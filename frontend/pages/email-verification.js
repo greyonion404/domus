@@ -1,10 +1,13 @@
 
 import { getSession } from '@auth0/nextjs-auth0';
 
+import { Text } from '../styles/Text';
 export default function EmailVerification() {
   return (
     <div>
-      Verify your email
+      <Text size={1}>
+        Verify your email
+      </Text>
     </div>
   )
 }
