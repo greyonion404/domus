@@ -1,14 +1,27 @@
 
 import { getSession } from '@auth0/nextjs-auth0';
+import { FaUserCheck } from 'react-icons/fa';
 
 import { Text } from '../styles/Text';
-export default function EmailVerification() {
+import { PromptBox, ImagedBackground, RefreshButton } from '../styles/email-verification-styles';
+
+const centerChilds = { display: "flex", justifyContent: "center", alignItems: "center" };
+
+export default function EmailVerificationPrompt() {
+
   return (
-    <div>
-      <Text size={1}>
-        Verify your email
-      </Text>
-    </div>
+    <ImagedBackground>
+      <PromptBox>
+        <Text size={1}>
+          {"A verification link has been sent to your email.\nYou can use this site after verifying your email. (´･_･`) "}
+        </Text>
+        <RefreshButton onClick={() => window.location.reload()} >
+          <Text size={2} style={centerChilds}>
+            <FaUserCheck />
+          </Text>
+        </RefreshButton>
+      </PromptBox>
+    </ImagedBackground>
   )
 }
 
@@ -23,6 +36,7 @@ export const getServerSideProps = async ({ req, res }) => {
       },
       props: {},
     };
+
 
   return { props: {} }
 };

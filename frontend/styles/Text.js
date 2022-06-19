@@ -9,7 +9,6 @@ let fontsSmaller = ['5vmin', '6vmin', '7.5vmin', '9vmin'];
 let getFontSize = (fontIndex, isSmallerDevice) => {
     if (!fontIndex) fontIndex = 0;
     else fontIndex = fontIndex - 1;
-    console.log(fontIndex);
     return (isSmallerDevice ? fontsSmaller[fontIndex] : fonts[fontIndex]);
 };
 
