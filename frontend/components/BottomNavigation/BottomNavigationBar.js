@@ -62,6 +62,22 @@ function OwnerNavigation() {
     )
 }
 
+function RenterNavigation() {
+
+   
+
+
+    return (
+        <NavbarMain>
+            <NavLink onClick={() => { Router.push('/api/auth/logout') }}>
+                <Text size={3} style={centerChilds}>
+                    <AiOutlineLogout />
+                </Text>
+            </NavLink>
+        </NavbarMain>
+    )
+}
+
 export default function BottomNavigationBar() {
 
     const hasPersistance = useStorePersistance();
@@ -75,7 +91,7 @@ export default function BottomNavigationBar() {
 
             {
                 getPersistantState(hasPersistance, isViewingAsOwner) ?
-                    <OwnerNavigation /> : null
+                    <OwnerNavigation /> :  <RenterNavigation />
             }
 
         </NavbarContainer >
