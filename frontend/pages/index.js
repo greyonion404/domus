@@ -12,8 +12,6 @@ import { useStorePersistance, useUserPreferencesStore } from '../store';
 
 export default function Dashboard({ profile }) {
 
-
-  
   const setUserID = useUserPreferencesStore((state) => state.setUserID);
   setUserID(profile.authID);
 
