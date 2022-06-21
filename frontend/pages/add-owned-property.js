@@ -2,8 +2,8 @@ import React from 'react';
 import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { supabase } from '../supabaseClient';
 import BottomNavigationBar from '../components/BottomNavigation/BottomNavigationBar';
-import ProfileInformationBar from '../components/ProfileBar/ProfileInformationBar';
 import { MainContent, Page } from '../styles/Page';
+import ProfileInformationBar from '../components/ProfileBar/ProfileInformationBar';
 
 
 

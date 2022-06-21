@@ -29,14 +29,29 @@
   display: none;
 }
 
+
+
+html, body, #__next, #__next>div {
+  height: 100%
+}
+
+button {
+  padding: 10px;
+  background-color: var(--secondaryMedium);
+  outline: none;
+  border: none;
+}
+
 body {
   background-color: var(--primaryMedium);
 }
 
+
+
 p {
   color: var(--primaryMedium);
 }
-a 
-{
+
+a {
   all: unset;
 }

@@ -1,11 +1,21 @@
 import { UserProvider } from '@auth0/nextjs-auth0'
 import '../styles/globals.css'
+import NextNProgress from 'nextjs-progressbar';
+import { useState } from 'react'
+import data from '../styles/data';
 
 function MyApp({ Component, pageProps }) {
   return (
-    <UserProvider>
-      <Component {...pageProps} />
-    </UserProvider>
+    <>
+
+      <NextNProgress
+        options={{ easing: "ease", speed: 500 }}
+        color={data.styles.color.secondary}
+      />
+      <UserProvider>
+        <Component {...pageProps} />
+      </UserProvider>
+    </>
   )
 }
 
