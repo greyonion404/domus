@@ -4,12 +4,22 @@ import { supabase } from '../supabaseClient';
 import BottomNavigationBar from '../components/BottomNavigation/BottomNavigationBar';
 import ProfileInformationBar from '../components/ProfileBar/ProfileInformationBar';
 import { MainContent, Page } from '../styles/Page';
+import { useStorePersistance, useUserPreferencesStore } from '../store';
 
 
 
 
 
 export default function Dashboard({ profile }) {
+
+
+  
+  const setUserID = useUserPreferencesStore((state) => state.setUserID);
+  setUserID(profile.authID);
+
+
+
+
   return (
     <Page>
       <ProfileInformationBar profile={profile} />

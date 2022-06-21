@@ -30,7 +30,6 @@ let NavbarMain = styled.div`
     }
 `
 
-let linkHoverColorOpacity = 50;
 let fontFamily = "'Yanone Kaffeesatz', sans-serif";
 let NavLink = styled.div`
     width: min-content;

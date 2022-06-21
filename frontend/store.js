@@ -20,10 +20,32 @@ function getPersistantState(hasPersistance, state) {
 let userPreferencesStore = (set) =>
 ({
     isViewingAsOwner: true,
+    userID: "USER_NOT_LOGGED_IN",
+
     toggleViewerMode: () => set((state) => ({ isViewingAsOwner: !state.isViewingAsOwner })),
+    setUserID: (userID) => set((state) => ({userID: userID})),
 
 });
 userPreferencesStore = persist(userPreferencesStore, { name: 'userPreference' });
 const useUserPreferencesStore = create(userPreferencesStore);
 
-export { useStorePersistance, useUserPreferencesStore, getPersistantState }
+
+// preferenceStore
+let modalStore = (set) =>
+({
+    isModalOpen: true,
+    toggleIsModalOpen: () => set((state) => ({ isModalOpen: !state.isModalOpen })),
+
+});
+const useModalStore = create(modalStore);
+
+
+
+
+export {
+    useStorePersistance,
+    getPersistantState,
+
+    useUserPreferencesStore,
+    useModalStore,
+}
