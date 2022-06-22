@@ -9,6 +9,7 @@ const ModalContainer = styled.div`
     width: 100%;
     top: 0;
     @media ${data.styles.devices.tablet} {
+        background-color: ${data.styles.color.primary};
     }
 `
 const CloseModalButton = styled.button`

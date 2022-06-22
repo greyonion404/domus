@@ -1,11 +1,14 @@
 import { Text } from "../../styles/Text"
+import { GenericModal } from "./Modals.styles"
+
 
 export default function ChangeNameModal() {
     return (
-        <>
-            {/* <Text>
-                aaa
-            </Text> */}
-        </>
+        <GenericModal>
+            <Text>
+                change name Modal
+            </Text>
+        </GenericModal>
+
     )
 }

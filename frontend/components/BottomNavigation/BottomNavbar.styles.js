@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import data from '../../styles/data';
 
 
-const navbarHeight = "12vh";
+const navbarHeight = "10vh";
 const navbarWidth = "100vw";
 
 
