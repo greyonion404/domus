@@ -1,5 +1,8 @@
 import { useModalStore } from "../../store";
-import { ModalContainer } from "./Modal.styles";
+import { ModalContainer, CloseModalButton } from "./Modal.styles";
+import { AiFillCloseCircle } from 'react-icons/ai'
+import { centerChilds, Text } from "../../styles/Text";
+
 
 
 export default function Modal(props) {
@@ -10,7 +13,12 @@ export default function Modal(props) {
     if (!isModalOpen) return <></>
 
     return (
-        <ModalContainer onClick={toggleIsModalOpen}>
+        <ModalContainer>
+            <CloseModalButton onClick={toggleIsModalOpen}>
+                <Text size={2} style={centerChilds}>
+                    <AiFillCloseCircle/>
+                </Text>
+            </CloseModalButton>
             {props.children}
         </ModalContainer>
     )
