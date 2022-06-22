@@ -21,9 +21,11 @@ let userPreferencesStore = (set) =>
 ({
     isViewingAsOwner: true,
     userID: "USER_NOT_LOGGED_IN",
+    hasEditedModal: false,
 
     toggleViewerMode: () => set((state) => ({ isViewingAsOwner: !state.isViewingAsOwner })),
-    setUserID: (userID) => set((state) => ({userID: userID})),
+    changeModalEdition: (hasEdited) => set((state) => ({ hasEditedModal: hasEdited })),
+    setUserID: (userID) => set((state) => ({ userID: userID })),
 
 });
 userPreferencesStore = persist(userPreferencesStore, { name: 'userPreference' });

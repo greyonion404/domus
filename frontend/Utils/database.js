@@ -26,4 +26,14 @@ async function addAuth0UserToDatabase(user) {
     return { insertedProfile: data, insertError: error }
 }
 
-export { getUserWithAuth0ID, addAuth0UserToDatabase }
+async function changeNameOfUser(userID, name) {
+
+    const { data, error } = await supabase
+        .from('users')
+        .update({ name: name })
+        .eq("authID", userID)
+
+    return { updatedProfile: data, updateError: error }
+}
+
+export { getUserWithAuth0ID, addAuth0UserToDatabase, changeNameOfUser }

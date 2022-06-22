@@ -1,12 +1,15 @@
-import { useState } from "react";
 
 import { useUserPreferencesStore, useStorePersistance, getPersistantState, useModalStore } from "../../store"
-import { Text } from "../../styles/Text";
+import { centerChilds, Text } from "../../styles/Text";
 import ChangeNameModal from "../Modals/ChangeNameModal";
+import { BiHash } from "react-icons/bi";
+
+
 
 import { ProfileBar, ProfileImage, ConvertButton } from "./ProfileInformationBar.style";
 
 import Modal from '../Modal/Modal'
+import { AiFillEye } from "react-icons/ai";
 
 
 
@@ -26,10 +29,11 @@ export default function ProfileInformationBar({ profile }) {
     return (
         <ProfileBar>
             <ProfileImage src={profile.authUser.picture} alt={profile.authUser.nickname} onClick={toggleIsModalOpen} />
-            <Text size={1} onClick={toggleIsModalOpen}>{profile.authUser.nickname}</Text>
+            <Text size={1} style={centerChilds} onClick={toggleIsModalOpen}> <BiHash/> {profile.name}</Text>
             <ConvertButton onClick={() => { getPersistantState(hasPersistance, toggleViewerMode)() }}>
-                <Text size={1}>
-                    {getPersistantState(hasPersistance, isViewingAsOwner) ? "View as Renter" : "View as Owner"}
+                <Text size={1} style={centerChilds}>
+                    <AiFillEye />
+                    {getPersistantState(hasPersistance, isViewingAsOwner) ? " View as Renter" : " View as Owner"}
                 </Text>
             </ConvertButton>
             <Modal>

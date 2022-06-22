@@ -6,10 +6,33 @@ let ProfileImage = styled.img`
     height: 10%;
     aspect-ratio: 1;
     border-radius: 50%;
+    margin: 50px;
     margin-left: 50%;
     transform: translateX(-50%);
+    
     @media ${data.styles.devices.tablet} {
     }
+`
+let ChangeNameInputContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 15%;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 90% 10%;
+`
+let ChangeNameInput = styled.input`
+    all: unset;
+    background-color: transparent;
+    outline: none;
+    border-bottom: 1px solid ${data.styles.color.secondaryMedium};
+    color: ${data.styles.color.text.lighter};
+    font-size: xx-large;
+    width: 90%;
+    margin: auto;
+    text-align: center;
+ 
 `
 
 let GenericModal = styled.div`
@@ -42,4 +65,12 @@ let LoadingModalContainer = styled.div`
     align-items: center;
 `
 
-export { ProfileImage, GenericModal, LoadingModalContainer}
+export {
+     ProfileImage, 
+     ChangeNameInputContainer,
+     ChangeNameInput,
+
+     GenericModal, 
+
+     LoadingModalContainer,
+    }
