@@ -5,6 +5,8 @@ import BottomNavigationBar from '../components/BottomNavigation/BottomNavigation
 import ProfileInformationBar from '../components/ProfileBar/ProfileInformationBar';
 import { MainContent, Page } from '../styles/Page';
 import { useUserPreferencesStore } from '../store';
+import { addAuth0UserToDatabase, getUserWithAuth0ID } from '../Utils/database';
+
 
 
 
@@ -28,31 +30,6 @@ export default function Dashboard({ profile }) {
   )
 }
 
-async function getUserWithAuth0ID(auth0ID) {
-  const { data, error } = await supabase
-    .from('users')
-    .select('*')
-    .eq('authID', auth0ID);
-
-  return { data, error };
-}
-
-async function addAuth0UserToDatabase(user) {
-
-  let item = {
-    authID: user.sub,
-    authUser: user,
-    name: user.nickname,
-    ownedProperties: [],
-    rentedProperties: []
-  };
-
-  const { data, error } = await supabase
-    .from('users')
-    .insert([item])
-
-  return { insertedProfile: data, insertError: error }
-}
 
 
 export const getServerSideProps = withPageAuthRequired({

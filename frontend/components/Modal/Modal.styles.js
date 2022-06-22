@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 
 const ModalContainer = styled.div`
-    background-color: rgb(0,0,0, 0.7);
+    background-color: rgb(0,0,0, 0.9);
     position: fixed;
     height: 100%;
     width: 100%;
@@ -17,8 +17,13 @@ const CloseModalButton = styled.button`
     height: 7vh;
     width: 7vh;
     background-color: ${data.styles.color.secondaryMedium};
-    margin-top: 1.5vh;
-    margin-left: 1.5vh;
+    margin: 1.5vh;
     border-radius: 50%;
+    right: 0;
+    @media ${data.styles.devices.tablet} {
+        height: 5vh;
+        width: 5vh;
+        margin: 20px;
+    }
 `
 export { ModalContainer, CloseModalButton }
