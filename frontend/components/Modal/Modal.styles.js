@@ -11,4 +11,4 @@ let ModalContainer = styled.div`
     @media ${data.styles.devices.tablet} {
     }
 `
-export {ModalContainer}
+export { ModalContainer }

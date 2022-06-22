@@ -4,7 +4,7 @@ import { supabase } from '../supabaseClient';
 import BottomNavigationBar from '../components/BottomNavigation/BottomNavigationBar';
 import ProfileInformationBar from '../components/ProfileBar/ProfileInformationBar';
 import { MainContent, Page } from '../styles/Page';
-import { useStorePersistance, useUserPreferencesStore } from '../store';
+import { useUserPreferencesStore } from '../store';
 
 
 
