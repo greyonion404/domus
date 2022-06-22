@@ -2,10 +2,11 @@ import { useState } from "react";
 
 import { useUserPreferencesStore, useStorePersistance, getPersistantState, useModalStore } from "../../store"
 import { Text } from "../../styles/Text";
-import Modal from "../Modal/Modal";
+import ChangeNameModal from "../Modals/ChangeNameModal";
+
 import { ProfileBar, ProfileImage, ConvertButton } from "./ProfileInformationBar.style";
 
-
+import Modal from '../Modal/Modal'
 
 
 
@@ -18,22 +19,24 @@ export default function ProfileInformationBar({ profile }) {
     const toggleIsModalOpen = useModalStore((state) => state.toggleIsModalOpen);
 
 
-    
+
 
 
 
     return (
         <ProfileBar>
-            <ProfileImage src={profile.authUser.picture} alt={profile.authUser.nickname} />
-            <Text onClick={toggleIsModalOpen}>{profile.authUser.nickname}</Text>
+            <ProfileImage src={profile.authUser.picture} alt={profile.authUser.nickname} onClick={toggleIsModalOpen} />
+            <Text size={1} onClick={toggleIsModalOpen}>{profile.authUser.nickname}</Text>
             <ConvertButton onClick={() => { getPersistantState(hasPersistance, toggleViewerMode)() }}>
                 <Text size={1}>
                     {getPersistantState(hasPersistance, isViewingAsOwner) ? "View as Renter" : "View as Owner"}
                 </Text>
             </ConvertButton>
             <Modal>
-                <button>aaa</button>
+                <ChangeNameModal />
             </Modal>
+            {/* <Modal>
+            </Modal> */}
         </ProfileBar>
     )
 }

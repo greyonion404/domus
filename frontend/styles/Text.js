@@ -34,5 +34,8 @@ let Text = styled.p`
     @media ${data.styles.devices.tablet} {
         font-size: ${({ size }) => (getFontSize(size, true))};
     }
+
 `
-export { Text }
+const centerChilds = { display: "flex", justifyContent: "center", alignItems: "center" };
+
+export { Text, centerChilds}
