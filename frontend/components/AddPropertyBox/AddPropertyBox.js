@@ -1,11 +1,14 @@
 import { centerChilds, Text } from "../../styles/Text";
 import { AddPropertyBoxContainer, AddPropertyInputBox, IconTextBox, Input, InputArea } from "./AddPropertyBox.styles";
-import { FaMapMarker, FaMapMarked, FaKey } from 'react-icons/fa'
+import { FaMapMarker, FaMapMarked, FaKey, FaCopy } from 'react-icons/fa'
 import { MdOutlineDescription } from 'react-icons/md'
 import { TiTick } from 'react-icons/ti'
 import { useState } from "react";
 import data from "../../styles/data";
 import { getRandomID } from "../../Utils/random";
+import { copyTextToClipboard } from "../../Utils/copy,js";
+
+
 
 
 export default function AddPropertyBox({ profile }) {
@@ -19,7 +22,7 @@ export default function AddPropertyBox({ profile }) {
     const textIconButton = {
         ...centerChilds, marginLeft: "auto",
         marginTop: "10px",
-        backgroundColor: data.styles.color.secondaryMedium, width: "max-content"
+        backgroundColor: data.styles.color.secondaryMedium, width: "max-content",
     };
 
     return (
@@ -45,11 +48,14 @@ export default function AddPropertyBox({ profile }) {
             <AddPropertyInputBox>
                 <IconTextBox>
                     <Text style={marginedRightText}> {"Generate Secret Key "} </Text>
+                    <Text size={2} style={marginedRightText}>
+                        <FaKey onClick={() => setSecretKey(getRandomID("KEY"))} />
+                    </Text>
                     <Text size={2} style={verticallyCenterChilds}>
-                        <FaKey onClick={()=> setSecretKey(getRandomID("KEY"))} />
+                        <FaCopy onClick={async () => { await copyTextToClipboard(secretKey) }} />
                     </Text>
                 </IconTextBox>
-                <Input type="text" placeholder="SECRET KEY" spellCheck="false" value={secretKey} />
+                <Input type="text" placeholder="SECRET KEY" spellCheck="false" value={secretKey} onChange={() => { }} />
             </AddPropertyInputBox>
 
 
