@@ -43,7 +43,7 @@ export default function AddPropertyBox({ profile }) {
 
             <AddPropertyInputBox>
                 <Text size={2} style={verticallyCenterChilds}>
-                    <Text style={marginedRightText}> {"Gennerate Secret Key "} </Text>
+                    <Text style={marginedRightText}> {"Generate Secret Key "} </Text>
                     <FaKey />
                 </Text>
                 <Input type="text" placeholder="SECRET KEY" spellCheck="false" value={secretKey} />
