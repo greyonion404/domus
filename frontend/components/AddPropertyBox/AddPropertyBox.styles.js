@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 import data from '../../styles/data'
+import { Text } from '../../styles/Text'
+
 
 let AddPropertyBoxContainer = styled.div`
 
@@ -9,7 +11,7 @@ let AddPropertyBoxContainer = styled.div`
     overflow-y: scroll;
     width: 80%;
     height: 90%;
-    padding: 20px;
+    padding: 10px;
 
     @media ${data.styles.devices.tablet} {
 
@@ -23,7 +25,9 @@ let AddPropertyInputBox = styled.div`
     width: 100%;
     height: max-content;
     display: flex;
+    flex-direction: column;
     padding: 5px;
+    gap: 1em;
 `
 let Input = styled.input`
     all: unset;
@@ -33,8 +37,7 @@ let Input = styled.input`
     color: ${data.styles.color.text.lighter};
     font-size: x-large;
     width: 100%;
-    margin-left: 20px;
-    margin-right: 20px;
+    margin: auto;
 `
 let InputArea = styled.textarea`
     all: unset;
@@ -43,9 +46,9 @@ let InputArea = styled.textarea`
     border-bottom: 1px solid ${data.styles.color.secondaryMedium};
     color: ${data.styles.color.text.lighter};
     font-size: x-large;
-    height: 30vh;
+    height: 20vh;
     width: 100%;
-    margin-left: 20px;
+    margin: auto;
 `
 
 export {
