@@ -5,6 +5,7 @@ import BottomNavigationBar from '../components/BottomNavigation/BottomNavigation
 import { MainContent, Page } from '../styles/Page';
 import ProfileInformationBar from '../components/ProfileBar/ProfileInformationBar';
 import { addAuth0UserToDatabase, getUserWithAuth0ID } from '../Utils/database';
+import AddPropertyBox from '../components/AddPropertyBox/AddPropertyBox';
 
 
 
@@ -14,6 +15,7 @@ export default function Dashboard({ profile }) {
     <Page>
       <ProfileInformationBar profile={profile} />
       <MainContent>
+        <AddPropertyBox profile={profile} />
       </MainContent>
       <BottomNavigationBar />
     </Page>

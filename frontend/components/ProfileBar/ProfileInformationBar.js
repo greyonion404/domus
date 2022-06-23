@@ -37,7 +37,7 @@ export default function ProfileInformationBar({ profile }) {
                 </Text>
             </ConvertButton>
             <Modal>
-                <ChangeNameModal />
+                <ChangeNameModal profile={profile} />
             </Modal>
             {/* <Modal>
             </Modal> */}

@@ -22,29 +22,32 @@ import {
 
 
 
-function ChangeName({ userName, userID }) {
+function ChangeName({ userName, userID, isUpdating, setIsUpdating }) {
 
     const changeModalEdition = useUserPreferencesStore((state) => state.changeModalEdition);
     const [isEditing, setIsEditing] = useState(false);
-    const [isUploading, setIsUploading] = useState(false);
 
     const [name, setName] = useState(userName);
     const [nameInput, setNameInput] = useState("");
 
     async function updateNameEffects() {
+        const validName = nameInput && nameInput.length > 2;
+        if (!validName) return;
+
         setIsEditing(false);
-        setIsUploading(true);
+        setIsUpdating(true);
         let { updatedProfile, updateError } = await changeNameOfUser(userID, nameInput);
-        setIsUploading(false);
+        setIsUpdating(false);
         if (updatedProfile)
             setName(nameInput);
         changeModalEdition(true);
     }
+
     return (
         <>
             <Text size={3} style={centerChilds} onClick={() => setIsEditing(!isEditing)}>
                 <BiHash />
-                {isUploading ? <AiOutlineUpload /> : name}
+                {isUpdating ? <AiOutlineUpload /> : name}
                 {isEditing ? <AiFillCloseCircle /> : <AiFillEdit />}
             </Text>
             {
@@ -54,10 +57,7 @@ function ChangeName({ userName, userID }) {
                         onChange={(event) => { setNameInput(event.target.value) }}
                     />
                     <Text size={2} onClick={async () => {
-                        const validName = nameInput && nameInput.length > 2;
-                        if (validName) {
-                            await updateNameEffects();
-                        }
+                        await updateNameEffects();
                     }}>
                         <TiTick />
                     </Text>
@@ -73,25 +73,29 @@ function ChangeName({ userName, userID }) {
 
 
 
-export default function ChangeNameModal() {
+export default function ChangeNameModal({ profile }) {
     const userID = useUserPreferencesStore((state) => state.userID);
-    const [user, setUser] = useState(null);
+    const user = profile;
+    const [isUpdating, setIsUpdating] = useState(false);
 
-    async function fetchUser() {
-        let fetchedUser = await getUserWithAuth0ID(userID);
-        setUser(fetchedUser.data[0]);
-    }
-    useEffect(() => {
-        fetchUser();
-        return () => {
-        };
-    }, [])
 
-    if (user) {
+    // async function fetchUser() {
+    //     let fetchedUser = await getUserWithAuth0ID(userID);
+    //     setUser(fetchedUser.data[0]);
+    // }
+    // useEffect(() => {
+    //     fetchUser();
+    //     return () => {
+    //     };
+    // }, [])
+
+  
+
+    if (!isUpdating) {
         return (
             <GenericModal>
                 <ProfileImage src={user.authUser.picture} alt={user.authUser.nickname} />
-                <ChangeName userName={user.name} userID={userID} />
+                <ChangeName userName={user.name} userID={userID} isUpdating={isUpdating} setIsUpdating={setIsUpdating}/>
                 <Text size={2} style={centerChilds}>
                     <TiMail />
                     {user.authUser.email}
@@ -109,7 +113,7 @@ export default function ChangeNameModal() {
 
     return <LoadingModalContainer>
         <Text size={2} style={centerChilds}>
-            {"Loading "}
+            {"updating name "}
             <RiLoaderFill />
         </Text>
     </LoadingModalContainer>
