@@ -7,17 +7,9 @@ let AddPropertyBoxContainer = styled.div`
     word-wrap: break-word;
     margin: auto;
     overflow-y: scroll;
-    width: max-content;
-    height: max-content;
-    min-height: 50%;
-    min-width: 50%;
-    max-width: 100%;
-    max-height: 100%;
-    border-top: .5px solid ${data.styles.color.text.light};
-    border-bottom: .5px solid ${data.styles.color.text.light};
+    width: 80%;
+    height: 90%;
     padding: 20px;
-    padding-left: 20%;
-    padding-right: 20%;
 
     @media ${data.styles.devices.tablet} {
 
@@ -26,8 +18,28 @@ let AddPropertyBoxContainer = styled.div`
         min-width: 90%;
     }
 `
+let AddPropertyInputBox = styled.div`
+    background-color: ${data.styles.color.primary};
+    width: 100%;
+    height: max-content;
+    display: flex;
+    padding: 5px;
+`
+let Input = styled.input`
+    all: unset;
+    background-color: transparent;
+    outline: none;
+    border-bottom: 1px solid ${data.styles.color.secondaryMedium};
+    color: ${data.styles.color.text.lighter};
+    font-size: x-large;
+    width: 100%;
+    margin-left: 20px;
+    text-align: center;
+`
 
 export {
     AddPropertyBoxContainer,
+    AddPropertyInputBox,
+    Input,
 }
 
