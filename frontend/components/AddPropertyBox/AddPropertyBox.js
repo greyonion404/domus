@@ -1,5 +1,5 @@
 import { centerChilds, Text } from "../../styles/Text";
-import { AddPropertyBoxContainer, AddPropertyInputBox, Input } from "./AddPropertyBox.styles";
+import { AddPropertyBoxContainer, AddPropertyInputBox, Input, InputArea } from "./AddPropertyBox.styles";
 import { FaAddressBook} from 'react-icons/fa'
 import { useState } from "react";
 
@@ -16,8 +16,14 @@ export default function AddPropertyBox({ profile }) {
           </AddPropertyInputBox>
 
           <AddPropertyInputBox>
-              <Text size={2} style={centerChilds} onClick={()=>{ setSecretKey("random")}}> <FaAddressBook/> </Text>
+              <Text size={2} style={centerChilds}> <FaAddressBook/> </Text>
+              <InputArea type="text" placeholder="description (rent, additional info ...)" spellCheck="false"/>
+          </AddPropertyInputBox>
+
+
+          <AddPropertyInputBox>
               <Input type="text" value={secretKey} spellCheck="false"/>
+              <Text size={2} style={centerChilds} onClick={()=>{ setSecretKey("random")}}> <FaAddressBook/> </Text>
           </AddPropertyInputBox>
 
 

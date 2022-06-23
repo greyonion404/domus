@@ -34,12 +34,24 @@ let Input = styled.input`
     font-size: x-large;
     width: 100%;
     margin-left: 20px;
-    text-align: center;
+    margin-right: 20px;
+`
+let InputArea = styled.textarea`
+    all: unset;
+    background-color: transparent;
+    outline: none;
+    border-bottom: 1px solid ${data.styles.color.secondaryMedium};
+    color: ${data.styles.color.text.lighter};
+    font-size: x-large;
+    height: 30vh;
+    width: 100%;
+    margin-left: 20px;
 `
 
 export {
     AddPropertyBoxContainer,
     AddPropertyInputBox,
     Input,
+    InputArea
 }
 
