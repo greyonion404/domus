@@ -36,7 +36,9 @@ const useUserPreferencesStore = create(userPreferencesStore);
 let modalStore = (set) =>
 ({
     isModalOpen: false,
+    modalType: "",
     toggleIsModalOpen: () => set((state) => ({ isModalOpen: !state.isModalOpen })),
+    setModalType: (type) => set((state) => ({ modalType: type })),
 
 });
 const useModalStore = create(modalStore);

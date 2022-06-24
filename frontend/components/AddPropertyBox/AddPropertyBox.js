@@ -7,6 +7,7 @@ import { useState } from "react";
 import data from "../../styles/data";
 import { getRandomID } from "../../Utils/random";
 import { copyTextToClipboard } from "../../Utils/copy,js";
+import { useModalStore } from "../../store";
 
 
 
@@ -24,6 +25,9 @@ export default function AddPropertyBox({ profile }) {
         marginTop: "10px",
         backgroundColor: data.styles.color.secondaryMedium, width: "max-content",
     };
+
+    const toggleIsModalOpen = useModalStore((state) => state.toggleIsModalOpen);
+
 
     return (
         <AddPropertyBoxContainer>
@@ -63,7 +67,7 @@ export default function AddPropertyBox({ profile }) {
                 <IconTextBox>
                     <Text style={marginedRightText}> {"Pin exact location (optional) "} </Text>
                     <Text size={2} style={verticallyCenterChilds}>
-                        <FaMapMarker />
+                        <FaMapMarker onClick={toggleIsModalOpen} />
                     </Text>
                 </IconTextBox>
             </AddPropertyInputBox>
