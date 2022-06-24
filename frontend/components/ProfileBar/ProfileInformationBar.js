@@ -9,28 +9,36 @@ import { ProfileBar, ProfileImage, ConvertButton } from "./ProfileInformationBar
 
 import Modal from '../Modal/Modal'
 import { AiFillEye } from "react-icons/ai";
-import { useModal } from "../../Utils/useModal";
+import { showModal, ModalTypes } from "../../Utils/useModal";
 
 
 
 export default function ProfileInformationBar({ profile }) {
 
     const hasPersistance = useStorePersistance();
-    const isViewingAsOwner = useUserPreferencesStore((state) => state.isViewingAsOwner);
 
+    const isViewingAsOwner = useUserPreferencesStore((state) => state.isViewingAsOwner);
     const toggleViewerMode = useUserPreferencesStore((state) => state.toggleViewerMode);
 
+    const modalType = useModalStore((state) => state.modalType);
+    const setModalType = useModalStore((state) => state.setModalType);
 
+    const isModalOpen = useModalStore((state) => state.isModalOpen);
+    const toggleIsModalOpen = useModalStore((state) => state.toggleIsModalOpen);
 
-    const { openModal, closeModal, showModal, ModalTypes } = useModal();
+    function openModal(type) {
+        setModalType(type);
+        toggleIsModalOpen();
 
-    console.log(openModal);
+    }
+
 
 
     return (
         <ProfileBar>
-            <ProfileImage src={profile.authUser.picture} alt={profile.authUser.nickname} onClick={openModal(ModalTypes.ChaneNameModal)} />
-            <Text size={1} style={centerChilds} onClick={openModal(ModalTypes.ChangeNameModal)}> <BiHash /> {profile.name}</Text>
+            <ProfileImage src={profile.authUser.picture} alt={profile.authUser.nickname}
+                onClick={() => { openModal(ModalTypes.ChaneNameModal) }} />
+            <Text size={1} style={centerChilds} onClick={() => { openModal(ModalTypes.ChaneNameModal) }}  > <BiHash /> {profile.name}</Text>
             <ConvertButton onClick={() => { getPersistantState(hasPersistance, toggleViewerMode)() }}>
                 <Text size={1} style={centerChilds}>
                     <AiFillEye />
@@ -38,7 +46,7 @@ export default function ProfileInformationBar({ profile }) {
                 </Text>
             </ConvertButton>
 
-            <Modal showModal={showModal(ModalTypes.ChaneNameModal)}>
+            <Modal showModal={showModal(ModalTypes.ChaneNameModal, modalType, isModalOpen)}>
                 <ChangeNameModal profile={profile} />
             </Modal>
 

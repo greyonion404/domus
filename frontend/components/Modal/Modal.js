@@ -6,14 +6,13 @@ import { centerChilds, Text } from "../../styles/Text";
 
 export default function Modal(props) {
 
-    const isModalOpen = useModalStore((state) => state.isModalOpen);
+    const isModalOpen = useModalStore((state) => state.isModalOpen); 
     const toggleIsModalOpen = useModalStore((state) => state.toggleIsModalOpen);
     const setModalType = useModalStore((state) => state.setModalType);
     const hasEditedModal = useUserPreferencesStore((state) => state.hasEditedModal);
     const changeModalEdition = useUserPreferencesStore((state) => state.changeModalEdition);
 
 
-    if (!isModalOpen) return <></>
     if (!props.showModal) return <></>
 
     return (

@@ -90,33 +90,34 @@ export default function ChangeNameModal({ profile }) {
     // }, [])
 
   
+    return (
+        <GenericModal>
+            <ProfileImage src={user.authUser.picture} alt={user.authUser.nickname} />
+            <ChangeName userName={user.name} userID={userID} isUpdating={isUpdating} setIsUpdating={setIsUpdating}/>
+            <Text size={2} style={centerChilds}>
+                <TiMail />
+                {user.authUser.email}
+            </Text>
+            <Text style={centerChilds}>
+                <BiHash /> {`you own ${user.ownedProperties.length} properties.`}
+            </Text>
+            <Text style={centerChilds}>
+                <BiHash /> {`you rent ${user.rentedProperties.length} properties.`}
+            </Text>
+        </GenericModal>
 
-    if (!isUpdating) {
-        return (
-            <GenericModal>
-                <ProfileImage src={user.authUser.picture} alt={user.authUser.nickname} />
-                <ChangeName userName={user.name} userID={userID} isUpdating={isUpdating} setIsUpdating={setIsUpdating}/>
-                <Text size={2} style={centerChilds}>
-                    <TiMail />
-                    {user.authUser.email}
-                </Text>
-                <Text style={centerChilds}>
-                    <BiHash /> {`you own ${user.ownedProperties.length} properties.`}
-                </Text>
-                <Text style={centerChilds}>
-                    <BiHash /> {`you rent ${user.rentedProperties.length} properties.`}
-                </Text>
-            </GenericModal>
+    )
 
-        )
-    }
+    // if (!isUpdating) {
+    //     <></>
+    // }
 
-    return <LoadingModalContainer>
-        <Text size={2} style={centerChilds}>
-            {"updating name "}
-            <RiLoaderFill />
-        </Text>
-    </LoadingModalContainer>
+    // return <LoadingModalContainer>
+    //     <Text size={2} style={centerChilds}>
+    //         {"updating name "}
+    //         <RiLoaderFill />
+    //     </Text>
+    // </LoadingModalContainer>
 
 
 

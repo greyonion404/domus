@@ -8,6 +8,8 @@ import data from "../../styles/data";
 import { getRandomID } from "../../Utils/random";
 import { copyTextToClipboard } from "../../Utils/copy,js";
 import { useModalStore } from "../../store";
+import { ModalTypes, showModal } from "../../Utils/useModal";
+import Modal from "../Modal/Modal";
 
 
 
@@ -26,7 +28,19 @@ export default function AddPropertyBox({ profile }) {
         backgroundColor: data.styles.color.secondaryMedium, width: "max-content",
     };
 
+    const modalType = useModalStore((state) => state.modalType);
+    const setModalType = useModalStore((state) => state.setModalType);
+
+    const isModalOpen = useModalStore((state) => state.isModalOpen);
     const toggleIsModalOpen = useModalStore((state) => state.toggleIsModalOpen);
+
+    function openModal(type) {
+        setModalType(type);
+        toggleIsModalOpen();
+
+    }
+
+
 
 
     return (
@@ -67,7 +81,7 @@ export default function AddPropertyBox({ profile }) {
                 <IconTextBox>
                     <Text style={marginedRightText}> {"Pin exact location (optional) "} </Text>
                     <Text size={2} style={verticallyCenterChilds}>
-                        <FaMapMarker onClick={toggleIsModalOpen} />
+                        <FaMapMarker onClick={() => openModal("")} />
                     </Text>
                 </IconTextBox>
             </AddPropertyInputBox>
@@ -80,6 +94,10 @@ export default function AddPropertyBox({ profile }) {
             </AddPropertyInputBox>
 
 
+
+            <Modal showModal={showModal("", modalType, isModalOpen)}>
+                    <Text> aaa </Text>
+            </Modal>
 
 
         </AddPropertyBoxContainer>
