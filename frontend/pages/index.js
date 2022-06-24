@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { supabase } from '../supabaseClient';
 import BottomNavigationBar from '../components/BottomNavigation/BottomNavigationBar';
@@ -6,7 +6,8 @@ import ProfileInformationBar from '../components/ProfileBar/ProfileInformationBa
 import { MainContent, Page } from '../styles/Page';
 import { useUserPreferencesStore } from '../store';
 import { addAuth0UserToDatabase, getUserWithAuth0ID } from '../Utils/database';
-
+import dynamic from "next/dynamic"
+const Map = dynamic(() => import("../components/Map/Map"), { ssr:false })
 
 
 
@@ -24,6 +25,7 @@ export default function Dashboard({ profile }) {
     <Page>
       <ProfileInformationBar profile={profile} />
       <MainContent>
+       <Map/>
       </MainContent>
       <BottomNavigationBar />
     </Page>
