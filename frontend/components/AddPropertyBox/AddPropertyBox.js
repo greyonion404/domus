@@ -1,11 +1,12 @@
 import { centerChilds, Text } from "../../styles/Text";
-import { AddPropertyBoxContainer, AddPropertyInputBox, Input, InputArea } from "./AddPropertyBox.styles";
+import { AddPropertyBoxContainer, AddPropertyInputBox, IconTextBox, Input, InputArea } from "./AddPropertyBox.styles";
 import { FaMapMarker, FaMapMarked, FaKey } from 'react-icons/fa'
 import { MdOutlineDescription } from 'react-icons/md'
 import { TiTick } from 'react-icons/ti'
-
 import { useState } from "react";
 import data from "../../styles/data";
+import { getRandomID } from "../../Utils/random";
+
 
 export default function AddPropertyBox({ profile }) {
 
@@ -37,24 +38,28 @@ export default function AddPropertyBox({ profile }) {
                 <Text size={2} style={verticallyCenterChilds}> <MdOutlineDescription /> </Text>
                 <InputArea type="text" placeholder="description (rent, additional info ...)"
                     spellCheck="false"
-                    onChange={(event) => { setAddress(event.target.value) }}
+                    onChange={(event) => { setDescription(event.target.value) }}
                 />
             </AddPropertyInputBox>
 
             <AddPropertyInputBox>
-                <Text size={2} style={verticallyCenterChilds}>
+                <IconTextBox>
                     <Text style={marginedRightText}> {"Generate Secret Key "} </Text>
-                    <FaKey />
-                </Text>
+                    <Text size={2} style={verticallyCenterChilds}>
+                        <FaKey onClick={()=> setSecretKey(getRandomID("KEY"))} />
+                    </Text>
+                </IconTextBox>
                 <Input type="text" placeholder="SECRET KEY" spellCheck="false" value={secretKey} />
             </AddPropertyInputBox>
 
 
             <AddPropertyInputBox>
-                <Text size={2} style={verticallyCenterChilds}>
+                <IconTextBox>
                     <Text style={marginedRightText}> {"Pin exact location (optional) "} </Text>
-                    <FaMapMarker />
-                </Text>
+                    <Text size={2} style={verticallyCenterChilds}>
+                        <FaMapMarker />
+                    </Text>
+                </IconTextBox>
             </AddPropertyInputBox>
 
 

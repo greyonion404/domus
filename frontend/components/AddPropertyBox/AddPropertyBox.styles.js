@@ -50,11 +50,15 @@ let InputArea = styled.textarea`
     width: 100%;
     margin: auto;
 `
-
+let IconTextBox = styled.div`
+    display: flex;
+    align-items: center;
+`
 export {
     AddPropertyBoxContainer,
     AddPropertyInputBox,
     Input,
-    InputArea
+    InputArea,
+    IconTextBox,
 }
 
