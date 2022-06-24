@@ -4,10 +4,10 @@
 :root {
   --dark: #000000;
   --light: #FFFFFF;
-  --primary: #282B30;
-  --primaryMedium: #36393E;
-  --secondary: #798ED7;
-  --secondaryMedium: #404EED;
+  --primary: #0C0C0C;
+  --primaryMedium: #292931;
+  --secondary: #D7899C;
+  --secondaryMedium: #BA8597;
   --textLight: #99AAB5;
   --textLighter: #C0C0C0;
   --textLightest: #FFFFFF;

@@ -12,7 +12,7 @@ let Page = styled.div`
 let MainContent = styled.div`
     display: flex;
     flex: 1;
-    background-color: #36393F;
+    background-color: ${data.styles.color.primaryMedium};
     overflow-y: scroll;
     @media ${data.styles.devices.tablet} {
     }
