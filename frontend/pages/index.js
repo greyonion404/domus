@@ -6,6 +6,7 @@ import ProfileInformationBar from '../components/ProfileBar/ProfileInformationBa
 import { MainContent, Page } from '../styles/Page';
 import { useUserPreferencesStore } from '../store';
 import { addAuth0UserToDatabase, getUserWithAuth0ID } from '../Utils/database';
+import OwnedProperties from '../components/Properties/OwnedProperties';
 
 
 
@@ -19,6 +20,7 @@ export default function Dashboard({ profile }) {
     <Page>
       <ProfileInformationBar profile={profile} />
       <MainContent>
+        <OwnedProperties profile={profile} />
       </MainContent>
       <BottomNavigationBar />
     </Page>
