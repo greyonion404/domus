@@ -65,6 +65,18 @@ let LoadingModalContainer = styled.div`
     align-items: center;
 `
 
+let MapBox = styled.div`
+    width: 100%;
+    height: 85%;
+`
+let SaveMarkerButtonBox = styled.div`
+    width: 100%;
+    height: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
+
 export {
      ProfileImage, 
      ChangeNameInputContainer,
@@ -73,4 +85,7 @@ export {
      GenericModal, 
 
      LoadingModalContainer,
+
+     MapBox,
+     SaveMarkerButtonBox
     }

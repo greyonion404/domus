@@ -10,6 +10,11 @@ import { copyTextToClipboard } from "../../Utils/copy,js";
 import { useModalStore } from "../../store";
 import { ModalTypes, showModal } from "../../Utils/useModal";
 import Modal from "../Modal/Modal";
+import Map from '../../components/Map/index'
+import { GenericModal } from "../Modals/Modals.styles";
+import MoveMapMarkerModal from "../Modals/MoveMapMarkerModal";
+
+
 
 
 
@@ -96,7 +101,9 @@ export default function AddPropertyBox({ profile }) {
 
 
             <Modal showModal={showModal("", modalType, isModalOpen)}>
-                    <Text> aaa </Text>
+                <MoveMapMarkerModal>
+                    <Map/>
+                </MoveMapMarkerModal>
             </Modal>
 
 

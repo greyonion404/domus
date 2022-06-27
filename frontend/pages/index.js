@@ -6,10 +6,6 @@ import ProfileInformationBar from '../components/ProfileBar/ProfileInformationBa
 import { MainContent, Page } from '../styles/Page';
 import { useUserPreferencesStore } from '../store';
 import { addAuth0UserToDatabase, getUserWithAuth0ID } from '../Utils/database';
-import dynamic from "next/dynamic"
-const Map = dynamic(() => import("../components/Map/Map"), { ssr:false })
-
-
 
 
 
@@ -19,13 +15,10 @@ export default function Dashboard({ profile }) {
   setUserID(profile.authID);
 
 
-
-
   return (
     <Page>
       <ProfileInformationBar profile={profile} />
       <MainContent>
-       <Map/>
       </MainContent>
       <BottomNavigationBar />
     </Page>

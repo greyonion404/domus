@@ -1,21 +1,22 @@
-import { MapContainer, TileLayer, useMap, Marker, Popup } from 'react-leaflet'
-import { GenericModal } from '../Modals/Modals.styles'
+import { MapContainer, TileLayer, useMap } from 'react-leaflet'
+import styles from './Map.module.css'
+import 'leaflet/dist/leaflet.css';
+import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css'; // Re-uses images from ~leaflet package
+import * as L from 'leaflet';
+import 'leaflet-defaulticon-compatibility';
 
-export default function Map() {
-    return (
-        <GenericModal>
-            <MapContainer style={{ height: "100%", width: "100%", zIndex: '1' }} center={[51.505, -0.09]} zoom={13} scrollWheelZoom={true}>
-                <TileLayer
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-                <Marker position={[51.505, -0.09]}>
-                    <Popup>
-                        A pretty CSS3 popup. <br /> Easily customizable.
-                    </Popup>
-                </Marker>
-            </MapContainer>
-        </GenericModal>
-    )
+const Map = () => {
 
+  let positionOfDhaka = [23.7104000, 90.4074400];
+
+  return (
+    <MapContainer className={styles.map} center={positionOfDhaka} zoom={11} scrollWheelZoom={true}>
+      <TileLayer
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+    </MapContainer>
+  )
 }
+
+export default Map;
