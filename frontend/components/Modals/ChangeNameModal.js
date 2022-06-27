@@ -77,18 +77,6 @@ export default function ChangeNameModal({ profile }) {
     const userID = useUserPreferencesStore((state) => state.userID);
     const user = profile;
     const [isUpdating, setIsUpdating] = useState(false);
-
-
-    // async function fetchUser() {
-    //     let fetchedUser = await getUserWithAuth0ID(userID);
-    //     setUser(fetchedUser.data[0]);
-    // }
-    // useEffect(() => {
-    //     fetchUser();
-    //     return () => {
-    //     };
-    // }, [])
-
   
     return (
         <GenericModal>
@@ -107,19 +95,5 @@ export default function ChangeNameModal({ profile }) {
         </GenericModal>
 
     )
-
-    // if (!isUpdating) {
-    //     <></>
-    // }
-
-    // return <LoadingModalContainer>
-    //     <Text size={2} style={centerChilds}>
-    //         {"updating name "}
-    //         <RiLoaderFill />
-    //     </Text>
-    // </LoadingModalContainer>
-
-
-
 
 }
