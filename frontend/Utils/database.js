@@ -36,4 +36,13 @@ async function changeNameOfUser(userID, name) {
     return { updatedProfile: data, updateError: error }
 }
 
-export { getUserWithAuth0ID, addAuth0UserToDatabase, changeNameOfUser }
+async function addPropertyToDatabase(property) {
+    const { data, error } = await supabase
+        .from('properties')
+        .insert([property])
+
+    return { insertedProperty: data, insertError: error }
+}
+
+
+export { getUserWithAuth0ID, addAuth0UserToDatabase, changeNameOfUser, addPropertyToDatabase }

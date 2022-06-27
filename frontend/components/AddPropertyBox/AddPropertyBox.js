@@ -1,29 +1,53 @@
 import { centerChilds, Text } from "../../styles/Text";
 import { AddPropertyBoxContainer, AddPropertyInputBox, IconTextBox, Input, InputArea } from "./AddPropertyBox.styles";
 import { FaMapMarker, FaMapMarked, FaKey, FaCopy } from 'react-icons/fa'
-import { MdOutlineDescription } from 'react-icons/md'
+import { MdDesktopAccessDisabled, MdOutlineDescription } from 'react-icons/md'
 import { TiTick } from 'react-icons/ti'
 import { useState } from "react";
 import data from "../../styles/data";
 import { getRandomID } from "../../Utils/random";
 import { copyTextToClipboard } from "../../Utils/copy,js";
-import { useModalStore } from "../../store";
+import { getPersistantState, useMapStore, useModalStore, useStorePersistance, useUserPreferencesStore } from "../../store";
 import { ModalTypes, showModal } from "../../Utils/useModal";
 import Modal from "../Modal/Modal";
 import Map from '../../components/Map/index'
-import { GenericModal } from "../Modals/Modals.styles";
 import MoveMapMarkerModal from "../Modals/MoveMapMarkerModal";
+import { addPropertyToDatabase } from "../../Utils/database";
+import Loader from "../Modal/Loader";
+import { useRouter } from "next/router";
 
 
+
+function RenterPrompt() {
+
+
+    const verticallyCenterChilds = { display: "flex", alignItems: "center" };
+    const marginedRightText = { ...verticallyCenterChilds, marginRight: "10px" };
+
+
+    return <>
+        <AddPropertyBoxContainer style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <Text size={1} style={verticallyCenterChilds}>
+                <MdDesktopAccessDisabled style={marginedRightText} />
+                {"Viewing as renter, can't add property"}
+            </Text>
+        </AddPropertyBoxContainer>
+    </>
+
+}
 
 
 
 
 export default function AddPropertyBox({ profile }) {
 
+    const router = useRouter();
+
+    const [isuploading, setIsuploading] = useState(false);
+
     const [address, setAddress] = useState("");
     const [description, setDescription] = useState("");
-    const [secretKey, setSecretKey] = useState("");
+    const [secretKey, setSecretKey] = useState(getRandomID("KEY"));
 
     const verticallyCenterChilds = { display: "flex", alignItems: "center" };
     const marginedRightText = { ...verticallyCenterChilds, marginRight: "10px" };
@@ -32,6 +56,8 @@ export default function AddPropertyBox({ profile }) {
         marginTop: "10px",
         backgroundColor: data.styles.color.secondaryMedium, width: "max-content",
     };
+    const markerPosition = useMapStore((state) => state.markerPosition);
+
 
     const modalType = useModalStore((state) => state.modalType);
     const setModalType = useModalStore((state) => state.setModalType);
@@ -44,6 +70,37 @@ export default function AddPropertyBox({ profile }) {
         toggleIsModalOpen();
 
     }
+
+
+    const hasPersistance = useStorePersistance();
+    const isViewingAsOwner = useUserPreferencesStore((state) => state.isViewingAsOwner);
+
+
+    async function addProperty() {
+
+        let property =
+        {
+            propertyID: getRandomID("PROPERTY"),
+            propertySecretKey: secretKey,
+            address: address,
+            description: description,
+            latitude: markerPosition.lat,
+            longitude: markerPosition.lng,
+            ownerID: profile.authID,
+            renterID: "",
+        };
+        setIsuploading(true);
+        let response = await addPropertyToDatabase(property);
+        setIsuploading(false);
+        if (response.insertedProperty) router.push('/');
+    }
+    if (!getPersistantState(hasPersistance, isViewingAsOwner)) return <RenterPrompt />
+
+    if (isuploading)
+        return <Loader prompt={"adding property to dashboard."} />
+
+
+
 
 
 
@@ -86,23 +143,25 @@ export default function AddPropertyBox({ profile }) {
                 <IconTextBox>
                     <Text style={marginedRightText}> {"Pin exact location (optional) "} </Text>
                     <Text size={2} style={verticallyCenterChilds}>
-                        <FaMapMarker onClick={() => openModal("")} />
+                        <FaMapMarker onClick={() => openModal(ModalTypes.MoveMapMarkerModal)} />
                     </Text>
                 </IconTextBox>
             </AddPropertyInputBox>
 
 
             <AddPropertyInputBox>
-                <Text size={3} style={textIconButton}>
+                <Text size={3} style={textIconButton} onClick={async () => {
+                    await addProperty();
+                }}>
                     <TiTick />
                 </Text>
             </AddPropertyInputBox>
 
 
 
-            <Modal showModal={showModal("", modalType, isModalOpen)}>
+            <Modal showModal={showModal(ModalTypes.MoveMapMarkerModal, modalType, isModalOpen)}>
                 <MoveMapMarkerModal>
-                    <Map/>
+                    <Map draggable={true} address={address} />
                 </MoveMapMarkerModal>
             </Modal>
 

@@ -1,4 +1,4 @@
-import { TiTick } from "react-icons/ti"
+import { FaMap } from "react-icons/fa";
 import data from "../../styles/data";
 import { Text } from "../../styles/Text"
 import { GenericModal, MapBox, SaveMarkerButtonBox } from "./Modals.styles"
@@ -22,7 +22,7 @@ export default function MoveMapMarkerModal(props) {
             </MapBox>
             <SaveMarkerButtonBox>
                 <Text size={3} style={textIconButton}>
-                    <TiTick />
+                    <FaMap />
                 </Text>
             </SaveMarkerButtonBox>
         </GenericModal>

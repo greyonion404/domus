@@ -54,15 +54,20 @@ let GenericModal = styled.div`
     }
 `
 let LoadingModalContainer = styled.div`
+    background-color: ${data.styles.color.primary};
     position: fixed;
-    height: 75%;
-    width: 100%;
+    height: 80%;
+    width: 100%;     
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     display: flex;
     justify-content: center;
     align-items: center;
+
+    @media ${data.styles.devices.tablet} {
+
+    }
 `
 
 let MapBox = styled.div`

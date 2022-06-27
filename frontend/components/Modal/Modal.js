@@ -18,12 +18,12 @@ export default function Modal(props) {
     return (
         <ModalContainer>
             <CloseModalButton onClick={() => {
-                toggleIsModalOpen();
-                setModalType("");
+                if(isModalOpen) toggleIsModalOpen();
                 if (hasEditedModal) {
                     changeModalEdition(false);
                     window.location.reload(false);
                 }
+                setModalType("");
             }}>
                 <Text size={2} style={centerChilds}>
                     <AiFillCloseCircle />

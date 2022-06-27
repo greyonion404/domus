@@ -16,6 +16,9 @@ function getPersistantState(hasPersistance, state) {
     if (hasPersistance) return state;
 }
 
+
+
+
 // preferenceStore
 let userPreferencesStore = (set) =>
 ({
@@ -32,7 +35,9 @@ userPreferencesStore = persist(userPreferencesStore, { name: 'userPreference' })
 const useUserPreferencesStore = create(userPreferencesStore);
 
 
-// preferenceStore
+
+
+// modalStore
 let modalStore = (set) =>
 ({
     isModalOpen: false,
@@ -46,10 +51,24 @@ const useModalStore = create(modalStore);
 
 
 
+// mapStore
+let mapStore = (set) =>
+({
+    markerPosition: { lat: 23.7104000, lng: 90.4074400 },
+    setMarkerPosition: (position) => set((state) => ({ markerPosition: position })),
+
+});
+const useMapStore = create(mapStore);
+
+
+
+
+
 export {
     useStorePersistance,
     getPersistantState,
 
     useUserPreferencesStore,
     useModalStore,
+    useMapStore,
 }

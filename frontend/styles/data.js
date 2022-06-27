@@ -27,7 +27,7 @@ const color = {
     primary: "#302E3A",
     primaryMedium: "#555466",
     secondary: "#D7899C",
-    secondaryMedium: "#BA8597",
+    secondaryMedium: "#0267c1",
     text: {
         light: "#99AAB5",
         lighter: "#C0C0C0",
