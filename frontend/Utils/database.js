@@ -44,5 +44,14 @@ async function addPropertyToDatabase(property) {
     return { insertedProperty: data, insertError: error }
 }
 
+async function getOwnedPropertiesOfUser(ID) {
+    const { data, error } = await supabase
+        .from('properties')
+        .select('*')
+        .eq('ownerID', ID);
+    return { data, error };
+}
 
-export { getUserWithAuth0ID, addAuth0UserToDatabase, changeNameOfUser, addPropertyToDatabase }
+
+
+export { getUserWithAuth0ID, addAuth0UserToDatabase, changeNameOfUser, addPropertyToDatabase, getOwnedPropertiesOfUser }
