@@ -4,10 +4,10 @@
 :root {
   --dark: #000000;
   --light: #FFFFFF;
-  --primary: #0C0C0C;
-  --primaryMedium: #292931;
-  --secondary: #D7899C;
-  --secondaryMedium: #0267c1;
+  --primary: #373F47;
+  --primaryMedium: #545f6b;
+  --secondary: #EB5160;
+  --secondaryMedium: #EB5160;
   --textLight: #99AAB5;
   --textLighter: #C0C0C0;
   --textLightest: #FFFFFF;
@@ -31,7 +31,7 @@
 
 
 
-html, body, #__next, #__next>div {
+html, body, #__next, #__next>div { 
   background-color: var(--primaryMedium);
   height: 100%
 }

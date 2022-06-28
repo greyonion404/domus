@@ -78,6 +78,8 @@ export default function AddPropertyBox({ profile }) {
 
     async function addProperty() {
 
+        if(address === "") return;
+
         let property =
         {
             propertyID: getRandomID("PROPERTY"),

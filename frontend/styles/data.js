@@ -24,10 +24,10 @@ const devices = {
 const color = {
     dark: "#000000",
     light: "#FFFFFF",
-    primary: "#302E3A",
-    primaryMedium: "#555466",
-    secondary: "#D7899C",
-    secondaryMedium: "#0267c1",
+    primary: "#373F47",
+    primaryMedium: "#545f6b",
+    secondary: "#EB5160",
+    secondaryMedium: "#EB5160",
     text: {
         light: "#99AAB5",
         lighter: "#C0C0C0",
