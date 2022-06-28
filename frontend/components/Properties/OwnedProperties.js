@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { getPersistantState, useStorePersistance, useUserPreferencesStore } from "../../store";
 import { Text } from "../../styles/Text";
 import { getOwnedPropertiesOfUser } from "../../Utils/database";
-import { OwnedPropertiesBox, SearchPropertyInput } from "./OwnedProperties.styles";
+import { OwnedPropertiesBox, Property, PropertyContainer, SearchPropertyInput } from "./OwnedProperties.styles";
 import { MdDesktopAccessDisabled } from 'react-icons/md';
 
 function RenterPrompt() {
@@ -24,14 +24,17 @@ function RenterPrompt() {
 
 function PropertySnippet({ property, profile }) {
     console.log();
-    return <>
-        <Text>
-            {profile.name}
-        </Text>
-        <Text>
-            {property.address}
-        </Text>
-    </>
+    return (
+        <Property>
+            <Text>
+                {profile.name}
+            </Text>
+            <Text>
+                {property.address}
+            </Text>
+        </Property>
+
+    )
 }
 
 
@@ -53,18 +56,20 @@ export default function OwnedProperties({ profile }) {
     const hasPersistance = useStorePersistance();
     const isViewingAsOwner = useUserPreferencesStore((state) => state.isViewingAsOwner);
 
-    if(!getPersistantState(hasPersistance, isViewingAsOwner)) return <RenterPrompt/>
+    if (!getPersistantState(hasPersistance, isViewingAsOwner)) return <RenterPrompt />
 
 
 
     return (
         <OwnedPropertiesBox>
             <SearchPropertyInput placeholder="address" spellcheck="false" />
-            {
-                properties.map((property, index) => {
-                    return (<PropertySnippet key={property.propertyID} property={property} profile={profile} />)
-                })
-            }
+            <PropertyContainer>
+                {
+                    properties.map((property, index) => {
+                        return (<PropertySnippet key={property.propertyID} property={property} profile={profile} />)
+                    })
+                }
+            </PropertyContainer>
         </OwnedPropertiesBox>
     )
 }
