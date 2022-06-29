@@ -25,7 +25,7 @@ let PropertyContainer = styled.div`
     margin: auto;
     overflow-y: scroll;
     width: 100%;
-    height: 90%;
+    max-height: 90%;
     padding: 10px;
     @media ${data.styles.devices.tablet} {
         padding: 20px;
