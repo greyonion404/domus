@@ -6,7 +6,7 @@ import { TiTick } from 'react-icons/ti'
 import { useState } from "react";
 import data from "../../styles/data";
 import { getRandomID } from "../../Utils/random";
-import { copyTextToClipboard } from "../../Utils/copy,js";
+import { copyTextToClipboard } from "../../Utils/copy.js";
 import { getPersistantState, useMapStore, useModalStore, useStorePersistance, useUserPreferencesStore } from "../../store";
 import { ModalTypes, showModal } from "../../Utils/useModal";
 import Modal from "../Modal/Modal";
