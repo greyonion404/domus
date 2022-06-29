@@ -14,7 +14,7 @@ function RenterPrompt() {
         <OwnedPropertiesBox style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
             <Text size={1} style={verticallyCenterChilds}>
                 <MdDesktopAccessDisabled style={marginedRightText} />
-                {"Viewing as renter, can't add property"}
+                {"Viewing as renter, renter mode can't show owned properties"}
             </Text>
         </OwnedPropertiesBox>
     </>

@@ -28,6 +28,7 @@ let PropertyContainer = styled.div`
     max-height: 90%;
     padding: 10px;
     @media ${data.styles.devices.tablet} {
+        grid-template-columns: 1fr;
         padding: 20px;
     }
 `
@@ -53,7 +54,14 @@ let SearchPropertyInput = styled.input`
     }
 `
 let Property = styled.div`
-    background-color: ${data.styles.color.primaryMedium};
+    background-color: ${data.styles.color.primary};
+    border: 1px solid ${data.styles.color.text.light}80;
     height: max-content;
+    height: 100%;
+    padding: 20px;
+    &:hover
+    {
+        border: 1px solid ${data.styles.color.text.light};
+    }
 `
 export { OwnedPropertiesBox, SearchPropertyInput, PropertyContainer, Property }
