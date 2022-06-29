@@ -12,7 +12,7 @@ import { ModalTypes, showModal } from "../../Utils/useModal";
 import Modal from "../Modal/Modal";
 import Map from '../../components/Map/index'
 import MoveMapMarkerModal from "../Modals/MoveMapMarkerModal";
-import { addPropertyToDatabase } from "../../Utils/database";
+import { addPropertyIdToOwner, addPropertyToDatabase } from "../../Utils/database";
 import Loader from "../Modal/Loader";
 import { useRouter } from "next/router";
 
@@ -78,7 +78,7 @@ export default function AddPropertyBox({ profile }) {
 
     async function addProperty() {
 
-        if(address === "") return;
+        if (address === "") return;
 
         let property =
         {
@@ -93,8 +93,9 @@ export default function AddPropertyBox({ profile }) {
         };
         setIsuploading(true);
         let response = await addPropertyToDatabase(property);
+        let profileResponse = await addPropertyIdToOwner(property.propertyID, profile);
         setIsuploading(false);
-        if (response.insertedProperty) router.push('/');
+        if (response.insertedProperty && profileResponse.updatedProfile) router.push('/');
     }
     if (!getPersistantState(hasPersistance, isViewingAsOwner)) return <RenterPrompt />
 

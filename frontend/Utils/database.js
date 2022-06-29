@@ -44,6 +44,18 @@ async function addPropertyToDatabase(property) {
     return { insertedProperty: data, insertError: error }
 }
 
+async function addPropertyIdToOwner(propertyID, profile) {
+
+    let updatedOwnedProperties = [...profile.ownedProperties, propertyID]
+    const { data, error } = await supabase
+        .from('users')
+        .update({ ownedProperties: updatedOwnedProperties })
+        .eq("authID", profile.authID)
+
+    return { updatedProfile: data, updateError: error }
+
+}
+
 async function getOwnedPropertiesOfUser(ID) {
     const { data, error } = await supabase
         .from('properties')
@@ -54,4 +66,4 @@ async function getOwnedPropertiesOfUser(ID) {
 
 
 
-export { getUserWithAuth0ID, addAuth0UserToDatabase, changeNameOfUser, addPropertyToDatabase, getOwnedPropertiesOfUser }
+export { getUserWithAuth0ID, addAuth0UserToDatabase, changeNameOfUser, addPropertyToDatabase, addPropertyIdToOwner, getOwnedPropertiesOfUser }
