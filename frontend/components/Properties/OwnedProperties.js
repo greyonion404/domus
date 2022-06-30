@@ -89,7 +89,7 @@ export default function OwnedProperties({ profile }) {
 
     return (
         <OwnedPropertiesBox>
-            <SearchPropertyInput placeholder="address" spellcheck="false" />
+            <SearchPropertyInput placeholder="address" spellCheck="false" />
             <PropertyContainer>
                 {
                     properties.map((property, index) => {
