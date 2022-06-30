@@ -1,9 +1,13 @@
 import { useState, useEffect } from "react"
-import { getPersistantState, useStorePersistance, useUserPreferencesStore } from "../../store";
+import { getPersistantState, useModalStore, useStorePersistance, useUserPreferencesStore } from "../../store";
 import { Text } from "../../styles/Text";
 import { getOwnedPropertiesOfUser } from "../../Utils/database";
 import { OwnedPropertiesBox, Property, PropertyContainer, SearchPropertyInput } from "./OwnedProperties.styles";
 import { MdDesktopAccessDisabled } from 'react-icons/md';
+import Modal from "../Modal/Modal";
+import MoveMapMarkerModal from "../Modals/MoveMapMarkerModal";
+import Map from "../Map/index";
+import { ModalTypes, showModal } from "../../Utils/useModal";
 
 function RenterPrompt() {
 
@@ -23,15 +27,38 @@ function RenterPrompt() {
 
 
 function PropertySnippet({ property, profile }) {
-    console.log();
+    
+
+    const modalType = useModalStore((state) => state.modalType);
+    const isModalOpen = useModalStore((state) => state.isModalOpen);
+    const setModalType = useModalStore((state) => state.setModalType);
+    const toggleIsModalOpen = useModalStore((state) => state.toggleIsModalOpen);
+
+
+
+    function openModal(type) {
+        setModalType(type);
+        toggleIsModalOpen();
+
+    }
+
     return (
-        <Property>
+        <Property onClick={()=>{openModal(ModalTypes.MoveMapMarkerModal)}}>
             <Text size={2} underline>{`Adress`} </Text>
             <Text size={1}>{property.address}</Text>
             <Text underline size={2}>{`Description`} </Text>
             <Text size={1}> {property.description} </Text>
             <Text size={2} underline>{`owned by`} </Text>
             <Text> {profile.name} </Text>
+            
+
+            <Modal showModal={showModal(ModalTypes.MoveMapMarkerModal, modalType, isModalOpen)}>
+                <MoveMapMarkerModal>
+                    <Map draggable={true} address={property.address} />
+                </MoveMapMarkerModal>
+            </Modal>
+
+
         </Property>
 
     )
