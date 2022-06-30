@@ -32,7 +32,7 @@ const CustomMarker = ({ draggable, position, address }) => {
 
   }
   return (
-    <Marker position={position}> </Marker>
+    <Marker position={position}>   <Popup>{address}</Popup>  </Marker>
   )
 }
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { getPersistantState, useModalStore, useStorePersistance, useUserPreferencesStore } from "../../store";
+import { getPersistantState, useMapStore, useModalStore, useStorePersistance, useUserPreferencesStore } from "../../store";
 import { Text } from "../../styles/Text";
 import { getOwnedPropertiesOfUser } from "../../Utils/database";
 import { OwnedPropertiesBox, Property, PropertyContainer, SearchPropertyInput } from "./OwnedProperties.styles";
@@ -26,13 +26,36 @@ function RenterPrompt() {
 }
 
 
-function PropertySnippet({ property, profile }) {
-    
+function PropertySnippet({ property, profile, openModal, setPosition }) {
+
+    const setMarkerPosition = useMapStore((state) => state.setMarkerPosition);
+    return (
+        <Property onClick={() => {
+            let currentPosition = { lat: property.latitude, lng: property.longitude };
+            setMarkerPosition(currentPosition);
+            setPosition(currentPosition);
+            openModal(ModalTypes.MoveMapMarkerModal)
+        }}>
+            <Text size={2} underline>{`Address`} </Text>
+            <Text size={1}>{property.address}</Text>
+            <Text underline size={2}>{`Description`} </Text>
+            <Text size={1}> {property.description} </Text>
+            <Text size={2} underline>{`owned by`} </Text>
+            <Text> {profile.name} </Text>
+        </Property>
+
+    )
+}
+
+
+export default function OwnedProperties({ profile }) {
 
     const modalType = useModalStore((state) => state.modalType);
     const isModalOpen = useModalStore((state) => state.isModalOpen);
     const setModalType = useModalStore((state) => state.setModalType);
     const toggleIsModalOpen = useModalStore((state) => state.toggleIsModalOpen);
+
+    const [position, setPosition] = useState([]);
 
 
 
@@ -41,31 +64,6 @@ function PropertySnippet({ property, profile }) {
         toggleIsModalOpen();
 
     }
-
-    return (
-        <Property onClick={()=>{openModal(ModalTypes.MoveMapMarkerModal)}}>
-            <Text size={2} underline>{`Adress`} </Text>
-            <Text size={1}>{property.address}</Text>
-            <Text underline size={2}>{`Description`} </Text>
-            <Text size={1}> {property.description} </Text>
-            <Text size={2} underline>{`owned by`} </Text>
-            <Text> {profile.name} </Text>
-            
-
-            <Modal showModal={showModal(ModalTypes.MoveMapMarkerModal, modalType, isModalOpen)}>
-                <MoveMapMarkerModal>
-                    <Map draggable={true} address={property.address} />
-                </MoveMapMarkerModal>
-            </Modal>
-
-
-        </Property>
-
-    )
-}
-
-
-export default function OwnedProperties({ profile }) {
 
     const [properties, setProperties] = useState([]);
 
@@ -93,10 +91,22 @@ export default function OwnedProperties({ profile }) {
             <PropertyContainer>
                 {
                     properties.map((property, index) => {
-                        return (<PropertySnippet key={property.propertyID} property={property} profile={profile} />)
+                        return (<PropertySnippet key={property.propertyID}
+                            property={property}
+                            profile={profile}
+                            openModal={openModal}
+                            setPosition={setPosition}
+                        />)
                     })
                 }
             </PropertyContainer>
+
+            <Modal showModal={showModal(ModalTypes.MoveMapMarkerModal, modalType, isModalOpen, setPosition)}>
+                <MoveMapMarkerModal>
+                    <Map address={"asd"} position={position} />
+                </MoveMapMarkerModal>
+            </Modal>
+
         </OwnedPropertiesBox>
     )
 }
