@@ -26,12 +26,12 @@ function PropertySnippet({ property, profile }) {
     console.log();
     return (
         <Property>
-            <Text>
-                {profile.name}
-            </Text>
-            <Text>
-                {property.address}
-            </Text>
+            <Text size={2} underline>{`Adress`} </Text>
+            <Text size={1}>{property.address}</Text>
+            <Text underline size={2}>{`Description`} </Text>
+            <Text size={1}> {property.description} </Text>
+            <Text size={2} underline>{`owned by`} </Text>
+            <Text> {profile.name} </Text>
         </Property>
 
     )
