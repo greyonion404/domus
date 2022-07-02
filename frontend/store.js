@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import create from 'zustand'
 import { persist } from 'zustand/middleware'
+import { defaultPosition } from './Utils/defaultPosition';
 
 
 
@@ -54,7 +55,7 @@ const useModalStore = create(modalStore);
 // mapStore
 let mapStore = (set) =>
 ({
-    markerPosition: { lat: 23.7104000, lng: 90.4074400 },
+    markerPosition: defaultPosition,
     setMarkerPosition: (position) => set((state) => ({ markerPosition: position })),
 
 });

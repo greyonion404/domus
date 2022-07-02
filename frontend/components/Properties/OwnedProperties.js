@@ -9,6 +9,9 @@ import MoveMapMarkerModal from "../Modals/MoveMapMarkerModal";
 import Map from "../Map/index";
 import { ModalTypes, showModal } from "../../Utils/useModal";
 import { FaMap } from "react-icons/fa";
+import { BiHash } from "react-icons/bi";
+import { isEqualFloat } from "../../Utils/floatComparison";
+
 
 function RenterPrompt() {
 
@@ -30,20 +33,27 @@ function RenterPrompt() {
 function PropertySnippet({ property, profile, openModal, setPosition }) {
 
     const setMarkerPosition = useMapStore((state) => state.setMarkerPosition);
+    function openMapModal() {
+        let currentPosition = { lat: property.latitude, lng: property.longitude };
+        setMarkerPosition(currentPosition);
+        setPosition(currentPosition);
+        openModal(ModalTypes.MapMarkerModal)
+    }
+    function hasMapLocation() {
+        return !(isEqualFloat(property.latitude, 0) && isEqualFloat(property.longitude, 0))
+    }
+
     return (
-        <Property onClick={() => {
-            let currentPosition = { lat: property.latitude, lng: property.longitude };
-            setMarkerPosition(currentPosition);
-            setPosition(currentPosition);
-            openModal(ModalTypes.MoveMapMarkerModal)
-        }}>
+        <Property>
             <Text size={2} underline>{`Address`} </Text>
             <Text size={1}>{property.address}</Text>
+            <Text size={1} style={{ ...centerChilds, justifyContent: "left" }}>{`owned by`} <BiHash /> {profile.name}  </Text>
             <Text underline size={2}>{`Description`} </Text>
             <Text size={1}> {property.description} </Text>
-            <Text size={2} underline>{`owned by`} </Text>
-            <Text> {profile.name} </Text>
-            <Text size={2} underline> <FaMap/> </Text>
+            {
+                hasMapLocation() &&
+                <Text size={2} style={centerChilds}> <FaMap onClick={() => { openMapModal() }} /> </Text>
+            }
         </Property>
 
     )
@@ -58,13 +68,11 @@ export default function OwnedProperties({ profile }) {
     const toggleIsModalOpen = useModalStore((state) => state.toggleIsModalOpen);
 
     const [position, setPosition] = useState([]);
-
-
+    const [address, setAddress] = useState("");
 
     function openModal(type) {
         setModalType(type);
         toggleIsModalOpen();
-
     }
 
     const [properties, setProperties] = useState([]);
@@ -103,9 +111,9 @@ export default function OwnedProperties({ profile }) {
                 }
             </PropertyContainer>
 
-            <Modal showModal={showModal(ModalTypes.MoveMapMarkerModal, modalType, isModalOpen, setPosition)}>
+            <Modal showModal={showModal(ModalTypes.MapMarkerModal, modalType, isModalOpen, setPosition)}>
                 <MoveMapMarkerModal>
-                    <Map address={"asd"} position={position} />
+                    <Map address={address} position={position} />
                 </MoveMapMarkerModal>
             </Modal>
 

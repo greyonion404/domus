@@ -15,6 +15,8 @@ import MoveMapMarkerModal from "../Modals/MoveMapMarkerModal";
 import { addPropertyIdToOwner, addPropertyToDatabase } from "../../Utils/database";
 import Loader from "../Modal/Loader";
 import { useRouter } from "next/router";
+import { isEqualFloat } from "../../Utils/floatComparison";
+import { defaultPosition } from "../../Utils/defaultPosition";
 
 
 
@@ -39,6 +41,7 @@ function RenterPrompt() {
 
 
 
+
 export default function AddPropertyBox({ profile }) {
 
     const router = useRouter();
@@ -57,6 +60,9 @@ export default function AddPropertyBox({ profile }) {
         backgroundColor: data.styles.color.secondaryMedium, width: "max-content",
     };
     const markerPosition = useMapStore((state) => state.markerPosition);
+    const setMarkerPosition = useMapStore((state) => state.setMarkerPosition);
+
+
 
 
     const modalType = useModalStore((state) => state.modalType);
@@ -67,6 +73,7 @@ export default function AddPropertyBox({ profile }) {
 
     function openModal(type) {
         setModalType(type);
+        setMarkerPosition(defaultPosition);
         toggleIsModalOpen();
 
     }
@@ -79,6 +86,10 @@ export default function AddPropertyBox({ profile }) {
     async function addProperty() {
 
         if (address === "") return;
+        let position = { lat: 0, longitude: 0 };
+        position.lat = (isEqualFloat(markerPosition.lat, defaultPosition.lat)) ? 0 : markerPosition.lat;
+        position.lng = (isEqualFloat(markerPosition.lng, defaultPosition.lng)) ? 0 : markerPosition.lng;
+
 
         let property =
         {
@@ -86,8 +97,8 @@ export default function AddPropertyBox({ profile }) {
             propertySecretKey: secretKey,
             address: address,
             description: description,
-            latitude: markerPosition.lat,
-            longitude: markerPosition.lng,
+            latitude: position.lat,
+            longitude: position.lng,
             ownerID: profile.authID,
             renterID: "",
         };
