@@ -13,7 +13,6 @@ import {
     ChangeNameInput,
     ChangeNameInputContainer,
     GenericModal,
-    LoadingModalContainer,
     ProfileImage
 } from "./Modals.styles"
 

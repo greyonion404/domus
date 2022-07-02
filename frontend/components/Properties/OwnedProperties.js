@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { getPersistantState, useMapStore, useModalStore, useStorePersistance, useUserPreferencesStore } from "../../store";
-import { Text } from "../../styles/Text";
+import { Text, centerChilds } from "../../styles/Text";
 import { getOwnedPropertiesOfUser } from "../../Utils/database";
 import { OwnedPropertiesBox, Property, PropertyContainer, SearchPropertyInput } from "./OwnedProperties.styles";
 import { MdDesktopAccessDisabled } from 'react-icons/md';
@@ -8,6 +8,7 @@ import Modal from "../Modal/Modal";
 import MoveMapMarkerModal from "../Modals/MoveMapMarkerModal";
 import Map from "../Map/index";
 import { ModalTypes, showModal } from "../../Utils/useModal";
+import { FaMap } from "react-icons/fa";
 
 function RenterPrompt() {
 
@@ -42,6 +43,7 @@ function PropertySnippet({ property, profile, openModal, setPosition }) {
             <Text size={1}> {property.description} </Text>
             <Text size={2} underline>{`owned by`} </Text>
             <Text> {profile.name} </Text>
+            <Text size={2} underline> <FaMap/> </Text>
         </Property>
 
     )
