@@ -64,4 +64,8 @@ let Property = styled.div`
         border: 1px solid ${data.styles.color.text.light};
     }
 `
-export { OwnedPropertiesBox, SearchPropertyInput, PropertyContainer, Property }
+let IconTextBox = styled.div`
+    display: flex;
+    align-items: center;
+`
+export { OwnedPropertiesBox, SearchPropertyInput, PropertyContainer, Property, IconTextBox }

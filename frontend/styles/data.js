@@ -31,7 +31,7 @@ const color = {
     text: {
         light: "#99AAB5",
         lighter: "#C0C0C0",
-        lightest: "#FFFFFF",
+        lightest: "#dddddd",
         inverted: "#000000"
     }
 };
