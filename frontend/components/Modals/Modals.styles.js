@@ -58,10 +58,10 @@ let GenericModal = styled.div`
 let EditPropertyModalContainer = styled.div`
     background-color: ${data.styles.color.primary};
     position: fixed;
-    height: 85%;
-    width: 90%;
+    height: 80%;
+    width: 80%;
     top: 10%;
-    left: 5%;
+    left: 10%;
     padding: 10px;
     word-wrap: break-word;
     overflow-y: scroll;

@@ -16,23 +16,23 @@ const marginedRightText = { ...verticallyCenterChilds, marginRight: "10px" };
 export default function EditPropertyModal({ property }) {
 
     const router = useRouter();
-
     const [isuploading, setIsuploading] = useState(false);
-
     const [address, setAddress] = useState(property.address);
     const [description, setDescription] = useState(property.description);
-    const [secretKey, setSecretKey] = useState(property.secretKey);
+    const [secretKey, setSecretKey] = useState(property.propertySecretKey);
 
     const textIconButton = {
-        ...centerChilds, marginLeft: "auto",
-        marginTop: "10px",
+        ...centerChilds, margin: "auto",
+        position: "absolute",
+        bottom: 20,
+        right: 20,
+        padding: "10px",
         backgroundColor: data.styles.color.secondaryMedium, width: "max-content",
     };
 
 
     return <EditPropertyModalContainer>
         <AddPropertyBoxContainer>
-
             <AddPropertyInputBox>
                 <Text size={2} style={verticallyCenterChilds}>
                     <FaMapMarked />
@@ -61,16 +61,6 @@ export default function EditPropertyModal({ property }) {
                     </Text>
                 </IconTextBox>
                 <Input type="text" placeholder="SECRET KEY" spellCheck="false" value={secretKey} onChange={() => { }} />
-            </AddPropertyInputBox>
-
-
-            <AddPropertyInputBox>
-                <IconTextBox>
-                    <Text style={marginedRightText}> {"Pin exact location (optional) "} </Text>
-                    <Text size={2} style={verticallyCenterChilds}>
-                        <FaMapMarker onClick={() => openModal(ModalTypes.MoveMapMarkerModal)} />
-                    </Text>
-                </IconTextBox>
             </AddPropertyInputBox>
 
 
