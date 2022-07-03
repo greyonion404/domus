@@ -26,8 +26,8 @@ const color = {
     light: "#FFFFFF",
     primary: "#373F47",
     primaryMedium: "#545f6b",
-    secondary: "#EB5160",
-    secondaryMedium: "#EB5160",
+    secondary: "#C73A33",
+    secondaryMedium: "#C73A33",
     text: {
         light: "#99AAB5",
         lighter: "#C0C0C0",

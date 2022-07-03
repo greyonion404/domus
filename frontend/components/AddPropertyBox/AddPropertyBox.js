@@ -142,10 +142,10 @@ export default function AddPropertyBox({ profile }) {
             <AddPropertyInputBox>
                 <IconTextBox>
                     <Text style={marginedRightText}> {"Generate Secret Key "} </Text>
-                    <Text size={2} style={marginedRightText}>
+                    <Text size={1} style={marginedRightText}>
                         <FaKey onClick={() => setSecretKey(getRandomID("KEY"))} />
                     </Text>
-                    <Text size={2} style={verticallyCenterChilds}>
+                    <Text size={1} style={verticallyCenterChilds}>
                         <FaCopy onClick={async () => { await copyTextToClipboard(secretKey) }} />
                     </Text>
                 </IconTextBox>
