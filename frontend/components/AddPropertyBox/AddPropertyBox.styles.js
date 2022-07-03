@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import data from '../../styles/data'
-import { Text } from '../../styles/Text'
 
 
 let AddPropertyBoxContainer = styled.div`
