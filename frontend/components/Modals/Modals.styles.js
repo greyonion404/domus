@@ -81,6 +81,28 @@ let SaveMarkerButtonBox = styled.div`
     justify-content: center;
     align-items: center;
 `
+let DeletePropertyButton = styled.button`
+  
+    height: 7vh;
+    width: 7vh;
+    background-color: ${data.styles.color.secondaryMedium};
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    margin-bottom: 3vh;
+    margin-top: 3vh;
+    padding: 50px;
+    @media ${data.styles.devices.tablet} {
+        height: 5vh;
+        width: 5vh;
+    }
+`
+
+let FlexBox = styled.div`
+    display: flex;
+`
 
 export {
      ProfileImage, 
@@ -92,5 +114,8 @@ export {
      LoadingModalContainer,
 
      MapBox,
-     SaveMarkerButtonBox
+     SaveMarkerButtonBox,
+
+     DeletePropertyButton,
+     FlexBox,
     }

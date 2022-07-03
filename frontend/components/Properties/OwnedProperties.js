@@ -13,6 +13,7 @@ import { BiHash } from "react-icons/bi";
 import { isEqualFloat } from "../../Utils/floatComparison";
 import { copyTextToClipboard } from "../../Utils/copy";
 import { AiFillEdit } from "react-icons/ai";
+import DeleteOwnedPropertyModal from "../Modals/DeleteOwnedPropertyModal";
 
 
 
@@ -33,7 +34,7 @@ function RenterPrompt() {
 }
 
 
-function PropertySnippet({ property, profile, openModal, setPosition, setAddress }) {
+function PropertySnippet({ property, profile, openModal, setPosition, setAddress, setSelectedProperty }) {
 
     const setMarkerPosition = useMapStore((state) => state.setMarkerPosition);
     function openMapModal() {
@@ -44,7 +45,12 @@ function PropertySnippet({ property, profile, openModal, setPosition, setAddress
         openModal(ModalTypes.MapMarkerModal)
     }
     function openPropertyEditModal() {
+        setSelectedProperty(property);
         openModal("");
+    }
+    function openPropertyDeleteModal() {
+        setSelectedProperty(property);
+        openModal(ModalTypes.OwnedPropertyDeleteModal);
     }
     function hasMapLocation() {
         return !(isEqualFloat(property.latitude, 0) && isEqualFloat(property.longitude, 0))
@@ -63,7 +69,7 @@ function PropertySnippet({ property, profile, openModal, setPosition, setAddress
                         <AiFillEdit onClick={() => { openPropertyEditModal() }} />
                     </Text>
                     <Text size={1} style={{ ...centerChilds, justifyContent: "left", marginLeft: "10px" }}>
-                        <FaTrash onClick={() => { openPropertyEditModal() }} />
+                        <FaTrash onClick={() => { openPropertyDeleteModal() }} />
                     </Text>
                 </IconTextBox>
             </IconTextBox>
@@ -109,6 +115,8 @@ export default function OwnedProperties({ profile }) {
 
     const [position, setPosition] = useState([]);
     const [address, setAddress] = useState("");
+    const [inputAddress, setInputAddress] = useState("");
+    const [selectedProperty, setSelectedProperty] = useState({})
 
     function openModal(type) {
         setModalType(type);
@@ -133,20 +141,24 @@ export default function OwnedProperties({ profile }) {
 
     if (!getPersistantState(hasPersistance, isViewingAsOwner)) return <RenterPrompt />
 
+    function propertyFilteredByInput(property) {
+        return property.address.toLowerCase().includes(inputAddress.toLowerCase());
+    }
 
 
     return (
         <OwnedPropertiesBox>
-            <SearchPropertyInput placeholder="address" spellCheck="false" />
+            <SearchPropertyInput placeholder="address" spellCheck="false" onChange={(event) => { setInputAddress(event.target.value) }} />
             <PropertyContainer>
                 {
-                    properties.map((property, index) => {
+                    properties.filter(propertyFilteredByInput).map((property, index) => {
                         return (<PropertySnippet key={property.propertyID}
                             property={property}
                             profile={profile}
                             openModal={openModal}
                             setPosition={setPosition}
                             setAddress={setAddress}
+                            setSelectedProperty={setSelectedProperty}
                         />)
                     })
                 }
@@ -159,6 +171,14 @@ export default function OwnedProperties({ profile }) {
             </Modal>
 
             <Modal showModal={showModal("", modalType, isModalOpen, setPosition)}>
+                <Text>
+                    EDIT
+                    {JSON.stringify(selectedProperty)}
+                </Text>
+            </Modal>
+
+            <Modal showModal={showModal(ModalTypes.OwnedPropertyDeleteModal, modalType, isModalOpen, setPosition)}>
+                <DeleteOwnedPropertyModal property={selectedProperty}/>
             </Modal>
 
         </OwnedPropertiesBox>
