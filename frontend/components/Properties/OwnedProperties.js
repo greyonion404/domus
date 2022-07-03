@@ -176,9 +176,7 @@ export default function OwnedProperties({ profile }) {
             </Modal>
 
             <Modal showModal={showModal(ModalTypes.EditPropertyModal, modalType, isModalOpen, setPosition)}>
-                <Text>
-                    <EditPropertyModal property={selectedProperty} />
-                </Text>
+                <EditPropertyModal property={selectedProperty} />
             </Modal>
 
             <Modal showModal={showModal(ModalTypes.OwnedPropertyDeleteModal, modalType, isModalOpen, setPosition)}>

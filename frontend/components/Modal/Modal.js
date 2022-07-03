@@ -1,4 +1,4 @@
-import { useModalStore, useUserPreferencesStore } from "../../store";
+import { useMapStore, useModalStore, useUserPreferencesStore } from "../../store";
 import { ModalContainer, CloseModalButton } from "./Modal.styles";
 import { AiFillCloseCircle } from 'react-icons/ai'
 import { centerChilds, Text } from "../../styles/Text";
@@ -11,6 +11,7 @@ export default function Modal(props) {
     const setModalType = useModalStore((state) => state.setModalType);
     const hasEditedModal = useUserPreferencesStore((state) => state.hasEditedModal);
     const changeModalEdition = useUserPreferencesStore((state) => state.changeModalEdition);
+    
 
 
     if (!props.showModal) return <></>

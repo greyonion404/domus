@@ -8,7 +8,8 @@ let Page = styled.div`
     @media ${data.styles.devices.tablet} {
     }
 `
-
+let Box = styled.div`
+`
 let MainContent = styled.div`
     display: flex;
     flex: 1;
@@ -18,4 +19,4 @@ let MainContent = styled.div`
     }
 `
 
-export { Page, MainContent }
+export { Page, Box, MainContent }

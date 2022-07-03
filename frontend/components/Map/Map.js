@@ -4,8 +4,9 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css'; // Re-uses images from ~leaflet package
 import * as L from 'leaflet';
 import 'leaflet-defaulticon-compatibility';
-import { useState, useMemo, useRef } from 'react'
+import { useState, useMemo, useRef, useEffect } from 'react'
 import { useMapStore } from '../../store';
+import { isEqualFloat } from '../../Utils/floatComparison';
 
 const CustomMarker = ({ draggable, position, address }) => {
 
@@ -36,9 +37,9 @@ const CustomMarker = ({ draggable, position, address }) => {
   )
 }
 
-function ChangeView({ center }) {
+function ChangeView({ center, zoom }) {
   const map = useMap();
-  map.setView(center);
+  map.setView(center, zoom);
   return null;
 }
 
@@ -48,15 +49,19 @@ const Map = ({ draggable, position, address }) => {
   const markerPosition = useMapStore((state) => state.markerPosition);
   let positionOfDhaka = { lat: 23.7104000, lng: 90.4074400 };
 
+  const [zoom, setZoom] = useState(11);
+  useEffect(() => {
+    if(position && !isEqualFloat(positionOfDhaka.lat, position.lat) && !isEqualFloat(positionOfDhaka.lng, position.lng)) setZoom(18);
+  }, [])
+
   return (
-    <MapContainer className={styles.map} center={markerPosition} zoom={11} scrollWheelZoom={true}>
-      <ChangeView center={markerPosition} />
+    <MapContainer className={styles.map} center={markerPosition} zoom={zoom} scrollWheelZoom={true}>
+      <ChangeView center={markerPosition} zoom={zoom}/>
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <CustomMarker draggable={draggable} position={position ? position : positionOfDhaka} address={address} />
-
     </MapContainer>
   )
 }

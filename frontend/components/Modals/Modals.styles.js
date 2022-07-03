@@ -93,6 +93,18 @@ let MapBox = styled.div`
     width: 100%;
     height: 85%;
 `
+let EditingMapBox = styled.div`
+    margin-top: 5%;
+    margin-left: 20%;
+    width: 60%;
+    height: 60%;
+    @media ${data.styles.devices.tablet} {
+        margin-left: 5%;
+        width: 90%;
+        height: 70%;
+    }
+`
+
 let SaveMarkerButtonBox = styled.div`
     width: 100%;
     height: 15%;
@@ -124,19 +136,20 @@ let FlexBox = styled.div`
 `
 
 export {
-     ProfileImage, 
-     ChangeNameInputContainer,
-     ChangeNameInput,
+    ProfileImage,
+    ChangeNameInputContainer,
+    ChangeNameInput,
 
-     GenericModal, 
+    GenericModal,
 
-     LoadingModalContainer,
+    LoadingModalContainer,
 
-     MapBox,
-     SaveMarkerButtonBox,
+    MapBox,
+    SaveMarkerButtonBox,
+    EditingMapBox,
 
-     DeletePropertyButton,
-     FlexBox,
+    DeletePropertyButton,
+    FlexBox,
 
-     EditPropertyModalContainer
-    }
+    EditPropertyModalContainer
+}

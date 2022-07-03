@@ -10,13 +10,13 @@ let AddPropertyBoxContainer = styled.div`
     margin: auto;
     overflow-y: scroll;
     width: 80%;
-    height: 90%;
+    height: 85%;
     padding: 10px;
 
     @media ${data.styles.devices.tablet} {
 
         padding: 20px;
-        min-height: 95%;
+        min-height: 85%;
         min-width: 90%;
     }
 `
