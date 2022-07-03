@@ -2,30 +2,34 @@ import { centerChilds, Text } from "../../styles/Text";
 import AddPropertyBox from "../AddPropertyBox/AddPropertyBox";
 import { AddPropertyBoxContainer, AddPropertyInputBox, IconTextBox, Input, InputArea } from "../AddPropertyBox/AddPropertyBox.styles";
 import { EditingMapBox, EditPropertyModalContainer, FlexBox, MapBox } from "./Modals.styles";
-import { FaMapMarker, FaMapMarked, FaKey, FaCopy, FaInfo } from 'react-icons/fa'
+import { FaMapMarker, FaMapMarked, FaKey, FaCopy, FaInfo, FaUpload } from 'react-icons/fa'
 import { MdDesktopAccessDisabled, MdOutlineDescription } from 'react-icons/md'
 import { TiTick } from 'react-icons/ti'
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { getRandomID } from "../../Utils/random";
 import data from "../../styles/data";
-import { copyTextToClipboard } from "../../Utils/copy";
 import { Box } from "../../styles/Page";
 import Map from '../Map/index'
 import { defaultPosition } from "../../Utils/defaultPosition";
 import { isEqualFloat } from "../../Utils/floatComparison";
-import { useMapStore } from "../../store";
-import { AiOutlineWarning } from "react-icons/ai"
+import { useMapStore, useModalStore, useUserPreferencesStore } from "../../store";
+import { AiOutlineWarning, AiOutlineUpload } from "react-icons/ai"
+import { updatePropertyByID } from "../../Utils/database";
 
 const verticallyCenterChilds = { display: "flex", alignItems: "center" };
 const marginedRightText = { ...verticallyCenterChilds, marginRight: "10px" };
 
 
 
-export default function EditPropertyModal({ property }) {
+export default function EditPropertyModal({ property, profile }) {
 
     const setMarkerPosition = useMapStore((state) => state.setMarkerPosition);
     const markerPosition = useMapStore((state) => state.markerPosition);
+    const changeModalEdition = useUserPreferencesStore((state) => state.changeModalEdition);
+    const toggleIsModalOpen = useModalStore((state) => state.toggleIsModalOpen);
+
+
 
     function getPosition() {
         if (isEqualFloat(property.latitude, 0) && isEqualFloat(property.longitude, 0)) setMarkerPosition(defaultPosition);
@@ -42,6 +46,33 @@ export default function EditPropertyModal({ property }) {
     const [address, setAddress] = useState(property.address);
     const [description, setDescription] = useState(property.description);
     const [secretKey, setSecretKey] = useState(property.propertySecretKey);
+
+    async function editProperty() {
+        let renterID = (secretKey === property.propertySecretKey) ? property.renterID : "";
+        let position = { lat: 0, longitude: 0 };
+        position.lat = (isEqualFloat(markerPosition.lat, defaultPosition.lat)) ? 0 : markerPosition.lat;
+        position.lng = (isEqualFloat(markerPosition.lng, defaultPosition.lng)) ? 0 : markerPosition.lng;
+        let editedProperty =
+        {
+            propertyID: property.propertyID,
+            propertySecretKey: secretKey,
+            address: address,
+            description: description,
+            latitude: position.lat,
+            longitude: position.lng,
+            ownerID: profile.authID,
+            renterID: renterID,
+        };
+        setIsuploading(true);
+        let {updatedProperty, updateError} = await updatePropertyByID(property.propertyID, editedProperty);
+        toggleIsModalOpen();
+        if(updatedProperty)
+        {
+            window.location.reload(false);
+        }
+        setIsuploading(false);
+
+    }
 
     const updateButtonStyle = {
         ...centerChilds, margin: "auto",
@@ -63,6 +94,8 @@ export default function EditPropertyModal({ property }) {
         ...tabStyle,
         backgroundColor: data.styles.color.primaryMedium,
     }
+
+
 
     return (
         <EditPropertyModalContainer>
@@ -116,7 +149,7 @@ export default function EditPropertyModal({ property }) {
                             <Text size={1} style={marginedRightText}>
                                 <FaKey onClick={() => setSecretKey(getRandomID("KEY"))} />
                             </Text>
-                           
+
                             <Text size={1} style={verticallyCenterChilds}>
                                 <AiOutlineWarning />
                             </Text>
@@ -134,8 +167,8 @@ export default function EditPropertyModal({ property }) {
             }
 
             <AddPropertyInputBox>
-                <Text size={3} style={updateButtonStyle} onClick={async () => { }}>
-                    <TiTick />
+                <Text size={3} style={updateButtonStyle} onClick={async () => { await editProperty() }}>
+                    { isuploading ? <AiOutlineUpload/> : <TiTick /> }
                 </Text>
             </AddPropertyInputBox>
         </EditPropertyModalContainer>

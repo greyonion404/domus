@@ -87,8 +87,23 @@ async function deleteOwnedPropertyFromOwner(propertyID, profile) {
 
 }
 
+async function updatePropertyByID(propertyID, property) {
+
+    const { data, error } = await supabase
+        .from('properties')
+        .update(property)
+        .eq("propertyID", propertyID)
+
+    return { updatedProperty: data, updateError: error }
+}
+
 export {
-    getUserWithAuth0ID, addAuth0UserToDatabase, changeNameOfUser,
-    addPropertyToDatabase, addPropertyIdToOwner, getOwnedPropertiesOfUser,
+    getUserWithAuth0ID, 
+    addAuth0UserToDatabase, 
+    changeNameOfUser,
+
+    getOwnedPropertiesOfUser,
+    addPropertyToDatabase, addPropertyIdToOwner, 
+    updatePropertyByID,
     deleteOwnedPropertyByID, deleteOwnedPropertyFromOwner,
 }
