@@ -15,16 +15,13 @@ const ModalContainer = styled.div`
 `
 const CloseModalButton = styled.button`
     position: fixed;
-    height: 7vh;
-    width: 7vh;
+    display: flex;
+    justify-content: center;
     background-color: ${data.styles.color.secondaryMedium};
     margin: 1.5vh;
     border-radius: 50%;
     right: 0;
     @media ${data.styles.devices.tablet} {
-        height: 5vh;
-        width: 5vh;
-        margin: 20px;
     }
 `
 export { ModalContainer, CloseModalButton }
