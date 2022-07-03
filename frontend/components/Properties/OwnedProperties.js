@@ -33,10 +33,11 @@ function RenterPrompt() {
 }
 
 
-function PropertySnippet({ property, profile, openModal, setPosition }) {
+function PropertySnippet({ property, profile, openModal, setPosition, setAddress }) {
 
     const setMarkerPosition = useMapStore((state) => state.setMarkerPosition);
     function openMapModal() {
+        setAddress(property.address);
         let currentPosition = { lat: property.latitude, lng: property.longitude };
         setMarkerPosition(currentPosition);
         setPosition(currentPosition);
@@ -145,6 +146,7 @@ export default function OwnedProperties({ profile }) {
                             profile={profile}
                             openModal={openModal}
                             setPosition={setPosition}
+                            setAddress={setAddress}
                         />)
                     })
                 }
@@ -157,7 +159,6 @@ export default function OwnedProperties({ profile }) {
             </Modal>
 
             <Modal showModal={showModal("", modalType, isModalOpen, setPosition)}>
-
             </Modal>
 
         </OwnedPropertiesBox>
