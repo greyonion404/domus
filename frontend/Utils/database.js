@@ -69,14 +69,26 @@ async function deleteOwnedPropertyByID(ID) {
     const { data, error } = await supabase
         .from('properties')
         .delete()
-        .match({propertyID: ID});
+        .match({ propertyID: ID });
 
-    return {data, error};
+    return { data, error };
+}
+
+async function deleteOwnedPropertyFromOwner(propertyID, profile) {
+    let updatedOwnedProperties = [...profile.ownedProperties];
+    updatedOwnedProperties = updatedOwnedProperties.filter((currentID) => (currentID !== propertyID));
+    console.log(updatedOwnedProperties);
+    const { data, error } = await supabase
+        .from('users')
+        .update({ ownedProperties: updatedOwnedProperties })
+        .eq("authID", profile.authID)
+
+    return { updatedProfile: data, updateError: error }
 
 }
 
 export {
     getUserWithAuth0ID, addAuth0UserToDatabase, changeNameOfUser,
     addPropertyToDatabase, addPropertyIdToOwner, getOwnedPropertiesOfUser,
-    deleteOwnedPropertyByID
+    deleteOwnedPropertyByID, deleteOwnedPropertyFromOwner,
 }

@@ -180,7 +180,7 @@ export default function OwnedProperties({ profile }) {
             </Modal>
 
             <Modal showModal={showModal(ModalTypes.OwnedPropertyDeleteModal, modalType, isModalOpen, setPosition)}>
-                <DeleteOwnedPropertyModal property={selectedProperty} />
+                <DeleteOwnedPropertyModal property={selectedProperty} profile={profile}/>
             </Modal>
 
         </OwnedPropertiesBox>
