@@ -105,14 +105,39 @@ async function getPropertyBySecretKey(KEY) {
     return { data, error };
 }
 
+async function addPropertyIdToRenter(propertyID, profile) {
+
+    let updatedRentedProperties = [...profile.rentedProperties.filter((currentID)=> currentID !== propertyID), propertyID];
+    
+    const { data, error } = await supabase
+        .from('users')
+        .update({ rentedProperties: updatedRentedProperties })
+        .eq("authID", profile.authID)
+
+    return { updatedProfile: data, updateError: error }
+
+}
+
+async function updatePropertyRenterID(propertyID, profile) {
+
+    const { data, error } = await supabase
+        .from('properties')
+        .update({ renterID : profile.authID })
+        .eq("propertyID", propertyID)
+
+    return { updatedProperty: data, updateError: error }
+}
+
+
+
 export {
     getUserWithAuth0ID, 
     addAuth0UserToDatabase, 
     changeNameOfUser,
 
     getOwnedPropertiesOfUser, getPropertyBySecretKey,
-    addPropertyToDatabase, addPropertyIdToOwner, 
-    updatePropertyByID,
+    addPropertyToDatabase, addPropertyIdToOwner,  addPropertyIdToRenter,
+    updatePropertyByID, updatePropertyRenterID,
     deleteOwnedPropertyByID, deleteOwnedPropertyFromOwner,
 
 }

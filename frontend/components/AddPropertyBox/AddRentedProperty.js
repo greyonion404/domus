@@ -5,10 +5,12 @@ import { AddPropertyBoxContainer, AddPropertyInputBox, IconTextBox, Input, Input
 import data from "../../styles/data";
 import { MdOutlineDescription } from "react-icons/md";
 import { TiTick } from "react-icons/ti";
-import { getPropertyBySecretKey } from "../../Utils/database";
+import { addPropertyIdToRenter, getPropertyBySecretKey, updatePropertyRenterID } from "../../Utils/database";
 import { AiOutlineUpload } from "react-icons/ai";
+import { Router, useRouter } from "next/router";
 
 export default function AddRentedPropertyBox({ profile }) {
+    const Router = useRouter();
     const verticallyCenterChilds = { display: "flex", alignItems: "center" };
     const marginedRightText = { ...verticallyCenterChilds, marginRight: "10px" };
     const textIconButton = {
@@ -32,7 +34,12 @@ export default function AddRentedPropertyBox({ profile }) {
         setIsBusyInQuery(false);
     }
     async function addProperty() {
-
+        setIsBusyInQuery(true);
+        let profileResponse = await addPropertyIdToRenter(property.propertyID, profile);
+        let propertyResponse = await updatePropertyRenterID(property.propertyID, profile);
+        setIsBusyInQuery(false);
+        Router.push('/');
+        
     }
 
 
@@ -65,9 +72,9 @@ export default function AddRentedPropertyBox({ profile }) {
                     <Text size={2} style={textIconButton} onClick={async () => {
                         await getAndSetProperty();
                     }}>
-                        {   
+                        {
                             !isBusyInQuery ?
-                            <FaKey /> : <AiOutlineUpload/>
+                                <FaKey /> : <AiOutlineUpload />
                         }
                     </Text>
                 </AddPropertyInputBox>
@@ -102,7 +109,10 @@ export default function AddRentedPropertyBox({ profile }) {
                     <Text size={2} style={textIconButton} onClick={async () => {
                         await addProperty();
                     }}>
-                        <TiTick />
+                        {
+                            !isBusyInQuery ?
+                                <TiTick /> : <AiOutlineUpload />
+                        }
                     </Text>
                 </AddPropertyInputBox>
             }
