@@ -97,13 +97,22 @@ async function updatePropertyByID(propertyID, property) {
     return { updatedProperty: data, updateError: error }
 }
 
+async function getPropertyBySecretKey(KEY) {
+    const { data, error } = await supabase
+        .from('properties')
+        .select('*')
+        .eq('propertySecretKey', KEY);
+    return { data, error };
+}
+
 export {
     getUserWithAuth0ID, 
     addAuth0UserToDatabase, 
     changeNameOfUser,
 
-    getOwnedPropertiesOfUser,
+    getOwnedPropertiesOfUser, getPropertyBySecretKey,
     addPropertyToDatabase, addPropertyIdToOwner, 
     updatePropertyByID,
     deleteOwnedPropertyByID, deleteOwnedPropertyFromOwner,
+
 }

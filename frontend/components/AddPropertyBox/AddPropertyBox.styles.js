@@ -15,7 +15,7 @@ let AddPropertyBoxContainer = styled.div`
     @media ${data.styles.devices.tablet} {
 
         padding: 20px;
-        min-height: 85%;
+        min-height: 90%;
         min-width: 90%;
     }
 `

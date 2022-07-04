@@ -5,6 +5,8 @@ import { AddPropertyBoxContainer, AddPropertyInputBox, IconTextBox, Input, Input
 import data from "../../styles/data";
 import { MdOutlineDescription } from "react-icons/md";
 import { TiTick } from "react-icons/ti";
+import { getPropertyBySecretKey } from "../../Utils/database";
+import { AiOutlineUpload } from "react-icons/ai";
 
 export default function AddRentedPropertyBox({ profile }) {
     const verticallyCenterChilds = { display: "flex", alignItems: "center" };
@@ -18,9 +20,16 @@ export default function AddRentedPropertyBox({ profile }) {
 
     const [secretKey, setSecretKey] = useState("");
     const [property, setProperty] = useState(null);
+    const [isBusyInQuery, setIsBusyInQuery] = useState(false);
+    const [isErrorFindingProperty, setIsErrorFindingProperty] = useState(false);
+
 
     async function getAndSetProperty() {
-        setProperty({})
+        setIsBusyInQuery(true);
+        let { data, error } = await getPropertyBySecretKey(secretKey);
+        if (data && data.length !== 0) setProperty(data[0]);
+        else setIsErrorFindingProperty(true);
+        setIsBusyInQuery(false);
     }
     async function addProperty() {
 
@@ -32,9 +41,23 @@ export default function AddRentedPropertyBox({ profile }) {
 
             <AddPropertyInputBox>
                 <Text size={2} style={verticallyCenterChilds}>
-                    <FaKey />
+                    <FaKey style={marginedRightText} /> Secret Key
                 </Text>
-                <Input type="text" placeholder="SECRET KEY" spellCheck="false" value={secretKey} onChange={(event) => { setSecretKey(event.target.value); setProperty(null) }} />
+                <Input type="text" placeholder="SECRET KEY" spellCheck="false" value={secretKey} onChange={(event) => {
+                    setSecretKey(event.target.value);
+                    setProperty(null);
+                    setIsErrorFindingProperty(false)
+                }} />
+
+                {
+                    (!property && isErrorFindingProperty) &&
+                    <Text underline>{"Couldn't find any property with the given Secret Key"}</Text>
+                }
+
+                {
+                    (property && !isErrorFindingProperty) &&
+                    <Text underline> {"The property below is found with the given Secret Key"} </Text>
+                }
             </AddPropertyInputBox>
             {
                 !property &&
@@ -42,7 +65,10 @@ export default function AddRentedPropertyBox({ profile }) {
                     <Text size={2} style={textIconButton} onClick={async () => {
                         await getAndSetProperty();
                     }}>
-                        <FaKey />
+                        {   
+                            !isBusyInQuery ?
+                            <FaKey /> : <AiOutlineUpload/>
+                        }
                     </Text>
                 </AddPropertyInputBox>
             }
@@ -50,11 +76,11 @@ export default function AddRentedPropertyBox({ profile }) {
             {
                 property &&
                 <AddPropertyInputBox>
-                    <Text size={2} style={verticallyCenterChilds}>
+                    <Text size={1} style={verticallyCenterChilds}>
                         <FaMapMarked />
                     </Text>
                     <Input type="text" placeholder="address" spellCheck="false"
-                        value={"address"}
+                        value={property.address}
                         onChange={() => { }}
                     />
                 </AddPropertyInputBox>
@@ -62,10 +88,10 @@ export default function AddRentedPropertyBox({ profile }) {
             {
                 (property && property.description !== "") &&
                 <AddPropertyInputBox>
-                    <Text size={2} style={verticallyCenterChilds}> <MdOutlineDescription /> </Text>
+                    <Text size={1} style={verticallyCenterChilds}> <MdOutlineDescription /> </Text>
                     <InputArea type="text" placeholder="description (rent, additional info ...)"
                         spellCheck="false"
-                        value={"description"}
+                        value={property.description}
                         onChange={() => { }}
                     />
                 </AddPropertyInputBox>
@@ -73,13 +99,14 @@ export default function AddRentedPropertyBox({ profile }) {
             {
                 property &&
                 <AddPropertyInputBox>
-                    <Text size={3} style={textIconButton} onClick={async () => {
+                    <Text size={2} style={textIconButton} onClick={async () => {
                         await addProperty();
                     }}>
                         <TiTick />
                     </Text>
                 </AddPropertyInputBox>
             }
+
 
 
         </AddPropertyBoxContainer >
