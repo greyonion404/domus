@@ -38,7 +38,8 @@ export default function ProfileInformationBar({ profile }) {
         <ProfileBar>
             <ProfileImage src={profile.authUser.picture} alt={profile.authUser.nickname}
                 onClick={() => { openModal(ModalTypes.ChaneNameModal) }} />
-            <Text size={1} style={centerChilds} onClick={() => { openModal(ModalTypes.ChaneNameModal) }}  > <BiHash /> {profile.name}</Text>
+            <Text size={1} style={centerChilds} onClick={() => { openModal(ModalTypes.ChaneNameModal) }}  > <BiHash />
+                {profile.name} {isViewingAsOwner ? "(Owner)" : "(Renter)"}</Text>
             <ConvertButton onClick={() => { getPersistantState(hasPersistance, toggleViewerMode)() }}>
                 <Text size={1} style={centerChilds}>
                     <AiFillEye />
