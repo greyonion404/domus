@@ -64,11 +64,43 @@ function OwnerNavigation() {
 
 function RenterNavigation() {
 
+    const PAGES =
+    {
+        ADD_RENTED_PROPERTY: 'ADD_RENED_PROPERTY',
+        HOME: 'HOME',
+        NOTIFICATION: 'NOTIFICATION',
+    }
+
+    const Router = useRouter();
+    const [currentPage, setCurrentPage] = useState(PAGES.HOME);
+
+    useEffect(() => {
+        if (!Router.pathname) return;
+        if (Router.pathname.includes('add-rented-property')) setCurrentPage(PAGES.ADD_RENTED_PROPERTY);
+        else if (Router.pathname.includes('renter-complaint-notifications')) setCurrentPage(PAGES.NOTIFICATION);
+        else setCurrentPage(PAGES.HOME);
+    }, [Router.pathname]);
    
 
 
     return (
         <NavbarMain>
+              <NavLink active={(currentPage === PAGES.ADD_RENTED_PROPERTY)} onClick={() => { Router.push('/add-rented-property') }}>
+                <Text size={3} style={centerChilds}>
+                    <RiAddCircleFill />
+                </Text>
+            </NavLink>
+            <NavLink active={(currentPage === PAGES.HOME)} onClick={() => { Router.push('/') }}>
+                <Text size={3} style={centerChilds}>
+                    <FaHome />
+                </Text>
+            </NavLink>
+            <NavLink active={(currentPage === PAGES.NOTIFICATION)} onClick={() => { Router.push('/renter-complaint-notifications') }}>
+                <Text size={3} style={centerChilds}>
+                    <ImNotification />
+                </Text>
+            </NavLink>
+
             <NavLink onClick={() => { Router.push('/api/auth/logout') }}>
                 <Text size={3} style={centerChilds}>
                     <AiOutlineLogout />
