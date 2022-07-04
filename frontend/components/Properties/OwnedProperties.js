@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { getPersistantState, useMapStore, useModalStore, useStorePersistance, useUserPreferencesStore } from "../../store";
 import { Text, centerChilds } from "../../styles/Text";
-import { getOwnedPropertiesOfUser } from "../../Utils/database";
+import { getOwnedPropertiesOfUser, getUserWithAuth0ID } from "../../Utils/database";
 import { IconTextBox, OwnedPropertiesBox, Property, PropertyContainer, SearchPropertyInput } from "./OwnedProperties.styles";
 import { MdDesktopAccessDisabled } from 'react-icons/md';
 import Modal from "../Modal/Modal";
@@ -44,6 +44,20 @@ function PropertySnippet({ property, profile, openModal, setPosition, setAddress
         return property.renterID !== "";
     }
     const [showSecret, setShowSecret] = useState(false);
+    const [renter, setRenter] = useState("");
+
+    async function fetchRenter()
+    {
+        const { data, error } = await getUserWithAuth0ID(property.renterID);
+        if (data && data.length !== 0) setRenter(data[0]);
+    }
+
+    useEffect(() => {
+       fetchRenter();
+       return ()=>{        
+       }
+
+    }, []);
 
     return (
         <Property>
@@ -62,7 +76,7 @@ function PropertySnippet({ property, profile, openModal, setPosition, setAddress
             <Text size={1} style={{ ...centerChilds, justifyContent: "left" }}>{`owned by`} <BiHash /> {profile.name}  </Text>
             {
                 hasRenter() &&
-                <Text size={1} style={{ ...centerChilds, justifyContent: "left" }}>{`rented by`} <BiHash /> {"renter"}  </Text>
+                <Text size={1} style={{ ...centerChilds, justifyContent: "left" }}>{`rented by`} <BiHash /> {renter.name}  </Text>
             }
 
             {hasDescription() && <Text underline active size={1}>{`Description`} </Text>}
@@ -160,7 +174,7 @@ export default function OwnedProperties({ profile }) {
             </Modal>
 
             <Modal showModal={showModal(ModalTypes.OwnedPropertyDeleteModal, modalType, isModalOpen, setPosition)}>
-                <DeleteOwnedPropertyModal property={selectedProperty} profile={profile}/>
+                <DeleteOwnedPropertyModal property={selectedProperty} profile={profile} />
             </Modal>
 
         </OwnedPropertiesBox>
