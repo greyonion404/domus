@@ -14,6 +14,7 @@ import { isEqualFloat } from "../../Utils/floatComparison";
 import { copyTextToClipboard } from "../../Utils/copy";
 import { AiFillEdit } from "react-icons/ai";
 import DeleteOwnedPropertyModal from "../Modals/DeleteOwnedPropertyModal";
+import EditPropertyModal from "../Modals/EditPropertyModal";
 
 
 
@@ -46,14 +47,17 @@ function PropertySnippet({ property, profile, openModal, setPosition, setAddress
     }
     function openPropertyEditModal() {
         setSelectedProperty(property);
-        openModal("");
+        openModal(ModalTypes.EditPropertyModal);
     }
     function openPropertyDeleteModal() {
         setSelectedProperty(property);
         openModal(ModalTypes.OwnedPropertyDeleteModal);
     }
     function hasMapLocation() {
-        return !(isEqualFloat(property.latitude, 0) && isEqualFloat(property.longitude, 0))
+        return !(isEqualFloat(property.latitude, 0) && isEqualFloat(property.longitude, 0));
+    }
+    function hasDescription() {
+        return (property.description !== "");
     }
     function hasRenter() {
         return property.renterID !== "";
@@ -79,8 +83,9 @@ function PropertySnippet({ property, profile, openModal, setPosition, setAddress
                 hasRenter() &&
                 <Text size={1} style={{ ...centerChilds, justifyContent: "left" }}>{`rented by`} <BiHash /> {"renter"}  </Text>
             }
-            <Text underline active size={1}>{`Description`} </Text>
-            <Text size={1}> {property.description} </Text>
+
+            {hasDescription() && <Text underline active size={1}>{`Description`} </Text>}
+            {hasDescription() && <Text size={1}> {property.description} </Text>}
 
             <IconTextBox>
                 <Text underline active size={1}>{`Secret Key`} </Text>
@@ -170,15 +175,14 @@ export default function OwnedProperties({ profile }) {
                 </MoveMapMarkerModal>
             </Modal>
 
-            <Modal showModal={showModal("", modalType, isModalOpen, setPosition)}>
+            <Modal showModal={showModal(ModalTypes.EditPropertyModal, modalType, isModalOpen, setPosition)}>
                 <Text>
-                    EDIT
-                    {JSON.stringify(selectedProperty)}
+                    <EditPropertyModal property={selectedProperty} />
                 </Text>
             </Modal>
 
             <Modal showModal={showModal(ModalTypes.OwnedPropertyDeleteModal, modalType, isModalOpen, setPosition)}>
-                <DeleteOwnedPropertyModal property={selectedProperty}/>
+                <DeleteOwnedPropertyModal property={selectedProperty} />
             </Modal>
 
         </OwnedPropertiesBox>

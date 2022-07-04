@@ -45,12 +45,31 @@ let GenericModal = styled.div`
     transform: translate(-50%, -50%);
     padding: 10px;
     word-wrap: break-word;
+    overflow-y: scroll;
     @media ${data.styles.devices.tablet} {
         height: 90%;
         width: 100%;
         top: 10%;
         left: 0%;
         transform: translate(0%, 0%);
+    }
+`
+
+let EditPropertyModalContainer = styled.div`
+    background-color: ${data.styles.color.primary};
+    position: fixed;
+    height: 85%;
+    width: 90%;
+    top: 10%;
+    left: 5%;
+    padding: 10px;
+    word-wrap: break-word;
+    overflow-y: scroll;
+    @media ${data.styles.devices.tablet} {
+        height: 90%;
+        width: 100%;
+        top: 10%;
+        left: 0%;
     }
 `
 let LoadingModalContainer = styled.div`
@@ -118,4 +137,6 @@ export {
 
      DeletePropertyButton,
      FlexBox,
+
+     EditPropertyModalContainer
     }

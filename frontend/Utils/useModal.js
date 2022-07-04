@@ -4,6 +4,7 @@ let ModalTypes =
     MoveMapMarkerModal: "MoveMapMarkerModal",
     MapMarkerModal: "MapMarkerModal",
     OwnedPropertyDeleteModal: "OwnedPropertyDeleteModal",
+    EditPropertyModal: "EditPropertyModal",
 }
 function showModal(currentType, modalType, isModalOpen) {
     return ((currentType == modalType) && isModalOpen);
