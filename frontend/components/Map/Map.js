@@ -37,9 +37,9 @@ const CustomMarker = ({ draggable, position, address }) => {
   )
 }
 
-function ChangeView({ center, zoom }) {
+function ChangeView({ center }) {
   const map = useMap();
-  map.setView(center, zoom);
+  map.setView(center);
   return null;
 }
 
@@ -49,12 +49,14 @@ const Map = ({ draggable, position, address }) => {
   const markerPosition = useMapStore((state) => state.markerPosition);
   let positionOfDhaka = { lat: 23.7104000, lng: 90.4074400 };
 
-  const [zoom, setZoom] = useState(11);
+  const [zoom, setZoom] = useState(null);
   useEffect(() => {
     if(position && !isEqualFloat(positionOfDhaka.lat, position.lat) && !isEqualFloat(positionOfDhaka.lng, position.lng)) setZoom(18);
+    else setZoom(11);
   }, [])
 
   return (
+    zoom &&
     <MapContainer className={styles.map} center={markerPosition} zoom={zoom} scrollWheelZoom={true}>
       <ChangeView center={markerPosition} zoom={zoom}/>
       <TileLayer
