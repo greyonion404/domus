@@ -16,25 +16,6 @@ import { AiFillEdit } from "react-icons/ai";
 import DeleteOwnedPropertyModal from "../Modals/DeleteOwnedPropertyModal";
 import EditPropertyModal from "../Modals/EditPropertyModal";
 
-
-
-function RenterPrompt() {
-
-
-    const verticallyCenterChilds = { display: "flex", alignItems: "center" };
-    const marginedRightText = { ...verticallyCenterChilds, marginRight: "10px" };
-    return <>
-        <OwnedPropertiesBox style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-            <Text size={1} style={verticallyCenterChilds}>
-                <MdDesktopAccessDisabled style={marginedRightText} />
-                {"Viewing as renter, renter mode can't show owned properties"}
-            </Text>
-        </OwnedPropertiesBox>
-    </>
-
-}
-
-
 function PropertySnippet({ property, profile, openModal, setPosition, setAddress, setSelectedProperty }) {
 
     const setMarkerPosition = useMapStore((state) => state.setMarkerPosition);
@@ -144,8 +125,7 @@ export default function OwnedProperties({ profile }) {
     const hasPersistance = useStorePersistance();
     const isViewingAsOwner = useUserPreferencesStore((state) => state.isViewingAsOwner);
 
-    if (!getPersistantState(hasPersistance, isViewingAsOwner)) return <RenterPrompt />
-
+    if (!getPersistantState(hasPersistance, isViewingAsOwner)) return null;
     function propertyFilteredByInput(property) {
         return property.address.toLowerCase().includes(inputAddress.toLowerCase());
     }
