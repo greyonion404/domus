@@ -19,15 +19,17 @@ export default function AddRentedPropertyBox({ profile }) {
     const [secretKey, setSecretKey] = useState("");
     const [property, setProperty] = useState(null);
 
-    async function addPropertyToProfile()
-    {
+    async function getAndSetProperty() {
+        setProperty({})
+    }
+    async function addProperty() {
 
     }
 
 
     return (
         <AddPropertyBoxContainer>
-            
+
             <AddPropertyInputBox>
                 <Text size={2} style={verticallyCenterChilds}>
                     <FaKey />
@@ -37,8 +39,8 @@ export default function AddRentedPropertyBox({ profile }) {
             {
                 !property &&
                 <AddPropertyInputBox>
-                    <Text size={32} style={textIconButton} onClick={async () => {
-                        setProperty({})
+                    <Text size={2} style={textIconButton} onClick={async () => {
+                        await getAndSetProperty();
                     }}>
                         <FaKey />
                     </Text>
@@ -72,6 +74,7 @@ export default function AddRentedPropertyBox({ profile }) {
                 property &&
                 <AddPropertyInputBox>
                     <Text size={3} style={textIconButton} onClick={async () => {
+                        await addProperty();
                     }}>
                         <TiTick />
                     </Text>
