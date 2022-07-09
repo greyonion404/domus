@@ -48,6 +48,8 @@ export default function EditPropertyModal({ property, profile }) {
     const [secretKey, setSecretKey] = useState(property.propertySecretKey);
 
     async function editProperty() {
+
+        // change the occupency of the property to be empty if the secret key is changed
         let renterID = (secretKey === property.propertySecretKey) ? property.renterID : "";
         let position = { lat: 0, longitude: 0 };
         position.lat = (isEqualFloat(markerPosition.lat, defaultPosition.lat)) ? 0 : markerPosition.lat;

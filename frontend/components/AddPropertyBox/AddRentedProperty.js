@@ -23,20 +23,43 @@ export default function AddRentedPropertyBox({ profile }) {
     const [secretKey, setSecretKey] = useState("");
     const [property, setProperty] = useState(null);
     const [isBusyInQuery, setIsBusyInQuery] = useState(false);
-    const [isErrorFindingProperty, setIsErrorFindingProperty] = useState(false);
+    const [isErrorFindingProperty, setIsErrorFindingProperty] = useState(null);
 
 
     async function getAndSetProperty() {
         setIsBusyInQuery(true);
         let { data, error } = await getPropertyBySecretKey(secretKey);
-        if (data && data.length !== 0) setProperty(data[0]);
-        else setIsErrorFindingProperty(true);
+        if (data && data.length !== 0)
+        {
+            if(data[0].ownerID === profile.authID) 
+            {
+                setIsErrorFindingProperty("This property is owned by you. Can't add as rented.");
+                setIsBusyInQuery(false);
+                return;
+            }
+            
+            if(data[0].renterID === profile.authID) 
+            {
+                setIsErrorFindingProperty("You already added this property before");
+                setIsBusyInQuery(false);
+                return;
+            }
+
+            if(data[0].renterID !== "") 
+            {
+                setIsErrorFindingProperty("Already there's an renter living in that property");
+                setIsBusyInQuery(false);
+                return;
+            }
+            setProperty(data[0]);
+        } 
+        else setIsErrorFindingProperty("Couldn't find any property with the given Secret Key");
         setIsBusyInQuery(false);
     }
     async function addProperty() {
         setIsBusyInQuery(true);
         let profileResponse = await addPropertyIdToRenter(property.propertyID, profile);
-        let propertyResponse = await updatePropertyRenterID(property.propertyID, profile);
+        let updatedPropertyResponse = await updatePropertyRenterID(property.propertyID, profile);
         setIsBusyInQuery(false);
         Router.push('/');
         
@@ -58,7 +81,7 @@ export default function AddRentedPropertyBox({ profile }) {
 
                 {
                     (!property && isErrorFindingProperty) &&
-                    <Text underline>{"Couldn't find any property with the given Secret Key"}</Text>
+                    <Text underline>{isErrorFindingProperty}</Text>
                 }
 
                 {
