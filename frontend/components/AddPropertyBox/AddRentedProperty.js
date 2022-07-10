@@ -5,7 +5,7 @@ import { AddPropertyBoxContainer, AddPropertyInputBox, IconTextBox, Input, Input
 import data from "../../styles/data";
 import { MdOutlineDescription } from "react-icons/md";
 import { TiTick } from "react-icons/ti";
-import { addPropertyIdToRenter, getPropertyBySecretKey, updatePropertyRenterID } from "../../Utils/database";
+import { getPropertyBySecretKey, updatePropertyRenterID } from "../../Utils/database";
 import { AiOutlineUpload } from "react-icons/ai";
 import { Router, useRouter } from "next/router";
 
@@ -58,7 +58,6 @@ export default function AddRentedPropertyBox({ profile }) {
     }
     async function addProperty() {
         setIsBusyInQuery(true);
-        let profileResponse = await addPropertyIdToRenter(property.propertyID, profile);
         let updatedPropertyResponse = await updatePropertyRenterID(property.propertyID, profile);
         setIsBusyInQuery(false);
         Router.push('/');

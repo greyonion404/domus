@@ -31,8 +31,7 @@ export default function ProfileInformationBar({ profile }) {
         toggleIsModalOpen();
 
     }
-
-
+    if(!profile || !profile.authUser) return null;
 
     return (
         <ProfileBar>

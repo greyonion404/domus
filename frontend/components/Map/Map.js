@@ -52,7 +52,7 @@ const Map = ({ draggable, position, address }) => {
   const [zoom, setZoom] = useState(null);
   useEffect(() => {
     if(position && !isEqualFloat(positionOfDhaka.lat, position.lat) && !isEqualFloat(positionOfDhaka.lng, position.lng)) setZoom(18);
-    else setZoom(11);
+    else setZoom(14);
   }, [])
 
   return (

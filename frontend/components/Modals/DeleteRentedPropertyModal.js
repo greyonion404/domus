@@ -1,12 +1,12 @@
 import { useRouter } from "next/router";
 import { FaTrash, FaUpload } from "react-icons/fa";
 import { centerChilds, Text } from "../../styles/Text";
-import { deleteOwnedPropertyByID } from "../../Utils/database";
+import { deleteOwnedPropertyByID, updatePropertyRenterID } from "../../Utils/database";
 import { DeletePropertyButton, GenericModal } from "./Modals.styles";
 import { useModalStore } from "../../store"
 import { useState } from "react";
 
-export default function DeleteOwnedPropertyModal({ property, profile }) {
+export default function DeleteRentedPropertyModal({ property, profile }) {
     let router = useRouter();
 
 
@@ -15,10 +15,11 @@ export default function DeleteOwnedPropertyModal({ property, profile }) {
 
     async function deleteProperty() {
         setIsDeleting(true);
-        const { data, error } = await deleteOwnedPropertyByID(property.propertyID);
+        const { updatedProperty, updateError } = await updatePropertyRenterID(property.propertyID, profile = { authID: "" });
+        console.log(updateError);
         setIsDeleting(false);
         toggleIsModalOpen();
-        if (data) window.location.reload(false);
+        if (updatedProperty) window.location.reload(false);
 
 
     }
@@ -27,7 +28,7 @@ export default function DeleteOwnedPropertyModal({ property, profile }) {
             <Text style={centerChilds}>
                 {`Click the button to remove the property @address "`}
                 {`${property.address}`}
-                {`" from the list of your owned properties!`}
+                {`" from the list of your rented properties!`}
             </Text>
             <DeletePropertyButton onClick={async () => { await deleteProperty() }}>
                 <Text size={3} style={centerChilds}>

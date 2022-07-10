@@ -8,7 +8,7 @@ import { BiHash } from "react-icons/bi";
 
 import { useUserPreferencesStore } from "../../store";
 import { centerChilds, Text } from "../../styles/Text"
-import { changeNameOfUser, getUserWithAuth0ID } from "../../Utils/database";
+import { changeNameOfUser, getOwnedPropertiesOfUser, getRentedPropertiesOfUser, getUserWithAuth0ID } from "../../Utils/database";
 import {
     ChangeNameInput,
     ChangeNameInputContainer,
@@ -76,6 +76,29 @@ export default function ChangeNameModal({ profile }) {
     const userID = useUserPreferencesStore((state) => state.userID);
     const user = profile;
     const [isUpdating, setIsUpdating] = useState(false);
+    const [ownedPropertyCount, setOwnedPropertyCount] = useState(0);
+    const [rentedPropertyCount, setRentedPropertyCount] = useState(0);
+
+
+    
+
+    async function getandSetOwnedPropertyCount() {
+        let { data, error } = await getOwnedPropertiesOfUser(profile.authID);
+        if (data) setOwnedPropertyCount(data.length);
+    }
+
+
+    async function getandSetRentedPropertyCount() {
+        let { data, error } = await getRentedPropertiesOfUser(profile.authID);
+        if (data) setRentedPropertyCount(data.length);
+    }
+
+
+
+    useEffect(()=>{
+        getandSetOwnedPropertyCount();
+        getandSetRentedPropertyCount();
+    }, []);
   
     return (
         <GenericModal>
@@ -86,10 +109,10 @@ export default function ChangeNameModal({ profile }) {
                 {user.authUser.email}
             </Text>
             <Text style={centerChilds}>
-                <BiHash /> {`you own ${user.ownedProperties.length} properties.`}
+                <BiHash /> {`you own ${ownedPropertyCount} properties.`}
             </Text>
             <Text style={centerChilds}>
-                <BiHash /> {`you rent ${user.rentedProperties.length} properties.`}
+                <BiHash /> {`you rent ${rentedPropertyCount} properties.`}
             </Text>
         </GenericModal>
 

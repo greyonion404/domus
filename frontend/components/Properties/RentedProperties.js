@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react"
 import { getPersistantState, useMapStore, useModalStore, useStorePersistance, useUserPreferencesStore } from "../../store";
 import { Text, centerChilds } from "../../styles/Text";
-import { getOwnedPropertiesOfUser, getUserWithAuth0ID } from "../../Utils/database";
+import { getRentedPropertiesOfUser, getUserWithAuth0ID } from "../../Utils/database";
 import { IconTextBox, OwnedPropertiesBox, Property, PropertyContainer, SearchPropertyInput } from "./OwnedProperties.styles";
-import { MdDesktopAccessDisabled } from 'react-icons/md';
 import Modal from "../Modal/Modal";
 import MoveMapMarkerModal from "../Modals/MoveMapMarkerModal";
 import Map from "../Map/index";
@@ -15,6 +14,7 @@ import { copyTextToClipboard } from "../../Utils/copy";
 import { AiFillEdit } from "react-icons/ai";
 import DeleteOwnedPropertyModal from "../Modals/DeleteOwnedPropertyModal";
 import EditPropertyModal from "../Modals/EditPropertyModal";
+import DeleteRentedPropertyModal from "../Modals/DeleteRentedPropertyModal";
 
 function PropertySnippet({ property, profile, openModal, setPosition, setAddress, setSelectedProperty }) {
 
@@ -26,13 +26,10 @@ function PropertySnippet({ property, profile, openModal, setPosition, setAddress
         setPosition(currentPosition);
         openModal(ModalTypes.MapMarkerModal)
     }
-    function openPropertyEditModal() {
-        setSelectedProperty(property);
-        openModal(ModalTypes.EditPropertyModal);
-    }
+  
     function openPropertyDeleteModal() {
         setSelectedProperty(property);
-        openModal(ModalTypes.OwnedPropertyDeleteModal);
+        openModal(ModalTypes.RentedPropertyDeleteModal);
     }
     function hasMapLocation() {
         return !(isEqualFloat(property.latitude, 0) && isEqualFloat(property.longitude, 0));
@@ -48,7 +45,7 @@ function PropertySnippet({ property, profile, openModal, setPosition, setAddress
 
     async function fetchRenter()
     {
-        const { data, error } = await getUserWithAuth0ID(property.renterID);
+        const { data, error } = await getUserWithAuth0ID(property.ownerID);
         if (data && data.length !== 0) setRenter(data[0]);
     }
 
@@ -65,18 +62,15 @@ function PropertySnippet({ property, profile, openModal, setPosition, setAddress
                 <Text size={1} active underline>{`Address`} </Text>
                 <IconTextBox>
                     <Text size={1} style={{ ...centerChilds, justifyContent: "left", marginLeft: "10px" }}>
-                        <AiFillEdit onClick={() => { openPropertyEditModal() }} />
-                    </Text>
-                    <Text size={1} style={{ ...centerChilds, justifyContent: "left", marginLeft: "10px" }}>
                         <FaTrash onClick={() => { openPropertyDeleteModal() }} />
                     </Text>
                 </IconTextBox>
             </IconTextBox>
             <Text size={1}>{property.address}</Text>
-            <Text size={1} style={{ ...centerChilds, justifyContent: "left" }}>{`owned by`} <BiHash /> {profile.name}  </Text>
+            <Text size={1} style={{ ...centerChilds, justifyContent: "left" }}>{`owned by`} <BiHash /> {renter.name}  </Text>
             {
                 hasRenter() &&
-                <Text size={1} style={{ ...centerChilds, justifyContent: "left" }}>{`rented by`} <BiHash /> {renter.name}  </Text>
+                <Text size={1} style={{ ...centerChilds, justifyContent: "left" }}>{`rented by`} <BiHash /> {profile.name}  </Text>
             }
 
             {hasDescription() && <Text underline active size={1}>{`Description`} </Text>}
@@ -106,7 +100,7 @@ function PropertySnippet({ property, profile, openModal, setPosition, setAddress
 }
 
 
-export default function OwnedProperties({ profile }) {
+export default function RentedProperties({ profile }) {
 
     const modalType = useModalStore((state) => state.modalType);
     const isModalOpen = useModalStore((state) => state.isModalOpen);
@@ -126,7 +120,7 @@ export default function OwnedProperties({ profile }) {
     const [properties, setProperties] = useState([]);
 
     async function fetchProperties() {
-        let { data, error } = await getOwnedPropertiesOfUser(profile.authID);
+        let { data, error } = await getRentedPropertiesOfUser(profile.authID);
         if (data) setProperties(data);
     }
 
@@ -139,7 +133,8 @@ export default function OwnedProperties({ profile }) {
     const hasPersistance = useStorePersistance();
     const isViewingAsOwner = useUserPreferencesStore((state) => state.isViewingAsOwner);
 
-    if (!getPersistantState(hasPersistance, isViewingAsOwner)) return null;
+    if (getPersistantState(hasPersistance, isViewingAsOwner)) return null;
+
     function propertyFilteredByInput(property) {
         return property.address.toLowerCase().includes(inputAddress.toLowerCase());
     }
@@ -147,7 +142,7 @@ export default function OwnedProperties({ profile }) {
 
     return (
         <OwnedPropertiesBox>
-            <SearchPropertyInput placeholder="address of owned property" spellCheck="false" onChange={(event) => { setInputAddress(event.target.value) }} />
+            <SearchPropertyInput placeholder="address of rented property" spellCheck="false" onChange={(event) => { setInputAddress(event.target.value) }} />
             <PropertyContainer>
                 {
                     properties.filter(propertyFilteredByInput).map((property, index) => {
@@ -169,12 +164,8 @@ export default function OwnedProperties({ profile }) {
                 </MoveMapMarkerModal>
             </Modal>
 
-            <Modal showModal={showModal(ModalTypes.EditPropertyModal, modalType, isModalOpen, setPosition)}>
-                <EditPropertyModal property={selectedProperty} profile={profile} />
-            </Modal>
-
-            <Modal showModal={showModal(ModalTypes.OwnedPropertyDeleteModal, modalType, isModalOpen, setPosition)}>
-                <DeleteOwnedPropertyModal property={selectedProperty} profile={profile} />
+            <Modal showModal={showModal(ModalTypes.RentedPropertyDeleteModal, modalType, isModalOpen, setPosition)}>
+                <DeleteRentedPropertyModal property={selectedProperty} profile={profile} />
             </Modal>
 
         </OwnedPropertiesBox>

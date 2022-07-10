@@ -44,17 +44,15 @@ async function addPropertyToDatabase(property) {
     return { insertedProperty: data, insertError: error }
 }
 
-async function addPropertyIdToOwner(propertyID, profile) {
 
-    let updatedOwnedProperties = [...profile.ownedProperties, propertyID]
+async function getRentedPropertiesOfUser(ID) {
     const { data, error } = await supabase
-        .from('users')
-        .update({ ownedProperties: updatedOwnedProperties })
-        .eq("authID", profile.authID)
-
-    return { updatedProfile: data, updateError: error }
-
+        .from('properties')
+        .select('*')
+        .eq('renterID', ID);
+    return { data, error };
 }
+
 
 async function getOwnedPropertiesOfUser(ID) {
     const { data, error } = await supabase
@@ -74,18 +72,9 @@ async function deleteOwnedPropertyByID(ID) {
     return { data, error };
 }
 
-async function deleteOwnedPropertyFromOwner(propertyID, profile) {
-    let updatedOwnedProperties = [...profile.ownedProperties];
-    updatedOwnedProperties = updatedOwnedProperties.filter((currentID) => (currentID !== propertyID));
-    console.log(updatedOwnedProperties);
-    const { data, error } = await supabase
-        .from('users')
-        .update({ ownedProperties: updatedOwnedProperties })
-        .eq("authID", profile.authID)
 
-    return { updatedProfile: data, updateError: error }
 
-}
+
 
 async function updatePropertyByID(propertyID, property) {
 
@@ -105,18 +94,7 @@ async function getPropertyBySecretKey(KEY) {
     return { data, error };
 }
 
-async function addPropertyIdToRenter(propertyID, profile) {
 
-    let updatedRentedProperties = [...profile.rentedProperties.filter((currentID)=> currentID !== propertyID), propertyID];
-    
-    const { data, error } = await supabase
-        .from('users')
-        .update({ rentedProperties: updatedRentedProperties })
-        .eq("authID", profile.authID)
-
-    return { updatedProfile: data, updateError: error }
-
-}
 
 async function updatePropertyRenterID(propertyID, profile) {
 
@@ -134,10 +112,10 @@ export {
     getUserWithAuth0ID, 
     addAuth0UserToDatabase, 
     changeNameOfUser,
-
+    getRentedPropertiesOfUser,
     getOwnedPropertiesOfUser, getPropertyBySecretKey,
-    addPropertyToDatabase, addPropertyIdToOwner,  addPropertyIdToRenter,
+    addPropertyToDatabase,
     updatePropertyByID, updatePropertyRenterID,
-    deleteOwnedPropertyByID, deleteOwnedPropertyFromOwner,
+    deleteOwnedPropertyByID,
 
 }
