@@ -12,6 +12,7 @@ import { BiHash } from "react-icons/bi";
 import { isEqualFloat } from "../../Utils/floatComparison";
 import { copyTextToClipboard } from "../../Utils/copy";
 import DeleteRentedPropertyModal from "../Modals/DeleteRentedPropertyModal";
+import AddIssueModal from "../Modals/AddIssueModal";
 
 
 function PropertySnippet({ property, profile, openModal, setPosition, setAddress, setSelectedProperty }) {
@@ -28,6 +29,11 @@ function PropertySnippet({ property, profile, openModal, setPosition, setAddress
     function openPropertyDeleteModal() {
         setSelectedProperty(property);
         openModal(ModalTypes.RentedPropertyDeleteModal);
+    }
+    function openAddIssueModal()
+    {
+        setSelectedProperty(property);
+        openModal(ModalTypes.AddIssueModal);
     }
     function hasMapLocation() {
         return !(isEqualFloat(property.latitude, 0) && isEqualFloat(property.longitude, 0));
@@ -95,7 +101,7 @@ function PropertySnippet({ property, profile, openModal, setPosition, setAddress
             <IconTextBox>
                 <Text underline active size={1}>{`Create Issue/Complaint`} </Text>
                 <Text size={1} style={{ ...centerChilds, justifyContent: "left", marginLeft: "10px" }}>
-                    <FaComment onClick={() => { }} />
+                    <FaComment onClick={() => { openAddIssueModal() }} />
                 </Text>
             </IconTextBox>
 
@@ -172,10 +178,9 @@ export default function RentedProperties({ profile }) {
                 }
             </PropertyContainer>
 
-            <Modal showModal={showModal(ModalTypes.MapMarkerModal, modalType, isModalOpen, setPosition)}>
-                <MoveMapMarkerModal>
-                    <Map address={address} position={position} />
-                </MoveMapMarkerModal>
+            <Modal showModal={showModal(ModalTypes.AddIssueModal, modalType, isModalOpen, setPosition)}>
+               <AddIssueModal>
+               </AddIssueModal>
             </Modal>
 
             <Modal showModal={showModal(ModalTypes.RentedPropertyDeleteModal, modalType, isModalOpen, setPosition)}>
