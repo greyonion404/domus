@@ -1,50 +1,60 @@
 import { centerChilds, Text } from "../../styles/Text";
-import AddPropertyBox from "../AddPropertyBox/AddPropertyBox";
-import { AddPropertyBoxContainer, AddPropertyInputBox, IconTextBox, Input, InputArea } from "../AddPropertyBox/AddPropertyBox.styles";
-import { AddIssueModalContainer, EditingMapBox, EditPropertyModalContainer, FlexBox, MapBox } from "./Modals.styles";
-import { FaMapMarker, FaMapMarked, FaKey, FaCopy, FaInfo, FaUpload } from 'react-icons/fa'
-import { MdDesktopAccessDisabled, MdOutlineDescription } from 'react-icons/md'
-import { TiTick } from 'react-icons/ti'
+import { AddPropertyBoxContainer, AddPropertyInputBox, Input, InputArea } from "../AddPropertyBox/AddPropertyBox.styles";
+import { AddIssueModalContainer, FlexBox } from "./Modals.styles";
+import { FaClock } from 'react-icons/fa'
+import { MdOutlineDescription, } from 'react-icons/md'
+import { TiTabsOutline, TiTick } from 'react-icons/ti'
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import { getRandomID } from "../../Utils/random";
 import data from "../../styles/data";
-import { Box } from "../../styles/Page";
-import Map from '../Map/index'
-import { defaultPosition } from "../../Utils/defaultPosition";
-import { isEqualFloat } from "../../Utils/floatComparison";
-import { useMapStore, useModalStore, useUserPreferencesStore } from "../../store";
-import { AiOutlineWarning, AiOutlineUpload } from "react-icons/ai"
-import { updatePropertyByID } from "../../Utils/database";
+import { useModalStore, useUserPreferencesStore } from "../../store";
+import { AiOutlineUpload } from "react-icons/ai"
+import { addIssueToDatabase, updatePropertyByID } from "../../Utils/database";
 import { getBangladeshTime, getTimeDateString } from "../../Utils/getBangladeshTime";
+import { ISSUE_STATUS } from "../../Utils/issueTypes";
 
 const verticallyCenterChilds = { display: "flex", alignItems: "center" };
 const marginedRightText = { ...verticallyCenterChilds, marginRight: "10px" };
 
-
+TiTabsOutline
 
 export default function AddIssueModal({ property, profile }) {
 
 
     const toggleIsModalOpen = useModalStore((state) => state.toggleIsModalOpen);
+    const userID = useUserPreferencesStore((state) => state.userID);
 
 
 
-
-    // const router = useRouter();
     const [isuploading, setIsuploading] = useState(false);
     const [time, setTime] = useState(0);
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
-    // const [secretKey, setSecretKey] = useState(property.propertySecretKey);
 
     async function addIssue() {
 
 
+        let issue =
+        {
+            id: getRandomID("ISSUE"),
+            createdBy: userID,
+            propertyID: property.propertyID,
+            title: title,
+            description: description,
+            currentStatus: ISSUE_STATUS.CREATED,
+            rating: null,
+            issuedAt: time,
+            issueClosedAt: null,
+        }
+
+
+
         setIsuploading(true);
         // upload
+        console.log(issue);
+        let { insertedIssue, insertError } = await addIssueToDatabase(issue);
         toggleIsModalOpen();
-        if (updatedProperty) {
+        if (insertedIssue) {
             window.location.reload(false);
         }
         setIsuploading(false);
@@ -80,14 +90,11 @@ export default function AddIssueModal({ property, profile }) {
 
     return (
         <AddIssueModalContainer>
-
-
-
             <AddPropertyBoxContainer>
                 <AddPropertyInputBox>
                     <FlexBox>
                         <Text size={2} style={marginedRightText}>
-                            <FaMapMarked />
+                            <TiTabsOutline />
                         </Text>
                         <Text size={2} style={verticallyCenterChilds}>
                             Issue Title
@@ -116,7 +123,7 @@ export default function AddIssueModal({ property, profile }) {
                 <AddPropertyInputBox>
                     <FlexBox>
                         <Text size={2} style={marginedRightText}>
-                            <MdOutlineDescription />
+                            <FaClock />
                         </Text>
                         <Text size={2} style={verticallyCenterChilds}>
                             {`Issued at `}
@@ -130,7 +137,7 @@ export default function AddIssueModal({ property, profile }) {
 
 
             <AddPropertyInputBox>
-                <Text size={3} style={updateButtonStyle} onClick={async () => { }}>
+                <Text size={3} style={updateButtonStyle} onClick={async () => { await addIssue() }}>
                     {isuploading ? <AiOutlineUpload /> : <TiTick />}
                 </Text>
             </AddPropertyInputBox>

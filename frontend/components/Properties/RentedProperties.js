@@ -13,6 +13,7 @@ import { isEqualFloat } from "../../Utils/floatComparison";
 import { copyTextToClipboard } from "../../Utils/copy";
 import DeleteRentedPropertyModal from "../Modals/DeleteRentedPropertyModal";
 import AddIssueModal from "../Modals/AddIssueModal";
+import IssueHistoryModal from "../Modals/IssueHistoryModal";
 
 
 function PropertySnippet({ property, profile, openModal, setPosition, setAddress, setSelectedProperty }) {
@@ -30,10 +31,13 @@ function PropertySnippet({ property, profile, openModal, setPosition, setAddress
         setSelectedProperty(property);
         openModal(ModalTypes.RentedPropertyDeleteModal);
     }
-    function openAddIssueModal()
-    {
+    function openAddIssueModal() {
         setSelectedProperty(property);
         openModal(ModalTypes.AddIssueModal);
+    }
+    function openIssueHistoryModal() {
+        setSelectedProperty(property);
+        openModal(ModalTypes.IssueHistoryModal);
     }
     function hasMapLocation() {
         return !(isEqualFloat(property.latitude, 0) && isEqualFloat(property.longitude, 0));
@@ -108,7 +112,7 @@ function PropertySnippet({ property, profile, openModal, setPosition, setAddress
             <IconTextBox>
                 <Text underline active size={1}>{`All Issues History`} </Text>
                 <Text size={1} style={{ ...centerChilds, justifyContent: "left", marginLeft: "10px" }}>
-                    <FaHistory onClick={() => { }} />
+                    <FaHistory onClick={() => { openIssueHistoryModal() }} />
                 </Text>
             </IconTextBox>
 
@@ -178,14 +182,27 @@ export default function RentedProperties({ profile }) {
                 }
             </PropertyContainer>
 
+            <Modal showModal={showModal(ModalTypes.MapMarkerModal, modalType, isModalOpen, setPosition)}>
+                <MoveMapMarkerModal>
+                    <Map address={address} position={position} />
+                </MoveMapMarkerModal>
+            </Modal>
+
             <Modal showModal={showModal(ModalTypes.AddIssueModal, modalType, isModalOpen, setPosition)}>
-               <AddIssueModal>
-               </AddIssueModal>
+                <AddIssueModal property={selectedProperty} profile={profile}>
+                </AddIssueModal>
+            </Modal>
+
+
+            <Modal showModal={showModal(ModalTypes.IssueHistoryModal, modalType, isModalOpen, setPosition)}>
+                <IssueHistoryModal property={selectedProperty} profile={profile}>
+                </IssueHistoryModal>
             </Modal>
 
             <Modal showModal={showModal(ModalTypes.RentedPropertyDeleteModal, modalType, isModalOpen, setPosition)}>
                 <DeleteRentedPropertyModal property={selectedProperty} profile={profile} />
             </Modal>
+
 
         </OwnedPropertiesBox>
     )

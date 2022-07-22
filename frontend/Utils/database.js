@@ -26,6 +26,23 @@ async function addAuth0UserToDatabase(user) {
     return { insertedProfile: data, insertError: error }
 }
 
+async function addIssueToDatabase(issue) {
+    const { data, error } = await supabase
+        .from('issues')
+        .insert([issue])
+
+    return { insertedIssue: data, insertError: error }
+}
+
+async function getIssuesOfProperty(propertyId) {
+    const { data, error } = await supabase
+        .from('issues')
+        .select('*')
+        .eq('propertyID', propertyId);
+    return { issues: data, error };
+}
+
+
 async function changeNameOfUser(userID, name) {
 
     const { data, error } = await supabase
@@ -117,5 +134,6 @@ export {
     addPropertyToDatabase,
     updatePropertyByID, updatePropertyRenterID,
     deleteOwnedPropertyByID,
+    addIssueToDatabase,
 
 }

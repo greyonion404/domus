@@ -90,6 +90,25 @@ let AddIssueModalContainer = styled.div`
         left: 0%;
     }
 `
+
+let IssueHistoryModalContainer = styled.div`
+    background-color: ${data.styles.color.primary};
+    position: fixed;
+    height: 80%;
+    width: 80%;
+    top: 10%;
+    left: 10%;
+    padding: 10px;
+    word-wrap: break-word;
+    overflow-y: scroll;
+    @media ${data.styles.devices.tablet} {
+        height: 90%;
+        width: 100%;
+        top: 10%;
+        left: 0%;
+    }
+`
+
 let LoadingModalContainer = styled.div`
     background-color: ${data.styles.color.primary};
     position: fixed;
@@ -171,5 +190,6 @@ export {
 
     EditPropertyModalContainer,
 
-    AddIssueModalContainer
+    AddIssueModalContainer,
+    IssueHistoryModalContainer
 }
