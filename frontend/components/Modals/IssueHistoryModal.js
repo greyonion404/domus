@@ -8,6 +8,7 @@ import { ISSUE_STATUS } from "../../Utils/issueTypes";
 
 import Select from 'react-select'
 import { Text } from "../../styles/Text";
+import { getIssuesOfProperty } from "../../Utils/database";
 
 const filterTypes = [
     { value: 'ALL', label: '🔎 All issues' },
@@ -50,37 +51,57 @@ export default function IssueHistoryModal({ property, profile }) {
     const toggleIsModalOpen = useModalStore((state) => state.toggleIsModalOpen);
     const userID = useUserPreferencesStore((state) => state.userID);
 
-    const [isSelectionPressed, setIsSelectionPressed] = useState(false);
+    const [retrievedIssues, setRetrievedIssues] = useState([]);
 
 
+    async function fetchIssues() {
+        const { issues, error } = await getIssuesOfProperty(property.propertyID);
+        if (issues) setRetrievedIssues(issues);
+    }
 
+    useEffect(() => {
+        fetchIssues();
+        return () => {
+        }
+
+    }, []);
+
+    function filterIssues(issues) {
+        let filtered = issues.filter(issue => issue.id === "ISSUE_b889ee13-08c6-4cfa-aa4f-1583953d8b9f")
+        console.log(filtered);
+        return filtered;
+    }
 
     return (
         <IssueHistoryModalContainer>
-
-
-
-
-
-            <Text size={1} underline style={{textAlign: "center" , marginBottom: "10px"}}>
-                {`The issues of the property @address : ${JSON.stringify(property.address)} are shown below.`}
-            </Text>
-            <div onClick={() => { setIsSelectionPressed(!isSelectionPressed); }}>
+       
                 <Select options={filterTypes}
                     isSearchable={false}
-                    onBlur={() => { setIsSelectionPressed(false) }}
+                   
                     styles={IssueTypeSelectStyle}
                     defaultValue={filterTypes[0]}
-                    onChange={(selected) => { console.log(selected); }}
+                    onChange={(selected) => { }}
                 />
-            </div>
 
-            {
-                !isSelectionPressed &&
                 <>
-                    issues
+                    <Text size={2} underline style={{ width: "max-content", maxWidth: "100%", margin: "auto", marginTop: "10px" }}>
+                        {`The issues of the property @address : ${JSON.stringify(property.address)} are shown below.`}
+                    </Text>
+                    {/* <Text size={1}>
+                        {JSON.stringify(retrievedIssues)};
+                    </Text> */}
+
+                    {
+                        filterIssues(retrievedIssues).map((current, index) => {
+                            return (
+                                <Text>
+                                    {current.id}
+                                </Text>
+                            )
+
+                        })
+                    }
                 </>
-            }
         </IssueHistoryModalContainer>
     )
 }

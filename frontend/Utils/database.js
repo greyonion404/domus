@@ -135,5 +135,6 @@ export {
     updatePropertyByID, updatePropertyRenterID,
     deleteOwnedPropertyByID,
     addIssueToDatabase,
+    getIssuesOfProperty
 
 }
