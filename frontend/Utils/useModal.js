@@ -8,6 +8,8 @@ let ModalTypes =
     EditPropertyModal: "EditPropertyModal",
     AddIssueModal: "AddIssueModal",
     IssueHistoryModal: "IssueHistoryModal",
+    IssueHistoryOfOwnerModal: "IssueHistoryOfOwnerModal",
+
 }
 function showModal(currentType, modalType, isModalOpen) {
     return ((currentType == modalType) && isModalOpen);

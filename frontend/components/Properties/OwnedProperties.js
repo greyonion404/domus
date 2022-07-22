@@ -8,13 +8,14 @@ import Modal from "../Modal/Modal";
 import MoveMapMarkerModal from "../Modals/MoveMapMarkerModal";
 import Map from "../Map/index";
 import { ModalTypes, showModal } from "../../Utils/useModal";
-import { FaCopy, FaEye, FaMap, FaTrash } from "react-icons/fa";
+import { FaCopy, FaEye, FaHistory, FaMap, FaTrash } from "react-icons/fa";
 import { BiHash } from "react-icons/bi";
 import { isEqualFloat } from "../../Utils/floatComparison";
 import { copyTextToClipboard } from "../../Utils/copy";
 import { AiFillEdit } from "react-icons/ai";
 import DeleteOwnedPropertyModal from "../Modals/DeleteOwnedPropertyModal";
 import EditPropertyModal from "../Modals/EditPropertyModal";
+import IssueHistoryOfOwnerModal from "../Modals/issueHistoryOfOwnerModal";
 
 function PropertySnippet({ property, profile, openModal, setPosition, setAddress, setSelectedProperty }) {
 
@@ -33,6 +34,10 @@ function PropertySnippet({ property, profile, openModal, setPosition, setAddress
     function openPropertyDeleteModal() {
         setSelectedProperty(property);
         openModal(ModalTypes.OwnedPropertyDeleteModal);
+    }
+    function openIssueHistoryOfOwnerModal() {
+        setSelectedProperty(property);
+        openModal(ModalTypes.IssueHistoryOfOwnerModal);
     }
     function hasMapLocation() {
         return !(isEqualFloat(property.latitude, 0) && isEqualFloat(property.longitude, 0));
@@ -100,6 +105,14 @@ function PropertySnippet({ property, profile, openModal, setPosition, setAddress
                     <FaMap onClick={() => { openMapModal() }} />
                 </Text>}
             </IconTextBox>
+
+            <IconTextBox>
+                <Text underline active size={1}>{`All Issues History`} </Text>
+                <Text size={1} style={{ ...centerChilds, justifyContent: "left", marginLeft: "10px" }}>
+                    <FaHistory onClick={() => { openIssueHistoryOfOwnerModal() }} />
+                </Text>
+            </IconTextBox>
+
         </Property>
 
     )
@@ -175,6 +188,12 @@ export default function OwnedProperties({ profile }) {
 
             <Modal showModal={showModal(ModalTypes.OwnedPropertyDeleteModal, modalType, isModalOpen, setPosition)}>
                 <DeleteOwnedPropertyModal property={selectedProperty} profile={profile} />
+            </Modal>
+
+
+            <Modal showModal={showModal(ModalTypes.IssueHistoryOfOwnerModal, modalType, isModalOpen, setPosition)}>
+                <IssueHistoryOfOwnerModal property={selectedProperty} profile={profile}>
+                </IssueHistoryOfOwnerModal>
             </Modal>
 
         </OwnedPropertiesBox>

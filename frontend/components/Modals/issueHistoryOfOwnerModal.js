@@ -1,4 +1,4 @@
-import { IssueHistoryModalContainer, FlexBox, IssueSnippetContainer, IssueSnippetsContainer } from "./Modals.styles";
+import { IssueHistoryOfOwnerModalContainer, FlexBox, IssueSnippetContainer, IssueSnippetsContainer } from "./Modals.styles";
 import { TiArrowBack, TiUploadOutline } from 'react-icons/ti'
 import { useEffect, useState } from "react";
 import { getRandomID } from "../../Utils/random";
@@ -58,7 +58,7 @@ const FILTER_TYPES =
 }
 
 
-export default function IssueHistoryModal({ property, profile }) {
+export default function IssueHistoryOfOwnerModal({ property, profile }) {
 
 
     const toggleIsModalOpen = useModalStore((state) => state.toggleIsModalOpen);
@@ -127,7 +127,7 @@ export default function IssueHistoryModal({ property, profile }) {
 
 
     return (
-        <IssueHistoryModalContainer>
+        <IssueHistoryOfOwnerModalContainer>
             {
                 !selectedIssue &&
                 <>
@@ -181,6 +181,6 @@ export default function IssueHistoryModal({ property, profile }) {
                 </>
             }
 
-        </IssueHistoryModalContainer>
+        </IssueHistoryOfOwnerModalContainer>
     )
 }

@@ -108,6 +108,23 @@ let IssueHistoryModalContainer = styled.div`
         left: 0%;
     }
 `
+let IssueHistoryOfOwnerModalContainer = styled.div`
+background-color: ${data.styles.color.primary};
+position: fixed;
+height: 80%;
+width: 80%;
+top: 10%;
+left: 10%;
+padding: 10px;
+word-wrap: break-word;
+overflow-y: scroll;
+@media ${data.styles.devices.tablet} {
+    height: 90%;
+    width: 100%;
+    top: 10%;
+    left: 0%;
+}
+`
 
 let LoadingModalContainer = styled.div`
     background-color: ${data.styles.color.primary};
@@ -172,6 +189,12 @@ let FlexBox = styled.div`
     display: flex;
 `
 
+let IssueSnippetsContainer = styled.div`
+    height: 80%;
+    overflow-y: scroll;
+`
+
+
 let IssueSnippetContainer = styled.div`
     display: flex;
     background-color: ${data.styles.color.primary};
@@ -209,5 +232,7 @@ export {
 
     AddIssueModalContainer,
     IssueHistoryModalContainer,
+    IssueSnippetsContainer,
     IssueSnippetContainer,
+    IssueHistoryOfOwnerModalContainer,
 }
