@@ -172,6 +172,23 @@ let FlexBox = styled.div`
     display: flex;
 `
 
+let IssueSnippetContainer = styled.div`
+    display: flex;
+    background-color: ${data.styles.color.primary};
+    width: 75%;
+    padding: 5px;
+    margin: auto;
+    margin-top: 5px;
+    justify-content: space-between;
+    border: 1px solid ${data.styles.color.text.light}80;
+    &:hover {
+        border: 1px solid ${data.styles.color.text.light};
+    }
+    @media ${data.styles.devices.tablet} {
+        width: 100%;
+    }
+`
+
 export {
     ProfileImage,
     ChangeNameInputContainer,
@@ -191,5 +208,6 @@ export {
     EditPropertyModalContainer,
 
     AddIssueModalContainer,
-    IssueHistoryModalContainer
+    IssueHistoryModalContainer,
+    IssueSnippetContainer,
 }
