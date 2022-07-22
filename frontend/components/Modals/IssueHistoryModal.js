@@ -136,7 +136,7 @@ export default function IssueHistoryModal({ property, profile }) {
                 {
                     filteredIssues.map((current, index) => {
                         return (
-                            <IssueSnippetContainer>
+                            <IssueSnippetContainer key={current.id}>
                                 <Text>
                                     {current.title}
                                 </Text>
