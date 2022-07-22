@@ -16,6 +16,7 @@ import { isEqualFloat } from "../../Utils/floatComparison";
 import { useMapStore, useModalStore, useUserPreferencesStore } from "../../store";
 import { AiOutlineWarning, AiOutlineUpload } from "react-icons/ai"
 import { updatePropertyByID } from "../../Utils/database";
+import { getBangladeshTime, getTimeDateString } from "../../Utils/getBangladeshTime";
 
 const verticallyCenterChilds = { display: "flex", alignItems: "center" };
 const marginedRightText = { ...verticallyCenterChilds, marginRight: "10px" };
@@ -72,8 +73,7 @@ export default function AddIssueModal({ property, profile }) {
     }
 
     useEffect(() => {
-        let currentTime = new Date().getTime();
-        setTime(currentTime);
+        setTime(getBangladeshTime());
     }, [])
 
 
@@ -123,7 +123,7 @@ export default function AddIssueModal({ property, profile }) {
                         </Text>
                     </FlexBox>
                     <Text size={1} style={verticallyCenterChilds}>
-                        {new Date(time).toLocaleString('en-GB', { timeZone: 'UTC' })}
+                        {getTimeDateString(time)}
                     </Text>
                 </AddPropertyInputBox>
             </AddPropertyBoxContainer>
