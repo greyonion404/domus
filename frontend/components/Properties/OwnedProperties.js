@@ -15,7 +15,7 @@ import { copyTextToClipboard } from "../../Utils/copy";
 import { AiFillEdit } from "react-icons/ai";
 import DeleteOwnedPropertyModal from "../Modals/DeleteOwnedPropertyModal";
 import EditPropertyModal from "../Modals/EditPropertyModal";
-import IssueHistoryOfOwnerModal from "../Modals/issueHistoryOfOwnerModal";
+import IssueHistoryOfOwnerModal from "../Modals/IssueHistoryOfOwnerModal";
 
 function PropertySnippet({ property, profile, openModal, setPosition, setAddress, setSelectedProperty }) {
 
@@ -51,16 +51,15 @@ function PropertySnippet({ property, profile, openModal, setPosition, setAddress
     const [showSecret, setShowSecret] = useState(false);
     const [renter, setRenter] = useState("");
 
-    async function fetchRenter()
-    {
+    async function fetchRenter() {
         const { data, error } = await getUserWithAuth0ID(property.renterID);
         if (data && data.length !== 0) setRenter(data[0]);
     }
 
     useEffect(() => {
-       fetchRenter();
-       return ()=>{        
-       }
+        fetchRenter();
+        return () => {
+        }
 
     }, []);
 
@@ -117,6 +116,7 @@ function PropertySnippet({ property, profile, openModal, setPosition, setAddress
 
     )
 }
+
 
 
 export default function OwnedProperties({ profile }) {

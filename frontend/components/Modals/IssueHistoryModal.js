@@ -176,7 +176,10 @@ export default function IssueHistoryModal({ property, profile }) {
                         </Text>
                     </FlexBox>
                     <Text>
-                        {selectedIssue.id}
+                        {selectedIssue.title}
+                    </Text>
+                    <Text>
+                        {selectedIssue.description}
                     </Text>
                 </>
             }

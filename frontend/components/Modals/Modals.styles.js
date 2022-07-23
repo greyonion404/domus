@@ -231,8 +231,10 @@ export {
     EditPropertyModalContainer,
 
     AddIssueModalContainer,
+
     IssueHistoryModalContainer,
+    IssueHistoryOfOwnerModalContainer,
+    
     IssueSnippetsContainer,
     IssueSnippetContainer,
-    IssueHistoryOfOwnerModalContainer,
 }
