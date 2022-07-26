@@ -11,7 +11,7 @@ import { centerChilds, Text } from "../../styles/Text";
 import { getIssuesOfProperty } from "../../Utils/database";
 import { getTimeDateString } from "../../Utils/getBangladeshTime";
 import { Box } from "../../styles/Page";
-import { FaHistory, FaMapMarker } from "react-icons/fa";
+import { FaHistory, FaInfo, FaMapMarker } from "react-icons/fa";
 import { AiFillCaretUp } from 'react-icons/ai';
 import { AddPropertyInputBox, InputArea } from "../AddPropertyBox/AddPropertyBox.styles";
 import { MdOutlineDescription } from "react-icons/md";
@@ -26,6 +26,7 @@ const filterTypes = [
 ];
 
 const issueTypes = [
+    { value: ISSUE_STATUS.CREATED, label: '➕ Created' },
     { value: ISSUE_STATUS.SEEN, label: '👁️‍🗨️ Seen' },
     { value: ISSUE_STATUS.ONGOING, label: '🔨 Ongoing' },
     { value: ISSUE_STATUS.CLOSED, label: '❌ Closed' },
@@ -35,6 +36,7 @@ const issueTypes = [
 const PAGE_TYPES =
 {
     SNIPPET: 'SNIPPET',
+    INFO: 'INFO',
     UPDATE: 'UPDATE',
     HISTORY: 'HISTORY',
 };
@@ -110,12 +112,16 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
     const [retrievedIssues, setRetrievedIssues] = useState(null);
     const [filteredIssues, setFilteredIssues] = useState(null);
     const [filterType, setFIlterType] = useState(FILTER_TYPES.ALL);
-    const [currentIssueTypes, setCurrentIssueTypes] = useState(FILTER_TYPES.ALL);
+    const [currentIssueTypes, setCurrentIssueTypes] = useState(FILTER_TYPES);
 
     const [pageType, setPageType] = useState(PAGE_TYPES.SNIPPET);
     const [selectedIssue, setSelectedIssue] = useState(null);
     const [isuploading, setIsuploading] = useState(false);
+
+
     const [message, setMessage] = useState("");
+    const [currentStatus, setCurrentStatus] = useState("");
+
 
 
 
@@ -139,6 +145,8 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
     }, []);
 
     function filterIssues() {
+
+
         let filtered;
         if (filterType === FILTER_TYPES.ALL) {
             filtered = retrievedIssues;
@@ -146,23 +154,23 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
             setFilteredIssues(filtered);
         }
         else if (filterType === FILTER_TYPES.CREATED) {
-            filtered = retrievedIssues.filter(issue => issue.currentStatus === FILTER_TYPES.CREATED);
-            filtered.sort(function (a, b) { return b.issuedAt - a.issuedAt });
+            filtered = retrievedIssues?.filter(issue => issue.currentStatus === FILTER_TYPES.CREATED);
+            filtered?.sort(function (a, b) { return b.issuedAt - a.issuedAt });
             setFilteredIssues(filtered);
         }
         else if (filterType === FILTER_TYPES.SEEN) {
-            filtered = retrievedIssues.filter(issue => issue.currentStatus === FILTER_TYPES.SEEN);
-            filtered.sort(function (a, b) { return b.issuedAt - a.issuedAt });
+            filtered = retrievedIssues?.filter(issue => issue.currentStatus === FILTER_TYPES.SEEN);
+            filtered?.sort(function (a, b) { return b.issuedAt - a.issuedAt });
             setFilteredIssues(filtered);
         }
         else if (filterType === FILTER_TYPES.ONGOING) {
-            filtered = retrievedIssues.filter(issue => issue.currentStatus === FILTER_TYPES.ONGOING);
-            filtered.sort(function (a, b) { return b.issuedAt - a.issuedAt });
+            filtered = retrievedIssues?.filter(issue => issue.currentStatus === FILTER_TYPES.ONGOING);
+            filtered?.sort(function (a, b) { return b.issuedAt - a.issuedAt });
             setFilteredIssues(filtered);
         }
         else if (filterType === FILTER_TYPES.CLOSED) {
-            filtered = retrievedIssues.filter(issue => issue.currentStatus === FILTER_TYPES.CLOSED);
-            filtered.sort(function (a, b) { return b.issuedAt - a.issuedAt });
+            filtered = retrievedIssues?.filter(issue => issue.currentStatus === FILTER_TYPES.CLOSED);
+            filtered?.sort(function (a, b) { return b.issuedAt - a.issuedAt });
             setFilteredIssues(filtered);
         }
 
@@ -174,17 +182,22 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
 
     useEffect(() => {
         if (selectedIssue) {
-            if (selectedIssue.currentStatus === ISSUE_STATUS.CREATED)
-                setCurrentIssueTypes([issueTypes[0], issueTypes[1], issueTypes[2]]);
+            if (selectedIssue.currentStatus === ISSUE_STATUS.CREATED) {
+                setCurrentIssueTypes([issueTypes[1], issueTypes[2], issueTypes[3]]);
+            }
 
-            if (selectedIssue.currentStatus === ISSUE_STATUS.SEEN)
-                setCurrentIssueTypes([issueTypes[1], issueTypes[2]]);
+            if (selectedIssue.currentStatus === ISSUE_STATUS.SEEN) {
+                setCurrentIssueTypes([issueTypes[2], issueTypes[3]]);
+            }
 
-            if (selectedIssue.currentStatus === ISSUE_STATUS.ONGOING)
-                setCurrentIssueTypes([issueTypes[1], issueTypes[2]]);
+            if (selectedIssue.currentStatus === ISSUE_STATUS.ONGOING) {
+                setCurrentIssueTypes([issueTypes[3]]);
+            }
 
-            if (selectedIssue.currentStatus === ISSUE_STATUS.CLOSED)
-                setCurrentIssueTypes([issueTypes[1]]);
+            if (selectedIssue.currentStatus === ISSUE_STATUS.CLOSED) {
+                setCurrentIssueTypes([issueTypes[2]]);
+
+            }
 
         }
     }, [selectedIssue])
@@ -236,16 +249,86 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
                 </>
             }
 
+            {/* INFO */}
+            {
+                (pageType === PAGE_TYPES.INFO) &&
+                <>
+                    <FlexBox>
+                        <Text size={2} style={{ width: "max-content", maxWidth: "100%" }}>
+                            <TiArrowBack onClick={() => { setPageType(PAGE_TYPES.SNIPPET); setSelectedIssue(null) }} />
+                        </Text>
+                    </FlexBox>
+                    <FlexBox>
+                        <Box style={(pageType === PAGE_TYPES.HISTORY) ? tabStyle : selectedTabStyle} onClick={() => { setPageType(PAGE_TYPES.UPDATE); }}>
+                            <Text size={3} style={verticallyCenterChilds}>
+                                <AiFillCaretUp />
+                            </Text>
+                        </Box>
+                        <Box style={(pageType === PAGE_TYPES.HISTORY) ? selectedTabStyle : tabStyle} onClick={() => { setPageType(PAGE_TYPES.HISTORY); }}>
+                            <Text size={3} style={verticallyCenterChilds}>
+                                <FaHistory />
+                            </Text>
+                        </Box>
+                    </FlexBox>
+
+
+
+
+                    <AddPropertyInputBox>
+                        <FlexBox>
+                            <Text size={1} style={marginedRightText}>
+                                <MdOutlineDescription />
+                            </Text>
+                            <Text size={1} style={verticallyCenterChilds}>
+                                Title :  {selectedIssue.title}
+                            </Text>
+                        </FlexBox>
+                    </AddPropertyInputBox>
+
+
+                    {
+                        selectedIssue.description !== "" &&
+                        <AddPropertyInputBox>
+                            <FlexBox>
+                                <Text size={2} style={marginedRightText}>
+                                    <MdOutlineDescription />
+                                </Text>
+                                <Text size={2} style={verticallyCenterChilds}>
+                                    Description
+                                </Text>
+                            </FlexBox>
+                            <InputArea type="text" placeholder="description of the isssue you are facing ..."
+                                spellCheck="false" value={selectedIssue.description}
+                                onChange={(event) => { }}
+                            />
+                        </AddPropertyInputBox>
+                    }
+                </>
+
+            }
+
             {/* update */}
             {
                 (pageType === PAGE_TYPES.UPDATE) &&
                 <>
                     <FlexBox>
                         <Text size={2} style={{ width: "max-content", maxWidth: "100%" }}>
-                            <TiArrowBack onClick={() => { setPageType(PAGE_TYPES.SNIPPET); setFIlterType(FILTER_TYPES.ALL); setSelectedIssue(null) }} />
+                            <TiArrowBack onClick={() => {
+                                setCurrentStatus("");
+                                setMessage("");
+                                setPageType(PAGE_TYPES.SNIPPET);
+                                setFIlterType(FILTER_TYPES.ALL);
+                                setSelectedIssue(null);
+                                setCurrentIssueTypes(FILTER_TYPES);
+                            }} />
                         </Text>
                     </FlexBox>
                     <FlexBox>
+                        <Box style={(pageType === PAGE_TYPES.UPDATE) ? tabStyle : selectedTabStyle} onClick={() => { setPageType(PAGE_TYPES.INFO); }}>
+                            <Text size={3} style={verticallyCenterChilds}>
+                                <FaInfo />
+                            </Text>
+                        </Box>
                         <Box style={(pageType === PAGE_TYPES.UPDATE) ? selectedTabStyle : tabStyle} onClick={() => { setPageType(PAGE_TYPES.UPDATE); }}>
                             <Text size={3} style={verticallyCenterChilds}>
                                 <AiFillCaretUp />
@@ -262,9 +345,10 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
                     <AddPropertyInputBox style={{ marginTop: "10px" }}>
                         <Select options={currentIssueTypes}
                             isSearchable={false}
-                            styles={IssueTypeSelectStyle}
-                            defaultValue={currentIssueTypes[0]}
-                            onChange={(selected) => { }}
+                            styles={IssueTypeSelectStyle} INFO
+                            onChange={(selected) => {
+                                setCurrentStatus(selected.value);
+                            }}
                         />
                         <FlexBox>
                             <Text size={1} style={marginedRightText}>
@@ -281,7 +365,7 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
                     </AddPropertyInputBox>
 
                     <AddPropertyInputBox>
-                        <Text size={3} style={updateButtonStyle} onClick={async () => { }}>
+                        <Text size={3} style={updateButtonStyle} onClick={async () => { console.log({ currentStatus, message }) }}>
                             {isuploading ? <AiOutlineUpload /> : <TiTick />}
                         </Text>
                     </AddPropertyInputBox>
