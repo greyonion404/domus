@@ -3,7 +3,6 @@ import { getPersistantState, useMapStore, useModalStore, useStorePersistance, us
 import { Text, centerChilds } from "../../styles/Text";
 import { getOwnedPropertiesOfUser, getUserWithAuth0ID } from "../../Utils/database";
 import { IconTextBox, OwnedPropertiesBox, Property, PropertyContainer, SearchPropertyInput } from "./OwnedProperties.styles";
-import { MdDesktopAccessDisabled } from 'react-icons/md';
 import Modal from "../Modal/Modal";
 import MoveMapMarkerModal from "../Modals/MoveMapMarkerModal";
 import Map from "../Map/index";

@@ -146,7 +146,6 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
 
     function filterIssues() {
 
-
         let filtered;
         if (filterType === FILTER_TYPES.ALL) {
             filtered = retrievedIssues;
@@ -253,18 +252,24 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
             {
                 (pageType === PAGE_TYPES.INFO) &&
                 <>
+                    info
                     <FlexBox>
                         <Text size={2} style={{ width: "max-content", maxWidth: "100%" }}>
                             <TiArrowBack onClick={() => { setPageType(PAGE_TYPES.SNIPPET); setSelectedIssue(null) }} />
                         </Text>
                     </FlexBox>
                     <FlexBox>
-                        <Box style={(pageType === PAGE_TYPES.HISTORY) ? tabStyle : selectedTabStyle} onClick={() => { setPageType(PAGE_TYPES.UPDATE); }}>
+                        <Box style={selectedTabStyle} onClick={() => { setPageType(PAGE_TYPES.INFO); }}>
+                            <Text size={3} style={verticallyCenterChilds}>
+                                <FaInfo />
+                            </Text>
+                        </Box>
+                        <Box style={tabStyle} onClick={() => { setPageType(PAGE_TYPES.UPDATE); }}>
                             <Text size={3} style={verticallyCenterChilds}>
                                 <AiFillCaretUp />
                             </Text>
                         </Box>
-                        <Box style={(pageType === PAGE_TYPES.HISTORY) ? selectedTabStyle : tabStyle} onClick={() => { setPageType(PAGE_TYPES.HISTORY); }}>
+                        <Box style={tabStyle} onClick={() => { setPageType(PAGE_TYPES.HISTORY); }}>
                             <Text size={3} style={verticallyCenterChilds}>
                                 <FaHistory />
                             </Text>
@@ -311,6 +316,7 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
             {
                 (pageType === PAGE_TYPES.UPDATE) &&
                 <>
+                    update
                     <FlexBox>
                         <Text size={2} style={{ width: "max-content", maxWidth: "100%" }}>
                             <TiArrowBack onClick={() => {
@@ -324,17 +330,17 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
                         </Text>
                     </FlexBox>
                     <FlexBox>
-                        <Box style={(pageType === PAGE_TYPES.UPDATE) ? tabStyle : selectedTabStyle} onClick={() => { setPageType(PAGE_TYPES.INFO); }}>
+                        <Box style={tabStyle} onClick={() => { setPageType(PAGE_TYPES.INFO); }}>
                             <Text size={3} style={verticallyCenterChilds}>
                                 <FaInfo />
                             </Text>
                         </Box>
-                        <Box style={(pageType === PAGE_TYPES.UPDATE) ? selectedTabStyle : tabStyle} onClick={() => { setPageType(PAGE_TYPES.UPDATE); }}>
+                        <Box style={selectedTabStyle} onClick={() => { setPageType(PAGE_TYPES.UPDATE); }}>
                             <Text size={3} style={verticallyCenterChilds}>
                                 <AiFillCaretUp />
                             </Text>
                         </Box>
-                        <Box style={(pageType === PAGE_TYPES.UPDATE) ? tabStyle : selectedTabStyle} onClick={() => { setPageType(PAGE_TYPES.HISTORY); }}>
+                        <Box style={tabStyle} onClick={() => { setPageType(PAGE_TYPES.HISTORY); }}>
                             <Text size={3} style={verticallyCenterChilds}>
                                 <FaHistory />
                             </Text>
@@ -376,18 +382,24 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
             {
                 (pageType === PAGE_TYPES.HISTORY) &&
                 <>
+                    History
                     <FlexBox>
                         <Text size={2} style={{ width: "max-content", maxWidth: "100%" }}>
                             <TiArrowBack onClick={() => { setPageType(PAGE_TYPES.SNIPPET); setSelectedIssue(null) }} />
                         </Text>
                     </FlexBox>
                     <FlexBox>
-                        <Box style={(pageType === PAGE_TYPES.HISTORY) ? tabStyle : selectedTabStyle} onClick={() => { setPageType(PAGE_TYPES.UPDATE); }}>
+                        <Box style={tabStyle} onClick={() => { setPageType(PAGE_TYPES.INFO); }}>
+                            <Text size={3} style={verticallyCenterChilds}>
+                                <FaInfo />
+                            </Text>
+                        </Box>
+                        <Box style={tabStyle} onClick={() => { setPageType(PAGE_TYPES.UPDATE); }}>
                             <Text size={3} style={verticallyCenterChilds}>
                                 <AiFillCaretUp />
                             </Text>
                         </Box>
-                        <Box style={(pageType === PAGE_TYPES.HISTORY) ? selectedTabStyle : tabStyle} onClick={() => { setPageType(PAGE_TYPES.HISTORY); }}>
+                        <Box style={selectedTabStyle} onClick={() => { setPageType(PAGE_TYPES.HISTORY); }}>
                             <Text size={3} style={verticallyCenterChilds}>
                                 <FaHistory />
                             </Text>
