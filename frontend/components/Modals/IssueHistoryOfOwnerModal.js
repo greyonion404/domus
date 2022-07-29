@@ -8,8 +8,8 @@ import { ISSUE_STATUS } from "../../Utils/issueTypes";
 import { AiOutlineReload, AiOutlineUpload } from 'react-icons/ai'
 import Select from 'react-select'
 import { centerChilds, Text } from "../../styles/Text";
-import { getIssuesOfProperty } from "../../Utils/database";
-import { getTimeDateString } from "../../Utils/getBangladeshTime";
+import { changeStatusOfIssue, getIssuesOfProperty, setClosingTimeOfIssue } from "../../Utils/database";
+import { getBangladeshTime, getTimeDateString } from "../../Utils/getBangladeshTime";
 import { Box } from "../../styles/Page";
 import { FaHistory, FaInfo, FaMapMarker } from "react-icons/fa";
 import { AiFillCaretUp } from 'react-icons/ai';
@@ -52,6 +52,9 @@ const updateButtonStyle = {
     backgroundColor: data.styles.color.secondaryMedium, width: "max-content",
     zIndex: "100"
 };
+
+
+
 
 const IssueTypeSelectStyle = {
     menuList: styles => ({
@@ -121,10 +124,17 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
 
     const [message, setMessage] = useState("");
     const [currentStatus, setCurrentStatus] = useState("");
+    const [issueUpdateError, setIssueUpdateError] = useState(null);
 
 
 
 
+    function getIssueSelectionLabel(issueType) {
+        for (let i = 0; i < issueTypes.length; i++) {
+            if (issueType === issueTypes[i].value) return issueTypes[i];
+        }
+        return {};
+    }
 
 
     async function fetchIssues() {
@@ -134,6 +144,25 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
             setRetrievedIssues(issues);
             setFilteredIssues(issues);
         }
+    }
+
+    async function updateIssueState() {
+        if (currentStatus === '') {
+            let currentIssueTypesString = '';
+            for (let i = 0; i < currentIssueTypes.length; i++) {
+                currentIssueTypesString += " " + currentIssueTypes[i].label + " | ";
+            }
+            let error = `you haven't chosen a state for the current issue. Choose from these options : ${currentIssueTypesString}`
+            setIssueUpdateError(error);
+            return;
+        }
+        setIsuploading(true);
+        // change the status of the propperty-issue to currentStatus
+        let { updatedIssue, updateError } = await changeStatusOfIssue(selectedIssue.id, currentStatus);
+        let closingTime = (currentStatus === ISSUE_STATUS.CLOSED) ? getBangladeshTime() : null;
+        let { updatedIssue: closingTimeUpdated, updateError: closingTimeUpdateError } = await setClosingTimeOfIssue(selectedIssue.id, closingTime);
+        setIsuploading(false);
+        console.log({ currentStatus, message });
     }
 
 
@@ -176,28 +205,48 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
     }
 
     useEffect(() => {
+        setIssueUpdateError(null);
+    }, [currentStatus]);
+
+
+    useEffect(() => {
         filterIssues();
     }, [filterType]);
 
     useEffect(() => {
         if (selectedIssue) {
+            // if created, can change to seen, ongoing or closed, directly
             if (selectedIssue.currentStatus === ISSUE_STATUS.CREATED) {
-                setCurrentIssueTypes([issueTypes[1], issueTypes[2], issueTypes[3]]);
+                setCurrentIssueTypes([
+                    issueTypes[1],
+                    issueTypes[2],
+                    issueTypes[3]
+                ]);
             }
-
+            // if seen, can change to ongoing or closed
             if (selectedIssue.currentStatus === ISSUE_STATUS.SEEN) {
-                setCurrentIssueTypes([issueTypes[2], issueTypes[3]]);
+                setCurrentIssueTypes([
+                    issueTypes[2],
+                    issueTypes[3]
+                ]);
             }
-
+            // if ongoing, can change to ongoing (with an update message) or closed
             if (selectedIssue.currentStatus === ISSUE_STATUS.ONGOING) {
-                setCurrentIssueTypes([issueTypes[3]]);
+                setCurrentIssueTypes([
+                    issueTypes[2],
+                    issueTypes[3]
+                ]);
             }
-
+            // if closed, can change to ongoing (essesntially re-opening the issue)
             if (selectedIssue.currentStatus === ISSUE_STATUS.CLOSED) {
-                setCurrentIssueTypes([issueTypes[2]]);
-
+                setCurrentIssueTypes([
+                    issueTypes[2],
+                ]);
             }
+        }
 
+        else {
+            setCurrentIssueTypes(null);
         }
     }, [selectedIssue])
 
@@ -226,7 +275,7 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
                             filteredIssues &&
                             filteredIssues.map((current, index) => {
                                 return (
-                                    <IssueSnippetContainer key={current.id} onClick={() => { setSelectedIssue(current); setPageType(PAGE_TYPES.UPDATE) }}>
+                                    <IssueSnippetContainer key={current.id} onClick={() => { setSelectedIssue(current); setPageType(PAGE_TYPES.INFO) }}>
                                         <Text>
                                             {index + 1}. {current.title}
                                         </Text>
@@ -252,7 +301,6 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
             {
                 (pageType === PAGE_TYPES.INFO) &&
                 <>
-                    info
                     <FlexBox>
                         <Text size={2} style={{ width: "max-content", maxWidth: "100%" }}>
                             <TiArrowBack onClick={() => { setPageType(PAGE_TYPES.SNIPPET); setSelectedIssue(null) }} />
@@ -295,11 +343,11 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
                         selectedIssue.description !== "" &&
                         <AddPropertyInputBox>
                             <FlexBox>
-                                <Text size={2} style={marginedRightText}>
+                                <Text size={1} style={marginedRightText}>
                                     <MdOutlineDescription />
                                 </Text>
-                                <Text size={2} style={verticallyCenterChilds}>
-                                    Description
+                                <Text size={1} style={verticallyCenterChilds}>
+                                    Description :
                                 </Text>
                             </FlexBox>
                             <InputArea type="text" placeholder="description of the isssue you are facing ..."
@@ -308,6 +356,35 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
                             />
                         </AddPropertyInputBox>
                     }
+
+
+                    <AddPropertyInputBox>
+                        <FlexBox>
+                            <Text size={1} style={verticallyCenterChilds}>
+                                {getIssueSelectionLabel(selectedIssue.currentStatus).label}
+                            </Text>
+                        </FlexBox>
+
+                        <FlexBox>
+                            <Text size={1} style={marginedRightText}>
+                                <MdOutlineDescription />
+                            </Text>
+                            <Text size={1} style={verticallyCenterChilds}>
+                                Issued at :  {getTimeDateString(selectedIssue.issuedAt)}
+                            </Text>
+                        </FlexBox>
+                        {
+                            (selectedIssue.currentStatus === ISSUE_STATUS.CLOSED) &&
+                            <FlexBox>
+                                <Text size={1} style={marginedRightText}>
+                                    <MdOutlineDescription />
+                                </Text>
+                                <Text size={1} style={verticallyCenterChilds}>
+                                    Issued closed at :  {getTimeDateString(selectedIssue.issueClosedAt)}
+                                </Text>
+                            </FlexBox>
+                        }
+                    </AddPropertyInputBox>
                 </>
 
             }
@@ -316,7 +393,6 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
             {
                 (pageType === PAGE_TYPES.UPDATE) &&
                 <>
-                    update
                     <FlexBox>
                         <Text size={2} style={{ width: "max-content", maxWidth: "100%" }}>
                             <TiArrowBack onClick={() => {
@@ -347,11 +423,15 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
                         </Box>
                     </FlexBox>
 
+                    {
+                        issueUpdateError && <Text style={{ marginTop: "10px" }}> {issueUpdateError} </Text>
+                    }
 
                     <AddPropertyInputBox style={{ marginTop: "10px" }}>
                         <Select options={currentIssueTypes}
                             isSearchable={false}
-                            styles={IssueTypeSelectStyle} INFO
+                            styles={IssueTypeSelectStyle}
+                            defaultValue={getIssueSelectionLabel(currentStatus)}
                             onChange={(selected) => {
                                 setCurrentStatus(selected.value);
                             }}
@@ -361,7 +441,7 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
                                 <MdOutlineDescription />
                             </Text>
                             <Text size={1} style={{ ...verticallyCenterChilds, marginRight: "10px" }}>
-                                Update Issue
+                                Message to the renter after updating the issue (optional)
                             </Text>
                         </FlexBox>
                         <InputArea type="text" placeholder="message to renter (optional) ..."
@@ -371,7 +451,10 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
                     </AddPropertyInputBox>
 
                     <AddPropertyInputBox>
-                        <Text size={3} style={updateButtonStyle} onClick={async () => { console.log({ currentStatus, message }) }}>
+                        <Text size={3} style={updateButtonStyle} onClick={async () => {
+                            await updateIssueState();
+                            // toggleIsModalOpen();
+                        }}>
                             {isuploading ? <AiOutlineUpload /> : <TiTick />}
                         </Text>
                     </AddPropertyInputBox>
@@ -382,7 +465,6 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
             {
                 (pageType === PAGE_TYPES.HISTORY) &&
                 <>
-                    History
                     <FlexBox>
                         <Text size={2} style={{ width: "max-content", maxWidth: "100%" }}>
                             <TiArrowBack onClick={() => { setPageType(PAGE_TYPES.SNIPPET); setSelectedIssue(null) }} />
@@ -405,39 +487,7 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
                             </Text>
                         </Box>
                     </FlexBox>
-
-
-
-
-                    <AddPropertyInputBox>
-                        <FlexBox>
-                            <Text size={1} style={marginedRightText}>
-                                <MdOutlineDescription />
-                            </Text>
-                            <Text size={1} style={verticallyCenterChilds}>
-                                Title :  {selectedIssue.title}
-                            </Text>
-                        </FlexBox>
-                    </AddPropertyInputBox>
-
-
-                    {
-                        selectedIssue.description !== "" &&
-                        <AddPropertyInputBox>
-                            <FlexBox>
-                                <Text size={2} style={marginedRightText}>
-                                    <MdOutlineDescription />
-                                </Text>
-                                <Text size={2} style={verticallyCenterChilds}>
-                                    Description
-                                </Text>
-                            </FlexBox>
-                            <InputArea type="text" placeholder="description of the isssue you are facing ..."
-                                spellCheck="false" value={selectedIssue.description}
-                                onChange={(event) => { }}
-                            />
-                        </AddPropertyInputBox>
-                    }
+                    <Text>HISTORY</Text>
                 </>
 
             }

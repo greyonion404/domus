@@ -42,6 +42,23 @@ async function getIssuesOfProperty(propertyId) {
     return { issues: data, error };
 }
 
+async function changeStatusOfIssue(issueID, currentStatus) {
+
+    const { data, error } = await supabase
+        .from('issues')
+        .update({ currentStatus: currentStatus })
+        .eq("id", issueID)
+    return { updatedIssue: data, updateError: error }
+}
+
+async function setClosingTimeOfIssue(issueID, issueClosedAt) {
+    const { data, error } = await supabase
+        .from('issues')
+        .update({ issueClosedAt: issueClosedAt })
+        .eq("id", issueID)
+    return { updatedIssue: data, updateError: error }
+}
+
 
 async function changeNameOfUser(userID, name) {
 
@@ -135,6 +152,8 @@ export {
     updatePropertyByID, updatePropertyRenterID,
     deleteOwnedPropertyByID,
     addIssueToDatabase,
-    getIssuesOfProperty
+    getIssuesOfProperty,
+    changeStatusOfIssue,
+    setClosingTimeOfIssue,
 
 }

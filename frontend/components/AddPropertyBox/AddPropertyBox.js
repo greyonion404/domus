@@ -3,7 +3,7 @@ import { AddPropertyBoxContainer, AddPropertyInputBox, IconTextBox, Input, Input
 import { FaMapMarker, FaMapMarked, FaKey, FaCopy } from 'react-icons/fa'
 import { MdDesktopAccessDisabled, MdOutlineDescription } from 'react-icons/md'
 import { TiTick } from 'react-icons/ti'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import data from "../../styles/data";
 import { getRandomID } from "../../Utils/random";
 import { copyTextToClipboard } from "../../Utils/copy.js";
@@ -77,6 +77,10 @@ export default function AddPropertyBox({ profile }) {
         toggleIsModalOpen();
 
     }
+
+    useEffect(()=>{
+        setMarkerPosition(defaultPosition);
+    },[])
 
 
     const hasPersistance = useStorePersistance();
