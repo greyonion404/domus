@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { FaTrash, FaUpload } from "react-icons/fa";
 import { centerChilds, Text } from "../../styles/Text";
-import { deleteOwnedPropertyByID, updatePropertyRenterID } from "../../Utils/database";
+import { deleteIssueOfProperty, deleteOwnedPropertyByID, updatePropertyRenterID } from "../../Utils/database";
 import { DeletePropertyButton, GenericModal } from "./Modals.styles";
 import { useModalStore } from "../../store"
 import { useState } from "react";
@@ -16,6 +16,7 @@ export default function DeleteRentedPropertyModal({ property, profile }) {
     async function deleteProperty() {
         setIsDeleting(true);
         const { updatedProperty, updateError } = await updatePropertyRenterID(property.propertyID, profile = { authID: "" });
+        await deleteIssueOfProperty(property.propertyID);
         console.log(updateError);
         setIsDeleting(false);
         toggleIsModalOpen();

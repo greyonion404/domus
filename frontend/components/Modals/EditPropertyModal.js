@@ -15,7 +15,7 @@ import { defaultPosition } from "../../Utils/defaultPosition";
 import { isEqualFloat } from "../../Utils/floatComparison";
 import { useMapStore, useModalStore, useUserPreferencesStore } from "../../store";
 import { AiOutlineWarning, AiOutlineUpload } from "react-icons/ai"
-import { updatePropertyByID } from "../../Utils/database";
+import { deleteIssueOfProperty, updatePropertyByID } from "../../Utils/database";
 
 const verticallyCenterChilds = { display: "flex", alignItems: "center" };
 const marginedRightText = { ...verticallyCenterChilds, marginRight: "10px" };
@@ -66,6 +66,11 @@ export default function EditPropertyModal({ property, profile }) {
             renterID: renterID,
         };
         setIsuploading(true);
+        //evcition
+        if(secretKey !== property.propertySecretKey)
+        {
+            await deleteIssueOfProperty(property.propertyID);
+        }
         let {updatedProperty, updateError} = await updatePropertyByID(property.propertyID, editedProperty);
         toggleIsModalOpen();
         if(updatedProperty)

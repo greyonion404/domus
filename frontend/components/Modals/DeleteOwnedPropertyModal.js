@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { FaTrash, FaUpload } from "react-icons/fa";
 import { centerChilds, Text } from "../../styles/Text";
-import { deleteOwnedPropertyByID } from "../../Utils/database";
+import { deleteIssueOfProperty, deleteOwnedPropertyByID } from "../../Utils/database";
 import { DeletePropertyButton, GenericModal } from "./Modals.styles";
 import { useModalStore } from "../../store"
 import { useState } from "react";
@@ -16,6 +16,7 @@ export default function DeleteOwnedPropertyModal({ property, profile }) {
     async function deleteProperty() {
         setIsDeleting(true);
         const { data, error } = await deleteOwnedPropertyByID(property.propertyID);
+        await deleteIssueOfProperty(property.propertyID);
         setIsDeleting(false);
         toggleIsModalOpen();
         if (data) window.location.reload(false);

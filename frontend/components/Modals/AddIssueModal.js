@@ -9,7 +9,7 @@ import { getRandomID } from "../../Utils/random";
 import data from "../../styles/data";
 import { useModalStore, useUserPreferencesStore } from "../../store";
 import { AiOutlineUpload } from "react-icons/ai"
-import { addIssueToDatabase, updatePropertyByID } from "../../Utils/database";
+import { addHistoryToDatabase, addIssueToDatabase, updatePropertyByID } from "../../Utils/database";
 import { getBangladeshTime, getTimeDateString } from "../../Utils/getBangladeshTime";
 import { ISSUE_STATUS } from "../../Utils/issueTypes";
 
@@ -31,12 +31,25 @@ export default function AddIssueModal({ property, profile }) {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
 
+    async function addHistory(issueID, action, message, timestamp)
+    {
+        let history = {
+            historyID : getRandomID('HISTORY'),
+            issueID: issueID,
+            action: action,
+            message: message,
+            timestamp: timestamp,
+        };
+        console.log(history)
+        let {data, error} = await addHistoryToDatabase(history);
+        console.log(error);
+    }
+
     async function addIssue() {
-
-
+        let issueID = getRandomID("ISSUE");
         let issue =
         {
-            id: getRandomID("ISSUE"),
+            id: issueID,
             createdBy: userID,
             propertyID: property.propertyID,
             title: title,
@@ -53,6 +66,7 @@ export default function AddIssueModal({ property, profile }) {
         // upload
         console.log(issue);
         let { insertedIssue, insertError } = await addIssueToDatabase(issue);
+        await addHistory(issueID, 'created issue', '', time);
         toggleIsModalOpen();
         if (insertedIssue) {
             window.location.reload(false);

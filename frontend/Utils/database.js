@@ -51,6 +51,17 @@ async function changeStatusOfIssue(issueID, currentStatus) {
     return { updatedIssue: data, updateError: error }
 }
 
+async function deleteIssueOfProperty(propertyID) {
+    const { data, error } = await supabase
+        .from('issues')
+        .delete()
+        .match({ propertyID: propertyID });
+
+    return { data, error };
+}
+
+
+
 async function setClosingTimeOfIssue(issueID, issueClosedAt) {
     const { data, error } = await supabase
         .from('issues')
@@ -76,6 +87,14 @@ async function addPropertyToDatabase(property) {
         .insert([property])
 
     return { insertedProperty: data, insertError: error }
+}
+
+async function addHistoryToDatabase(history) {
+    const { data, error } = await supabase
+        .from('histories')
+        .insert([history])
+
+    return { data, error }
 }
 
 
@@ -134,7 +153,7 @@ async function updatePropertyRenterID(propertyID, profile) {
 
     const { data, error } = await supabase
         .from('properties')
-        .update({ renterID : profile.authID })
+        .update({ renterID: profile.authID })
         .eq("propertyID", propertyID)
 
     return { updatedProperty: data, updateError: error }
@@ -143,8 +162,8 @@ async function updatePropertyRenterID(propertyID, profile) {
 
 
 export {
-    getUserWithAuth0ID, 
-    addAuth0UserToDatabase, 
+    getUserWithAuth0ID,
+    addAuth0UserToDatabase,
     changeNameOfUser,
     getRentedPropertiesOfUser,
     getOwnedPropertiesOfUser, getPropertyBySecretKey,
@@ -155,5 +174,7 @@ export {
     getIssuesOfProperty,
     changeStatusOfIssue,
     setClosingTimeOfIssue,
+    deleteIssueOfProperty,
+    addHistoryToDatabase,
 
 }
