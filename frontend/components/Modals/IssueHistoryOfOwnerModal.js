@@ -388,7 +388,7 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
                                 </Text>
                             </FlexBox>
                             <Text size={1} style={verticallyCenterChilds}>
-                                Description : {selectedIssue.description}
+                                {selectedIssue.description}
                             </Text>
                         </AddPropertyInputBox>
                     }
@@ -396,6 +396,9 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
 
                     <AddPropertyInputBox>
                         <FlexBox>
+                            <Text size={1} style={verticallyCenterChilds}>
+                                Status :
+                            </Text>
                             <Text size={1} style={verticallyCenterChilds}>
                                 {getIssueSelectionLabel(selectedIssue.currentStatus).label}
                             </Text>
