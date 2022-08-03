@@ -1,5 +1,5 @@
 import { IssueHistoryModalContainer, FlexBox, IssueSnippetContainer, IssueSnippetsContainer } from "./Modals.styles";
-import { TiArrowBack, TiUploadOutline } from 'react-icons/ti'
+import { TiArrowBack, TiMessage, TiUploadOutline } from 'react-icons/ti'
 import { useEffect, useState } from "react";
 import { getRandomID } from "../../Utils/random";
 import data from "../../styles/data";

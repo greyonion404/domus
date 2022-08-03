@@ -80,7 +80,7 @@ export default function AddPropertyBox({ profile }) {
 
     useEffect(()=>{
         setMarkerPosition(defaultPosition);
-    },[])
+    },[setMarkerPosition])
 
 
     const hasPersistance = useStorePersistance();
