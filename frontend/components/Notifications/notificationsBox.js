@@ -1,0 +1,50 @@
+import { useEffect, useState } from "react";
+import { Text } from "../../styles/Text";
+import { getNotificationsOfUser } from "../../Utils/database";
+import { getTimeDateString } from "../../Utils/getBangladeshTime";
+import { NotifcationSnippet, NotificationsContainer } from "./notifications.styles";
+
+export default function Notifcations({ profile }) {
+
+    let [notifications, setNotifications] = useState(null);
+
+    async function fetchNotifications() {
+        let { data: retrieved, error } = await getNotificationsOfUser(profile.authID);
+        retrieved.sort(function (a, b) { return b.timestamp - a.timestamp });
+        setNotifications(retrieved);
+    }
+
+
+    useEffect(() => {
+        fetchNotifications();
+        return () => {
+        }
+
+    }, []);
+
+
+    return (
+        <NotificationsContainer>
+
+
+            {
+                notifications &&
+                notifications.map((notification, index) => {
+                    return (
+                        <NotifcationSnippet>
+                            <Text>
+                                {notification.description}
+                            </Text>
+                            <Text size={1}>
+                                Time : {getTimeDateString(notification.timestamp)}
+                            </Text>
+                        </NotifcationSnippet>
+
+                    )
+
+                })
+            }
+
+        </NotificationsContainer>
+    )
+}
