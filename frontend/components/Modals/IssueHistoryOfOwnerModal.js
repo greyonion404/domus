@@ -188,6 +188,8 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
         let action = `changed issue status from "${getIssueSelectionLabel(selectedIssue?.currentStatus).label}" to "${getIssueSelectionLabel(currentStatus).label}"`
         console.log({ action, message });
         await addHistory(selectedIssue?.id, action, message, getBangladeshTime());
+        setMessage("");
+        toggleIsModalOpen();
     }
 
 
@@ -490,7 +492,6 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
                     <AddPropertyInputBox>
                         <Text size={3} style={updateButtonStyle} onClick={async () => {
                             await updateIssueState();
-                            // toggleIsModalOpen();
                         }}>
                             {isuploading ? <AiOutlineUpload /> : <TiTick />}
                         </Text>
@@ -524,7 +525,6 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
                             </Text>
                         </Box>
                     </FlexBox>
-                    <Text>HISTORY</Text>
                     <IssueSnippetsContainer>
 
                         {
@@ -538,7 +538,7 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
                                                 <MdInfo />
                                             </Text>
                                             <Text size={1}>
-                                                {`${profile.authID === history.creatorID ? "You" : "The renter"} ${history.action}`}
+                                               Action : {`${profile.authID === history.creatorID ? "You" : "The renter"} ${history.action}`}
                                             </Text>
                                         </FlexBox>
 
@@ -549,7 +549,7 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
                                                     <TiMessage />
                                                 </Text>
                                                 <Text size={1} style={verticallyCenterChilds}>
-                                                    {history.message}
+                                                    Message : {history.message}
                                                 </Text>
                                             </FlexBox>
 
@@ -559,7 +559,7 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
                                                 <FaClock />
                                             </Text>
                                             <Text size={1} style={verticallyCenterChilds}>
-                                                {getTimeDateString(history.timestamp)}
+                                                Time : {getTimeDateString(history.timestamp)}
                                             </Text>
                                         </FlexBox>
 
