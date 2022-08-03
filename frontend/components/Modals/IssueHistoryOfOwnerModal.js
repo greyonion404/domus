@@ -387,10 +387,9 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
                                     Description :
                                 </Text>
                             </FlexBox>
-                            <InputArea type="text" placeholder="description of the isssue you are facing ..."
-                                spellCheck="false" value={selectedIssue.description}
-                                onChange={(event) => { }}
-                            />
+                            <Text size={1} style={verticallyCenterChilds}>
+                                Description : {selectedIssue.description}
+                            </Text>
                         </AddPropertyInputBox>
                     }
 
@@ -544,7 +543,7 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
                                             (history.message !== "") &&
                                             <FlexBox>
                                                 <Text size={1} style={marginedRightText}>
-                                                    <TiMessage/>
+                                                    <TiMessage />
                                                 </Text>
                                                 <Text size={1} style={verticallyCenterChilds}>
                                                     Message : {history.message}
