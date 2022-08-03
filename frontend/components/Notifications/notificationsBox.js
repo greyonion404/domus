@@ -31,12 +31,12 @@ export default function Notifcations({ profile }) {
                 notifications &&
                 notifications.map((notification, index) => {
                     return (
-                        <NotifcationSnippet>
+                        <NotifcationSnippet key={notification.notificationID}>
                             <Text>
                                 {notification.description}
                             </Text>
                             <Text size={1}>
-                                Time : {getTimeDateString(notification.timestamp)}
+                              {getTimeDateString(notification.timestamp)}
                             </Text>
                         </NotifcationSnippet>
 
