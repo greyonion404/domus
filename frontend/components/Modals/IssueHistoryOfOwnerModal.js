@@ -156,9 +156,7 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
             message: message,
             timestamp: timestamp,
         };
-        console.log(history);
         let { data, error } = await addHistoryToDatabase(history);
-        console.log(error);
     }
 
     async function fetchHistories(issueID) {
@@ -186,7 +184,6 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
 
 
         let action = `changed issue status from "${getIssueSelectionLabel(selectedIssue?.currentStatus).label}" to "${getIssueSelectionLabel(currentStatus).label}"`
-        console.log({ action, message });
         await addHistory(selectedIssue?.id, action, message, getBangladeshTime());
         setMessage("");
         toggleIsModalOpen();
