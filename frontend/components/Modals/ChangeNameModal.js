@@ -8,13 +8,15 @@ import { BiHash } from "react-icons/bi";
 
 import { useUserPreferencesStore } from "../../store";
 import { centerChilds, Text } from "../../styles/Text"
-import { changeNameOfUser, getOwnedPropertiesOfUser, getRentedPropertiesOfUser, getUserWithAuth0ID } from "../../Utils/database";
+import { addNotificationToDatabase, changeNameOfUser, getOwnedPropertiesOfUser, getRentedPropertiesOfUser, getUserWithAuth0ID } from "../../Utils/database";
 import {
     ChangeNameInput,
     ChangeNameInputContainer,
     GenericModal,
     ProfileImage
 } from "./Modals.styles"
+import { getBangladeshTime } from "../../Utils/getBangladeshTime";
+import { getRandomID } from "../../Utils/random";
 
 
 
@@ -29,13 +31,29 @@ function ChangeName({ userName, userID, isUpdating, setIsUpdating }) {
     const [name, setName] = useState(userName);
     const [nameInput, setNameInput] = useState("");
 
+    async function sendNotification(description)
+    {
+        let notification = {
+            notificationID: getRandomID('NOTIFICATION'),
+            sentTo: userID,
+            description: description,
+            propertyID: null,
+            propertyAddress: null,
+            timestamp: getBangladeshTime(),
+        };
+        console.log(notification);
+        await addNotificationToDatabase(notification);
+    }
+
     async function updateNameEffects() {
-        const validName = nameInput && nameInput.length > 2;
+        const validName = nameInput && (nameInput.length > 2) && (name !== nameInput);
         if (!validName) return;
 
         setIsEditing(false);
         setIsUpdating(true);
         let { updatedProfile, updateError } = await changeNameOfUser(userID, nameInput);
+        let description = `You changed your name from "#${userName}" to "#${nameInput}"`;
+        await sendNotification(description);
         setIsUpdating(false);
         if (updatedProfile)
             setName(nameInput);

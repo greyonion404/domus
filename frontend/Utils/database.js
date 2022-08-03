@@ -271,8 +271,37 @@ async function getHistoryOfIssue(issueID) {
         data,
         error
     };
-
 }
+// notifications
+// add history
+async function addNotificationToDatabase(notification) {
+    const {
+        data,
+        error
+    } = await supabase
+        .from('notifications')
+        .insert([notification])
+
+    return {
+        data,
+        error
+    }
+}
+// get notification of user
+async function getNotificationsOfUser(userID) {
+    const {
+        data,
+        error
+    } = await supabase
+        .from('notifications')
+        .select('*')
+        .eq('sentTo', userID);
+    return {
+        data,
+        error
+    };
+}
+
 export {
     getUserWithAuth0ID,
     addAuth0UserToDatabase,
@@ -295,4 +324,7 @@ export {
 
     addHistoryToDatabase,
     getHistoryOfIssue,
+
+    addNotificationToDatabase,
+    getNotificationsOfUser,
 }
