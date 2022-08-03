@@ -8,8 +8,11 @@ import { ISSUE_STATUS } from "../../Utils/issueTypes";
 import { AiOutlineReload } from 'react-icons/ai'
 import Select from 'react-select'
 import { Text } from "../../styles/Text";
-import { getIssuesOfProperty } from "../../Utils/database";
+import { getHistoryOfIssue, getIssuesOfProperty } from "../../Utils/database";
 import { getTimeDateString } from "../../Utils/getBangladeshTime";
+import { MdHourglassEmpty, MdOutlineReportProblem, MdInfo } from "react-icons/md";
+import { GiCrossMark } from "react-icons/gi";
+import { FaClock, FaMehBlank } from "react-icons/fa";
 const filterTypes = [
     { value: 'ALL', label: '🔎 All issues' },
     { value: ISSUE_STATUS.CREATED, label: '➕ Created issues' },
@@ -57,6 +60,9 @@ const FILTER_TYPES =
     ALL: "ALL",
 }
 
+const verticallyCenterChilds = { display: "flex", alignItems: "center" };
+const marginedRightText = { ...verticallyCenterChilds, marginRight: "10px" };
+
 
 export default function IssueHistoryModal({ property, profile }) {
 
@@ -68,6 +74,8 @@ export default function IssueHistoryModal({ property, profile }) {
     const [filteredIssues, setFilteredIssues] = useState(null);
     const [filterType, setFIlterType] = useState(FILTER_TYPES.ALL);
     const [selectedIssue, setSelectedIssue] = useState(null);
+    const [histories, setCurrentHistories] = useState(null);
+
 
 
 
@@ -80,6 +88,11 @@ export default function IssueHistoryModal({ property, profile }) {
             setFilteredIssues(issues);
         }
     }
+    async function fetchHistories(issueID) {
+        let { data: retrievedHistories, error } = await getHistoryOfIssue(issueID);
+        retrievedHistories.sort(function (a, b) { return b.timestamp - a.timestamp });
+        setCurrentHistories(retrievedHistories);
+    }
 
 
     useEffect(() => {
@@ -88,6 +101,12 @@ export default function IssueHistoryModal({ property, profile }) {
         }
 
     }, []);
+
+    useEffect(() => {
+        if (selectedIssue) {
+            fetchHistories(selectedIssue.id)
+        }
+    }, [selectedIssue]);
 
     function filterIssues() {
         let filtered;
@@ -123,7 +142,7 @@ export default function IssueHistoryModal({ property, profile }) {
         filterIssues();
     }, [filterType]);
 
-    
+
 
 
     return (
@@ -138,10 +157,16 @@ export default function IssueHistoryModal({ property, profile }) {
                         onChange={(selected) => { setFIlterType(selected.value) }}
                     />
                     <Text size={2} underline style={{ width: "max-content", maxWidth: "100%", margin: "auto", marginTop: "10px" }}>
-                        {`The issues of the property @address : ${JSON.stringify(property.address)} are shown below.`}
+                        {`"${filterType?.toLowerCase()} issues" of the property @address : ${JSON.stringify(property.address)} are shown below.`}
                     </Text>
 
                     <IssueSnippetsContainer>
+                        {
+                            filteredIssues && (filteredIssues.length == 0) &&
+                            <Text size={3} underline style={{ width: "max-content", maxWidth: "100%", margin: "auto", marginTop: "10px" }}>
+                                <GiCrossMark />
+                            </Text>
+                        }
                         {
                             filteredIssues &&
                             filteredIssues.map((current, index) => {
@@ -171,16 +196,58 @@ export default function IssueHistoryModal({ property, profile }) {
                 selectedIssue &&
                 <>
                     <FlexBox>
-                        <Text size={2}>
+                        <Text size={2} style={{ width: "max-content", maxWidth: "100%" }}>
                             <TiArrowBack onClick={() => { setSelectedIssue(null) }} />
                         </Text>
                     </FlexBox>
-                    <Text>
-                        {selectedIssue.title}
+                    <Text size={2} underline style={{ width: "max-content", maxWidth: "100%", margin: "auto", marginTop: "10px" }}>
+                        {`Issue Title: ${selectedIssue.title}`}
                     </Text>
-                    <Text>
-                        {selectedIssue.description}
-                    </Text>
+                    <IssueSnippetsContainer>
+
+                        {
+                            histories &&
+                            histories.map((history, index) => {
+                                return (
+                                    <IssueSnippetContainer key={history.historyID} style={{ flexDirection: "column" }}>
+
+                                        <FlexBox>
+                                            <Text size={1} style={marginedRightText}>
+                                                <MdInfo />
+                                            </Text>
+                                            <Text size={1}>
+                                                Action : {`${profile.authID === history.creatorID ? "You" : "The owner "} ${history.action}`}
+                                            </Text>
+                                        </FlexBox>
+
+                                        {
+                                            (history.message !== "") &&
+                                            <FlexBox>
+                                                <Text size={1} style={marginedRightText}>
+                                                    <TiMessage />
+                                                </Text>
+                                                <Text size={1} style={verticallyCenterChilds}>
+                                                    Message : {history.message}
+                                                </Text>
+                                            </FlexBox>
+
+                                        }
+                                        <FlexBox>
+                                            <Text size={1} style={marginedRightText}>
+                                                <FaClock />
+                                            </Text>
+                                            <Text size={1} style={verticallyCenterChilds}>
+                                                Time : {getTimeDateString(history.timestamp)}
+                                            </Text>
+                                        </FlexBox>
+
+                                    </IssueSnippetContainer>
+                                )
+
+                            })
+                        }
+                    </IssueSnippetsContainer>
+
                 </>
             }
 

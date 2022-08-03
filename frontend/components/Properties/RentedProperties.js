@@ -14,6 +14,7 @@ import { copyTextToClipboard } from "../../Utils/copy";
 import DeleteRentedPropertyModal from "../Modals/DeleteRentedPropertyModal";
 import AddIssueModal from "../Modals/AddIssueModal";
 import IssueHistoryModal from "../Modals/IssueHistoryModal";
+import { MdOutlineReportProblem } from "react-icons/md";
 
 
 function PropertySnippet({ property, profile, openModal, setPosition, setAddress, setSelectedProperty }) {
@@ -105,7 +106,7 @@ function PropertySnippet({ property, profile, openModal, setPosition, setAddress
             <IconTextBox>
                 <Text underline active size={1}>{`Create Issue/Complaint`} </Text>
                 <Text size={1} style={{ ...centerChilds, justifyContent: "left", marginLeft: "10px" }}>
-                    <FaComment onClick={() => { openAddIssueModal() }} />
+                    <MdOutlineReportProblem onClick={() => { openAddIssueModal() }} />
                 </Text>
             </IconTextBox>
 

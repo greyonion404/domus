@@ -303,7 +303,7 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
                         onChange={(selected) => { setFIlterType(selected.value) }}
                     />
                     <Text size={2} underline style={{ width: "max-content", maxWidth: "100%", margin: "auto", marginTop: "10px" }}>
-                        {`The issues of the property @address : ${JSON.stringify(property.address)} are shown below.`}
+                        {`"${filterType?.toLowerCase()} issues" of the property @address : ${JSON.stringify(property.address)} are shown below.`}
                     </Text>
 
                     <IssueSnippetsContainer>
@@ -535,7 +535,7 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
                                                 <MdInfo />
                                             </Text>
                                             <Text size={1}>
-                                               Action : {`${profile.authID === history.creatorID ? "You" : "The renter"} ${history.action}`}
+                                                Action : {`${profile.authID === history.creatorID ? "You" : "The renter"} ${history.action}`}
                                             </Text>
                                         </FlexBox>
 
