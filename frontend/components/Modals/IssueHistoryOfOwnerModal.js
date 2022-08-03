@@ -1,5 +1,5 @@
 import { IssueHistoryOfOwnerModalContainer, FlexBox, IssueSnippetContainer, IssueSnippetsContainer } from "./Modals.styles";
-import { TiArrowBack, TiMessage, TiTick, TiUploadOutline } from 'react-icons/ti'
+import { TiArrowBack, TiMessage, TiMessages, TiTick, TiUploadOutline } from 'react-icons/ti'
 import { useEffect, useState } from "react";
 import { getRandomID } from "../../Utils/random";
 import data from "../../styles/data";
@@ -15,6 +15,8 @@ import { FaClock, FaHistory, FaInfo, FaMapMarker } from "react-icons/fa";
 import { AiFillCaretUp } from 'react-icons/ai';
 import { AddPropertyInputBox, InputArea } from "../AddPropertyBox/AddPropertyBox.styles";
 import { MdInfo, MdOutlineDescription } from "react-icons/md";
+import { BiMessage } from "react-icons/bi";
+
 
 
 const filterTypes = [
@@ -543,7 +545,7 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
                                             (history.message !== "") &&
                                             <FlexBox>
                                                 <Text size={1} style={marginedRightText}>
-                                                    <TiMessage />
+                                                    <BiMessage/>
                                                 </Text>
                                                 <Text size={1} style={verticallyCenterChilds}>
                                                     Message : {history.message}
