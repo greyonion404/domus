@@ -24,7 +24,7 @@ const devices = {
 const color = {
     dark: "#000000",
     light: "#FFFFFF",
-    primary: "#373F47",
+    primary: "#222932",
     primaryMedium: "#545f6b",
     secondary: "#C73A33",
     secondaryMedium: "#C73A33",

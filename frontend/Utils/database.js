@@ -1,4 +1,6 @@
-import { supabase } from "../supabaseClient";
+import {
+    supabase
+} from "../supabaseClient";
 
 
 // users
@@ -13,140 +15,263 @@ async function addAuth0UserToDatabase(user) {
         rentedProperties: []
     };
 
-    const { data, error } = await supabase
+    const {
+        data,
+        error
+    } = await supabase
         .from('users')
         .insert([item])
 
-    return { insertedProfile: data, insertError: error }
+    return {
+        insertedProfile: data,
+        insertError: error
+    }
 }
 // retrieve user
 async function getUserWithAuth0ID(auth0ID) {
-    const { data, error } = await supabase
+    const {
+        data,
+        error
+    } = await supabase
         .from('users')
         .select('*')
         .eq('authID', auth0ID);
 
-    return { data, error };
+    return {
+        data,
+        error
+    };
 }
 // update user
 async function changeNameOfUser(userID, name) {
 
-    const { data, error } = await supabase
+    const {
+        data,
+        error
+    } = await supabase
         .from('users')
-        .update({ name: name })
+        .update({
+            name: name
+        })
         .eq("authID", userID)
 
-    return { updatedProfile: data, updateError: error }
+    return {
+        updatedProfile: data,
+        updateError: error
+    }
 }
 // issues
 // get issues
 async function getIssuesOfProperty(propertyId) {
-    const { data, error } = await supabase
+    const {
+        data,
+        error
+    } = await supabase
         .from('issues')
         .select('*')
         .eq('propertyID', propertyId);
-    return { issues: data, error };
+    return {
+        issues: data,
+        error
+    };
 }
 // add issue
 async function addIssueToDatabase(issue) {
-    const { data, error } = await supabase
+    const {
+        data,
+        error
+    } = await supabase
         .from('issues')
         .insert([issue])
 
-    return { insertedIssue: data, insertError: error }
+    return {
+        insertedIssue: data,
+        insertError: error
+    }
 }
 // update issue
 async function changeStatusOfIssue(issueID, currentStatus) {
 
-    const { data, error } = await supabase
+    const {
+        data,
+        error
+    } = await supabase
         .from('issues')
-        .update({ currentStatus: currentStatus })
+        .update({
+            currentStatus: currentStatus
+        })
         .eq("id", issueID)
-    return { updatedIssue: data, updateError: error }
+    return {
+        updatedIssue: data,
+        updateError: error
+    }
 }
 async function setClosingTimeOfIssue(issueID, issueClosedAt) {
-    const { data, error } = await supabase
+    const {
+        data,
+        error
+    } = await supabase
         .from('issues')
-        .update({ issueClosedAt: issueClosedAt })
+        .update({
+            issueClosedAt: issueClosedAt
+        })
         .eq("id", issueID)
-    return { updatedIssue: data, updateError: error }
+    return {
+        updatedIssue: data,
+        updateError: error
+    }
 }
 // delete issues
 async function deleteIssueOfProperty(propertyID) {
-    const { data, error } = await supabase
+    const {
+        data,
+        error
+    } = await supabase
         .from('issues')
         .delete()
-        .match({ propertyID: propertyID });
+        .match({
+            propertyID: propertyID
+        });
 
-    return { data, error };
+    return {
+        data,
+        error
+    };
 }
 // property
 // get property
 async function getRentedPropertiesOfUser(ID) {
-    const { data, error } = await supabase
+    const {
+        data,
+        error
+    } = await supabase
         .from('properties')
         .select('*')
         .eq('renterID', ID);
-    return { data, error };
+    return {
+        data,
+        error
+    };
 }
 async function getOwnedPropertiesOfUser(ID) {
-    const { data, error } = await supabase
+    const {
+        data,
+        error
+    } = await supabase
         .from('properties')
         .select('*')
         .eq('ownerID', ID);
-    return { data, error };
+    return {
+        data,
+        error
+    };
 }
 async function getPropertyBySecretKey(KEY) {
-    const { data, error } = await supabase
+    const {
+        data,
+        error
+    } = await supabase
         .from('properties')
         .select('*')
         .eq('propertySecretKey', KEY);
-    return { data, error };
+    return {
+        data,
+        error
+    };
 }
 // add property
 async function addPropertyToDatabase(property) {
-    const { data, error } = await supabase
+    const {
+        data,
+        error
+    } = await supabase
         .from('properties')
         .insert([property])
 
-    return { insertedProperty: data, insertError: error }
+    return {
+        insertedProperty: data,
+        insertError: error
+    }
 }
 // update property
 async function updatePropertyByID(propertyID, property) {
 
-    const { data, error } = await supabase
+    const {
+        data,
+        error
+    } = await supabase
         .from('properties')
         .update(property)
         .eq("propertyID", propertyID)
 
-    return { updatedProperty: data, updateError: error }
+    return {
+        updatedProperty: data,
+        updateError: error
+    }
 }
 async function updatePropertyRenterID(propertyID, profile) {
 
-    const { data, error } = await supabase
+    const {
+        data,
+        error
+    } = await supabase
         .from('properties')
-        .update({ renterID: profile.authID })
+        .update({
+            renterID: profile.authID
+        })
         .eq("propertyID", propertyID)
 
-    return { updatedProperty: data, updateError: error }
+    return {
+        updatedProperty: data,
+        updateError: error
+    }
 }
 // delete  property
 async function deleteOwnedPropertyByID(ID) {
-    const { data, error } = await supabase
+    const {
+        data,
+        error
+    } = await supabase
         .from('properties')
         .delete()
-        .match({ propertyID: ID });
+        .match({
+            propertyID: ID
+        });
 
-    return { data, error };
+    return {
+        data,
+        error
+    };
 }
 //history
 // add history
 async function addHistoryToDatabase(history) {
-    const { data, error } = await supabase
+    const {
+        data,
+        error
+    } = await supabase
         .from('histories')
         .insert([history])
 
-    return { data, error }
+    return {
+        data,
+        error
+    }
+}
+// get history of issue
+async function getHistoryOfIssue(issueID) {
+    const {
+        data,
+        error
+    } = await supabase
+        .from('histories')
+        .select('*')
+        .eq('issueID', issueID);
+    return {
+        data,
+        error
+    };
+
 }
 export {
     getUserWithAuth0ID,
@@ -154,11 +279,11 @@ export {
     changeNameOfUser,
 
     getRentedPropertiesOfUser,
-    getOwnedPropertiesOfUser, 
+    getOwnedPropertiesOfUser,
     getPropertyBySecretKey,
 
     addPropertyToDatabase,
-    updatePropertyByID, 
+    updatePropertyByID,
     updatePropertyRenterID,
     deleteOwnedPropertyByID,
 
@@ -169,4 +294,5 @@ export {
     deleteIssueOfProperty,
 
     addHistoryToDatabase,
+    getHistoryOfIssue,
 }

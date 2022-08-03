@@ -190,8 +190,11 @@ let FlexBox = styled.div`
 `
 
 let IssueSnippetsContainer = styled.div`
-    height: 80%;
+    height: 75%;
     overflow-y: scroll;
+    @media ${data.styles.devices.tablet} {
+        height: 85%;
+    }
 `
 
 
@@ -204,6 +207,7 @@ let IssueSnippetContainer = styled.div`
     margin-top: 5px;
     justify-content: space-between;
     border: 1px solid ${data.styles.color.text.light}80;
+ 
     &:hover {
         border: 1px solid ${data.styles.color.text.light};
     }

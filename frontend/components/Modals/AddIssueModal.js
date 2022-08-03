@@ -66,7 +66,7 @@ export default function AddIssueModal({ property, profile }) {
         // upload
         console.log(issue);
         let { insertedIssue, insertError } = await addIssueToDatabase(issue);
-        await addHistory(issueID, 'created issue', '', time);
+        await addHistory(issueID, 'created the issue', '', time);
         toggleIsModalOpen();
         if (insertedIssue) {
             window.location.reload(false);

@@ -1,5 +1,5 @@
 import { IssueHistoryOfOwnerModalContainer, FlexBox, IssueSnippetContainer, IssueSnippetsContainer } from "./Modals.styles";
-import { TiArrowBack, TiTick, TiUploadOutline } from 'react-icons/ti'
+import { TiArrowBack, TiMessage, TiTick, TiUploadOutline } from 'react-icons/ti'
 import { useEffect, useState } from "react";
 import { getRandomID } from "../../Utils/random";
 import data from "../../styles/data";
@@ -8,13 +8,13 @@ import { ISSUE_STATUS } from "../../Utils/issueTypes";
 import { AiOutlineReload, AiOutlineUpload } from 'react-icons/ai'
 import Select from 'react-select'
 import { centerChilds, Text } from "../../styles/Text";
-import { changeStatusOfIssue, getIssuesOfProperty, setClosingTimeOfIssue } from "../../Utils/database";
+import { addHistoryToDatabase, changeStatusOfIssue, getHistoryOfIssue, getIssuesOfProperty, setClosingTimeOfIssue } from "../../Utils/database";
 import { getBangladeshTime, getTimeDateString } from "../../Utils/getBangladeshTime";
 import { Box } from "../../styles/Page";
-import { FaHistory, FaInfo, FaMapMarker } from "react-icons/fa";
+import { FaClock, FaHistory, FaInfo, FaMapMarker } from "react-icons/fa";
 import { AiFillCaretUp } from 'react-icons/ai';
 import { AddPropertyInputBox, InputArea } from "../AddPropertyBox/AddPropertyBox.styles";
-import { MdOutlineDescription } from "react-icons/md";
+import { MdInfo, MdOutlineDescription } from "react-icons/md";
 
 
 const filterTypes = [
@@ -146,17 +146,34 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
             setFilteredIssues(issues);
         }
     }
+
+    async function addHistory(issueID, action, message, timestamp) {
+        let history = {
+            historyID: getRandomID('HISTORY'),
+            creatorID: profile.authID,
+            issueID: issueID,
+            action: action,
+            message: message,
+            timestamp: timestamp,
+        };
+        console.log(history);
+        let { data, error } = await addHistoryToDatabase(history);
+        console.log(error);
+    }
+
     async function fetchHistories(issueID) {
-          setCurrentHistories([{ historyID: 1, action: "bal faka" }])
+        let { data: retrievedHistories, error } = await getHistoryOfIssue(issueID);
+        retrievedHistories.sort(function (a, b) { return b.timestamp - a.timestamp });
+        setCurrentHistories(retrievedHistories);
     }
 
     async function updateIssueState() {
         if (currentStatus === '') {
-            let currentIssueTypesString = '';
+            let availableIssueTypesString = '';
             for (let i = 0; i < currentIssueTypes.length; i++) {
-                currentIssueTypesString += " " + currentIssueTypes[i].label + " | ";
+                availableIssueTypesString += " " + currentIssueTypes[i].label + " | ";
             }
-            let error = `you haven't chosen a state for the current issue. Choose from these options : ${currentIssueTypesString}`
+            let error = `you haven't chosen a state for the current issue. Choose from these options : ${availableIssueTypesString}`
             setIssueUpdateError(error);
             return;
         }
@@ -166,7 +183,11 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
         let closingTime = (currentStatus === ISSUE_STATUS.CLOSED) ? getBangladeshTime() : null;
         let { updatedIssue: closingTimeUpdated, updateError: closingTimeUpdateError } = await setClosingTimeOfIssue(selectedIssue.id, closingTime);
         setIsuploading(false);
-        console.log({ currentStatus, message });
+
+
+        let action = `changed issue status from "${getIssueSelectionLabel(selectedIssue?.currentStatus).label}" to "${getIssueSelectionLabel(currentStatus).label}"`
+        console.log({ action, message });
+        await addHistory(selectedIssue?.id, action, message, getBangladeshTime());
     }
 
 
@@ -504,19 +525,51 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
                         </Box>
                     </FlexBox>
                     <Text>HISTORY</Text>
-                    {
-                        histories &&
-                        histories.map((history, index) => {
-                            return (
-                                <IssueSnippetContainer key={history.id}>
-                                    <Text>
-                                        {history.action}
-                                    </Text>
-                                </IssueSnippetContainer>
-                            )
+                    <IssueSnippetsContainer>
 
-                        })
-                    }
+                        {
+                            histories &&
+                            histories.map((history, index) => {
+                                return (
+                                    <IssueSnippetContainer key={history.historyID} style={{ flexDirection: "column" }}>
+
+                                        <FlexBox>
+                                            <Text size={1} style={marginedRightText}>
+                                                <MdInfo />
+                                            </Text>
+                                            <Text size={1}>
+                                                {`${profile.authID === history.creatorID ? "You" : "The renter"} ${history.action}`}
+                                            </Text>
+                                        </FlexBox>
+
+                                        {
+                                            (history.message !== "") &&
+                                            <FlexBox>
+                                                <Text size={1} style={marginedRightText}>
+                                                    <TiMessage />
+                                                </Text>
+                                                <Text size={1} style={verticallyCenterChilds}>
+                                                    {history.message}
+                                                </Text>
+                                            </FlexBox>
+
+                                        }
+                                        <FlexBox>
+                                            <Text size={1} style={marginedRightText}>
+                                                <FaClock />
+                                            </Text>
+                                            <Text size={1} style={verticallyCenterChilds}>
+                                                {getTimeDateString(history.timestamp)}
+                                            </Text>
+                                        </FlexBox>
+
+                                    </IssueSnippetContainer>
+                                )
+
+                            })
+                        }
+                    </IssueSnippetsContainer>
+
                 </>
 
             }
