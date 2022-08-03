@@ -31,17 +31,17 @@ export default function AddIssueModal({ property, profile }) {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
 
-    async function addHistory(issueID, action, message, timestamp)
-    {
+    async function addHistory(issueID, action, message, timestamp) {
         let history = {
-            historyID : getRandomID('HISTORY'),
+            historyID: getRandomID('HISTORY'),
+            creatorID: profile.authID,
             issueID: issueID,
             action: action,
             message: message,
             timestamp: timestamp,
         };
         console.log(history)
-        let {data, error} = await addHistoryToDatabase(history);
+        let { data, error } = await addHistoryToDatabase(history);
         console.log(error);
     }
 

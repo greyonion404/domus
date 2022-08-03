@@ -113,6 +113,7 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
     const userID = useUserPreferencesStore((state) => state.userID);
 
     const [retrievedIssues, setRetrievedIssues] = useState(null);
+    const [histories, setCurrentHistories] = useState(null);
     const [filteredIssues, setFilteredIssues] = useState(null);
     const [filterType, setFIlterType] = useState(FILTER_TYPES.ALL);
     const [currentIssueTypes, setCurrentIssueTypes] = useState(FILTER_TYPES);
@@ -144,6 +145,9 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
             setRetrievedIssues(issues);
             setFilteredIssues(issues);
         }
+    }
+    async function fetchHistories(issueID) {
+          setCurrentHistories([{ historyID: 1, action: "bal faka" }])
     }
 
     async function updateIssueState() {
@@ -213,8 +217,20 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
         filterIssues();
     }, [filterType]);
 
+
+
     useEffect(() => {
         if (selectedIssue) {
+            // fetch all the history of the current issue and set it to the state
+            fetchHistories(selectedIssue.id);
+        }
+
+    }, [selectedIssue])
+
+    useEffect(() => {
+        if (selectedIssue) {
+
+
             // if created, can change to seen, ongoing or closed, directly
             if (selectedIssue.currentStatus === ISSUE_STATUS.CREATED) {
                 setCurrentIssueTypes([
@@ -488,6 +504,19 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
                         </Box>
                     </FlexBox>
                     <Text>HISTORY</Text>
+                    {
+                        histories &&
+                        histories.map((history, index) => {
+                            return (
+                                <IssueSnippetContainer key={history.id}>
+                                    <Text>
+                                        {history.action}
+                                    </Text>
+                                </IssueSnippetContainer>
+                            )
+
+                        })
+                    }
                 </>
 
             }
