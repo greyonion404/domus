@@ -5,7 +5,6 @@ import data from './data'
 let Page = styled.div`
     display: flex;
     flex-direction: column;
-    min-height: 98vh;
     @media ${data.styles.devices.tablet} {
     }
 `
