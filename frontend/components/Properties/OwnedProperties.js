@@ -17,6 +17,7 @@ import EditPropertyModal from "../Modals/EditPropertyModal";
 import IssueHistoryOfOwnerModal from "../Modals/IssueHistoryOfOwnerModal";
 import { FlexBox } from "../Modals/Modals.styles";
 import { TiMessage } from "react-icons/ti";
+import { GiCrossMark } from "react-icons/gi";
 
 function PropertySnippet({ property, profile, openModal, setPosition, setAddress, setSelectedProperty }) {
 
@@ -163,11 +164,18 @@ export default function OwnedProperties({ profile }) {
         <OwnedPropertiesBox>
             <FlexBox>
                 <Text size={3}>
-                    <TiMessage/>
+                    <TiMessage />
                 </Text>
                 <SearchPropertyInput placeholder="address of owned property" spellCheck="false" onChange={(event) => { setInputAddress(event.target.value) }} />
             </FlexBox>
+            {
+                properties.filter(propertyFilteredByInput) && (properties.filter(propertyFilteredByInput).length == 0) &&
+                <Text size={3} underline style={{ width: "max-content", backgroundColor: "red", marginLeft: "60%", marginRight: "auto" }}>
+                    <GiCrossMark />
+                </Text>
+            }
             <PropertyContainer>
+
                 {
                     properties.filter(propertyFilteredByInput).map((property, index) => {
                         return (<PropertySnippet key={property.propertyID}

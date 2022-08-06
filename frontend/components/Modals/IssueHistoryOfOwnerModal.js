@@ -15,6 +15,7 @@ import { FaClock, FaHistory, FaInfo, FaMapMarker } from "react-icons/fa";
 import { AiFillCaretUp } from 'react-icons/ai';
 import { AddPropertyInputBox, InputArea } from "../AddPropertyBox/AddPropertyBox.styles";
 import { MdInfo, MdOutlineDescription } from "react-icons/md";
+import { GiCrossMark } from "react-icons/gi";
 
 
 
@@ -328,6 +329,13 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
                     </Text>
 
                     <IssueSnippetsContainer>
+                        {
+                            filteredIssues && (filteredIssues.length == 0) &&
+                            <Text size={3} underline style={{ width: "max-content", maxWidth: "100%", margin: "auto", marginTop: "10px" }}>
+                                <GiCrossMark />
+                            </Text>
+                        }
+
                         {
                             filteredIssues &&
                             filteredIssues.map((current, index) => {
