@@ -5,9 +5,11 @@ import { AddPropertyBoxContainer, AddPropertyInputBox, IconTextBox, Input, Input
 import data from "../../styles/data";
 import { MdOutlineDescription } from "react-icons/md";
 import { TiTick } from "react-icons/ti";
-import { getPropertyBySecretKey, updatePropertyRenterID } from "../../Utils/database";
+import { addNotificationToDatabase, getPropertyBySecretKey, updatePropertyRenterID } from "../../Utils/database";
 import { AiOutlineUpload } from "react-icons/ai";
 import { Router, useRouter } from "next/router";
+import { getRandomID } from "../../Utils/random";
+import { getBangladeshTime } from "../../Utils/getBangladeshTime";
 
 export default function AddRentedPropertyBox({ profile }) {
     const Router = useRouter();
@@ -56,9 +58,26 @@ export default function AddRentedPropertyBox({ profile }) {
         else setIsErrorFindingProperty("Couldn't find any property with the given Secret Key");
         setIsBusyInQuery(false);
     }
+
+    async function sendNotification(description, sendNotificationTo)
+    {
+        let notification = {
+            notificationID: getRandomID('NOTIFICATION'),
+            sentTo: sendNotificationTo,
+            description: description,
+            propertyID: property.propertyID,
+            propertyAddress: property.address,
+            timestamp: getBangladeshTime(),
+        };
+        console.log(notification);
+        await addNotificationToDatabase(notification);
+    }
+
     async function addProperty() {
         setIsBusyInQuery(true);
         let updatedPropertyResponse = await updatePropertyRenterID(property.propertyID, profile);
+        let additionDescription =  `You added a property to the list of your rented properties.\nProperty Address: @ ${property.address}`;
+        await sendNotification(additionDescription, profile.authID);
         setIsBusyInQuery(false);
         Router.push('/');
         

@@ -12,11 +12,12 @@ import { ModalTypes, showModal } from "../../Utils/useModal";
 import Modal from "../Modal/Modal";
 import Map from '../../components/Map/index'
 import MoveMapMarkerModal from "../Modals/MoveMapMarkerModal";
-import { addPropertyToDatabase } from "../../Utils/database";
+import { addNotificationToDatabase, addPropertyToDatabase } from "../../Utils/database";
 import Loader from "../Modal/Loader";
 import { useRouter } from "next/router";
 import { isEqualFloat } from "../../Utils/floatComparison";
 import { defaultPosition } from "../../Utils/defaultPosition";
+import { getBangladeshTime } from "../../Utils/getBangladeshTime";
 
 
 
@@ -86,6 +87,19 @@ export default function AddPropertyBox({ profile }) {
     const hasPersistance = useStorePersistance();
     const isViewingAsOwner = useUserPreferencesStore((state) => state.isViewingAsOwner);
 
+    async function sendNotification(property, description, sendNotificationTo)
+    {
+        let notification = {
+            notificationID: getRandomID('NOTIFICATION'),
+            sentTo: sendNotificationTo,
+            description: description,
+            propertyID: property.propertyID,
+            propertyAddress: property.address,
+            timestamp: getBangladeshTime(),
+        };
+        await addNotificationToDatabase(notification);
+    }
+
 
     async function addProperty() {
 
@@ -107,7 +121,9 @@ export default function AddPropertyBox({ profile }) {
             renterID: "",
         };
         setIsuploading(true);
+        let additionDescription =  `You added a property to the list of your owned properties.\nProperty Address: @ ${property.address}`;
         let response = await addPropertyToDatabase(property);
+        await sendNotification(property, additionDescription, profile.authID);
         setIsuploading(false);
         if (response.insertedProperty) router.push('/');
     }
