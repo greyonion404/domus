@@ -120,7 +120,7 @@ export default function ChangeNameModal({ profile }) {
   
     return (
         <GenericModal>
-            <ProfileImage src={user.authUser.picture} alt={user.authUser.nickname} />
+            <ProfileImage src={"/default_profile_picture.png"} alt={user.name} />
             <ChangeName userName={user.name} userID={userID} isUpdating={isUpdating} setIsUpdating={setIsUpdating}/>
             <Text size={2} style={centerChilds}>
                 <TiMail />

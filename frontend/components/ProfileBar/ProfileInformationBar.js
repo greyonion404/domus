@@ -35,7 +35,7 @@ export default function ProfileInformationBar({ profile }) {
 
     return (
         <ProfileBar>
-            <ProfileImage src={profile.authUser.picture} alt={profile.authUser.nickname}
+            <ProfileImage src={"/default_profile_picture.png"} alt={profile.name}
                 onClick={() => { openModal(ModalTypes.ChaneNameModal) }} />
             <Text size={1} style={centerChilds} onClick={() => { openModal(ModalTypes.ChaneNameModal) }}  > <BiHash />
                 {profile.name} {getPersistantState(hasPersistance, isViewingAsOwner) ? " (owner) " : " (renter) "}</Text>
