@@ -9,7 +9,7 @@ import { getRandomID } from "../../Utils/random";
 import data from "../../styles/data";
 import { useModalStore, useUserPreferencesStore } from "../../store";
 import { AiOutlineUpload } from "react-icons/ai"
-import { addHistoryToDatabase, addIssueToDatabase, updatePropertyByID } from "../../Utils/database";
+import { addHistoryToDatabase, addIssueToDatabase, addNotificationToDatabase, updatePropertyByID } from "../../Utils/database";
 import { getBangladeshTime, getTimeDateString } from "../../Utils/getBangladeshTime";
 import { ISSUE_STATUS } from "../../Utils/issueTypes";
 
@@ -30,6 +30,20 @@ export default function AddIssueModal({ property, profile }) {
     const [time, setTime] = useState(0);
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
+
+    async function sendNotification(description, sendNotificationTo)
+    {
+        let notification = {
+            notificationID: getRandomID('NOTIFICATION'),
+            sentTo: sendNotificationTo,
+            description: description,
+            propertyID: property.propertyID,
+            propertyAddress: property.address,
+            timestamp: getBangladeshTime(),
+        };
+        console.log(notification);
+        await addNotificationToDatabase(notification);
+    }
 
     async function addHistory(issueID, action, message, timestamp) {
         let history = {
@@ -67,6 +81,11 @@ export default function AddIssueModal({ property, profile }) {
         console.log(issue);
         let { insertedIssue, insertError } = await addIssueToDatabase(issue);
         await addHistory(issueID, 'created the issue', '', time);
+        let renterMotificationDescription = `You created an issue titled "${title}" for the property you currently rent @ ${property.address}`;
+        let ownerMotificationDescription = `Your renter created an issue titled "${title}" for the property you currently own @ ${property.address}`;
+        
+        await sendNotification(renterMotificationDescription, profile.authID);
+        await sendNotification(ownerMotificationDescription, property.ownerID);
         toggleIsModalOpen();
         if (insertedIssue) {
             window.location.reload(false);
