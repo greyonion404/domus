@@ -8,7 +8,7 @@ import { ISSUE_STATUS } from "../../Utils/issueTypes";
 import { AiOutlineReload, AiOutlineUpload } from 'react-icons/ai'
 import Select from 'react-select'
 import { centerChilds, Text } from "../../styles/Text";
-import { addHistoryToDatabase, changeStatusOfIssue, getHistoryOfIssue, getIssuesOfProperty, setClosingTimeOfIssue } from "../../Utils/database";
+import { addHistoryToDatabase, addNotificationToDatabase, changeStatusOfIssue, getHistoryOfIssue, getIssuesOfProperty, setClosingTimeOfIssue } from "../../Utils/database";
 import { getBangladeshTime, getTimeDateString } from "../../Utils/getBangladeshTime";
 import { Box } from "../../styles/Page";
 import { FaClock, FaHistory, FaInfo, FaMapMarker } from "react-icons/fa";
@@ -129,6 +129,20 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
     const [issueUpdateError, setIssueUpdateError] = useState(null);
 
 
+    async function sendNotification(description, sendNotificationTo) {
+        let notification = {
+            notificationID: getRandomID('NOTIFICATION'),
+            sentTo: sendNotificationTo,
+            description: description,
+            propertyID: property.propertyID,
+            propertyAddress: property.address,
+            timestamp: getBangladeshTime(),
+        };
+        console.log(notification);
+        await addNotificationToDatabase(notification);
+    }
+
+
 
 
     function getIssueSelectionLabel(issueType) {
@@ -185,7 +199,13 @@ export default function IssueHistoryOfOwnerModal({ property, profile }) {
 
 
         let action = `changed issue status from "${getIssueSelectionLabel(selectedIssue?.currentStatus).label}" to "${getIssueSelectionLabel(currentStatus).label}"`
+        let ownerMotificationDescription = `You ${action} for issue, titled "${selectedIssue.title}"\nThe issue was in the property you currently own @ ${property.address}`;
+        let renterMotificationDescription = `The owner ${action} for issue, titled "${selectedIssue.title}"\nThe issue was in the property you currently rent @ ${property.address}`;
+
         await addHistory(selectedIssue?.id, action, message, getBangladeshTime());
+        await sendNotification(ownerMotificationDescription, profile.authID);
+        await sendNotification(renterMotificationDescription, property.renterID);
+
         setMessage("");
         toggleIsModalOpen();
     }

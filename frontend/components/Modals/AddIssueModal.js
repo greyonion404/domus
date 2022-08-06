@@ -81,8 +81,8 @@ export default function AddIssueModal({ property, profile }) {
         console.log(issue);
         let { insertedIssue, insertError } = await addIssueToDatabase(issue);
         await addHistory(issueID, 'created the issue', '', time);
-        let renterMotificationDescription = `You created an issue titled "${title}" for the property you currently rent @ ${property.address}`;
-        let ownerMotificationDescription = `Your renter created an issue titled "${title}" for the property you currently own @ ${property.address}`;
+        let renterMotificationDescription = `You created an issue titled "${title}"\nThe issue is for the property you currently rent @ ${property.address}`;
+        let ownerMotificationDescription = `Your renter created an issue titled "${title}"\nThe issue is for the property you currently own @ ${property.address}`;
         
         await sendNotification(renterMotificationDescription, profile.authID);
         await sendNotification(ownerMotificationDescription, property.ownerID);
