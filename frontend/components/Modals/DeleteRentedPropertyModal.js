@@ -35,8 +35,7 @@ export default function DeleteRentedPropertyModal({ property, profile }) {
         let deletionDescription =  `You removed a property to the list of your rented properties.\nProperty Address: @ ${property.address}`;
         const { updatedProperty, updateError } = await updatePropertyRenterID(property.propertyID, profile = { authID: "" });
         await deleteIssueOfProperty(property.propertyID);
-        let data = await sendNotification(deletionDescription, property.renterID);
-        console.log(data);
+        await sendNotification(deletionDescription, property.renterID);
         console.log(updateError);
         setIsDeleting(false);
         toggleIsModalOpen();

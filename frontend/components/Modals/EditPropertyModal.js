@@ -48,8 +48,7 @@ export default function EditPropertyModal({ property, profile }) {
     const [description, setDescription] = useState(property.description);
     const [secretKey, setSecretKey] = useState(property.propertySecretKey);
 
-    async function sendNotification(description, sendNotificationTo)
-    {
+    async function sendNotification(description, sendNotificationTo) {
         let notification = {
             notificationID: getRandomID('NOTIFICATION'),
             sentTo: sendNotificationTo,
@@ -64,6 +63,7 @@ export default function EditPropertyModal({ property, profile }) {
 
 
     async function editProperty() {
+
 
         // change the occupency of the property to be empty if the secret key is changed
         let renterID = (secretKey === property.propertySecretKey) ? property.renterID : "";
@@ -82,19 +82,25 @@ export default function EditPropertyModal({ property, profile }) {
             renterID: renterID,
         };
         setIsuploading(true);
+
+        let evicted = secretKey !== property.propertySecretKey;
         //evcition
-        if(secretKey !== property.propertySecretKey)
-        {
+        if (evicted) {
             await deleteIssueOfProperty(property.propertyID);
             let evcitionNoticeForOwner = `You evicted the renter.\nThe renter was renting a property you own @ ${property.address}`;
             let evcitionNoticeForRenter = `You were evicted from a property by the renter.\nProperty Address: @ ${property.address}\n(If you think, this was a mistake, resolve the issue with the owner. Thanks.)`;
             await sendNotification(evcitionNoticeForOwner, profile.authID);
             await sendNotification(evcitionNoticeForRenter, property.renterID);
         }
-        let {updatedProperty, updateError} = await updatePropertyByID(property.propertyID, editedProperty);
+        let { updatedProperty, updateError } = await updatePropertyByID(property.propertyID, editedProperty);
+        let updatetionNoticeForOwner = `You updated the property.\nProperty Address: @ ${property.address}`;
+        let updatetionNoticeForRenter = `The owner updated the property you rent.\nProperty Address: @ ${property.address}`;
+        if (!evicted) {
+            await sendNotification(updatetionNoticeForOwner, profile.authID);
+            await sendNotification(updatetionNoticeForRenter, property.renterID);
+        }
         toggleIsModalOpen();
-        if(updatedProperty)
-        {
+        if (updatedProperty) {
             window.location.reload(false);
         }
         setIsuploading(false);
@@ -195,7 +201,7 @@ export default function EditPropertyModal({ property, profile }) {
 
             <AddPropertyInputBox>
                 <Text size={3} style={updateButtonStyle} onClick={async () => { await editProperty() }}>
-                    { isuploading ? <AiOutlineUpload/> : <TiTick /> }
+                    {isuploading ? <AiOutlineUpload /> : <TiTick />}
                 </Text>
             </AddPropertyInputBox>
         </EditPropertyModalContainer>
