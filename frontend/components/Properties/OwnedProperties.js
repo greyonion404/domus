@@ -170,7 +170,7 @@ export default function OwnedProperties({ profile }) {
             </FlexBox>
             {
                 properties.filter(propertyFilteredByInput) && (properties.filter(propertyFilteredByInput).length == 0) &&
-                <Text size={3} underline style={{ width: "max-content", backgroundColor: "red", marginLeft: "60%", marginRight: "auto" }}>
+                <Text size={3} underline style={{ width: "max-content", marginLeft: "52.5%", }}>
                     <GiCrossMark />
                 </Text>
             }

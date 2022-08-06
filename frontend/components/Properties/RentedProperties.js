@@ -17,6 +17,7 @@ import IssueHistoryModal from "../Modals/IssueHistoryModal";
 import { MdOutlineReportProblem } from "react-icons/md";
 import { FlexBox } from "../Modals/Modals.styles";
 import { TiMessage } from "react-icons/ti";
+import { GiCrossMark } from "react-icons/gi";
 
 
 function PropertySnippet({ property, profile, openModal, setPosition, setAddress, setSelectedProperty }) {
@@ -175,6 +176,13 @@ export default function RentedProperties({ profile }) {
                 </Text>
                 <SearchPropertyInput placeholder="address of owned property" spellCheck="false" onChange={(event) => { setInputAddress(event.target.value) }} />
             </FlexBox>
+
+            {
+                properties.filter(propertyFilteredByInput) && (properties.filter(propertyFilteredByInput).length == 0) &&
+                <Text size={3} underline style={{ width: "max-content", marginLeft: "52.5%", }}>
+                    <GiCrossMark />
+                </Text>
+            }
             
             <PropertyContainer>
                 {

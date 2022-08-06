@@ -83,7 +83,7 @@ export default function EditPropertyModal({ property, profile }) {
         };
         setIsuploading(true);
 
-        let evicted = secretKey !== property.propertySecretKey;
+        let evicted = ((secretKey !== property.propertySecretKey) && (property.renterID !== ""));
         //evcition
         if (evicted) {
             await deleteIssueOfProperty(property.propertyID);
