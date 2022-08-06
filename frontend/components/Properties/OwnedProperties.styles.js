@@ -40,15 +40,16 @@ let SearchPropertyInput = styled.input`
     color: ${data.styles.color.text.lighter};
     font-size: xx-large;
     margin-bottom: 10px;
-    margin-left: 25%;
+    margin-left: 30%;
     margin-right: 25%;
     text-align: center;
-    width: 50%;
+    width: 45%;
     height: 7.5%;
 
+
     @media ${data.styles.devices.tablet} {     
-        width: 100%;
-        margin-left: 0%;
+        width: 95%;
+        margin-left: 5%;
         margin-right: 0%;
 
     }

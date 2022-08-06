@@ -10,8 +10,9 @@ export default function Notifcations({ profile }) {
 
     async function fetchNotifications() {
         let { data: retrieved, error } = await getNotificationsOfUser(profile.authID);
-        retrieved.sort(function (a, b) { return b.timestamp - a.timestamp });
-        setNotifications(retrieved);
+        let all = retrieved;
+        all.sort(function (a, b) { return b.timestamp - a.timestamp });
+        setNotifications(all);
     }
 
 
