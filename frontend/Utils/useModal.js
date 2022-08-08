@@ -9,6 +9,7 @@ let ModalTypes =
     AddIssueModal: "AddIssueModal",
     IssueHistoryModal: "IssueHistoryModal",
     IssueHistoryOfOwnerModal: "IssueHistoryOfOwnerModal",
+    MessengerModal: "MessengerModal",
 
 }
 function showModal(currentType, modalType, isModalOpen) {

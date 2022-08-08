@@ -113,7 +113,6 @@ function PropertySnippet({ property, profile, openModal, setPosition, setAddress
                     <FaHistory onClick={() => { openIssueHistoryOfOwnerModal() }} />
                 </Text>
             </IconTextBox>
-
         </Property>
 
     )
@@ -138,6 +137,9 @@ export default function OwnedProperties({ profile }) {
         toggleIsModalOpen();
     }
 
+    function openMessengerModal() {
+        openModal(ModalTypes.MessengerModal);
+    }
     const [properties, setProperties] = useState([]);
 
     async function fetchProperties() {
@@ -164,7 +166,7 @@ export default function OwnedProperties({ profile }) {
         <OwnedPropertiesBox>
             <FlexBox>
                 <Text size={3}>
-                    <TiMessage />
+                    <TiMessage onClick={() => { openMessengerModal() }}  />
                 </Text>
                 <SearchPropertyInput placeholder="address of owned property" spellCheck="false" onChange={(event) => { setInputAddress(event.target.value) }} />
             </FlexBox>
@@ -204,11 +206,16 @@ export default function OwnedProperties({ profile }) {
                 <DeleteOwnedPropertyModal property={selectedProperty} profile={profile} />
             </Modal>
 
+            <Modal showModal={showModal(ModalTypes.MessengerModal, modalType, isModalOpen, setPosition)}>
+            </Modal>
+
+
 
             <Modal showModal={showModal(ModalTypes.IssueHistoryOfOwnerModal, modalType, isModalOpen, setPosition)}>
                 <IssueHistoryOfOwnerModal property={selectedProperty} profile={profile}>
                 </IssueHistoryOfOwnerModal>
             </Modal>
+
 
         </OwnedPropertiesBox>
     )
