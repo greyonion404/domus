@@ -19,6 +19,17 @@ const devices = {
     desktop: `(max-width: ${screenSize.desktop})`,
 };
 
+const bkashLinks = [
+    {
+        target: 'https://www.linkedin.com/in/youraccount/',
+        title: '1',
+    },
+    {
+        target: 'https://www.linkedin.com/in/youraccount/',
+        title: '2',
+    }
+];
+
 
 
 const color = {
@@ -41,7 +52,8 @@ const data = {
     styles: {
         devices: devices,
         color: color,
-    }
+    },
+    bkashLinks: bkashLinks,
 };
 
 export { data as default }

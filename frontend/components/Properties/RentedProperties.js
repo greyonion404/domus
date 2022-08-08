@@ -18,6 +18,21 @@ import { MdOutlineReportProblem } from "react-icons/md";
 import { FlexBox } from "../Modals/Modals.styles";
 import { TiMessage } from "react-icons/ti";
 import { GiCrossMark } from "react-icons/gi";
+import { BsCashCoin } from 'react-icons/bs';
+import data from "../../styles/data";
+
+function BkashLink({ link }) {
+    return (
+        <IconTextBox>
+            <Text size={1} style={{ ...centerChilds, justifyContent: "left", marginLeft: "10px" }}>
+                <BiHash />
+            </Text>
+            <Text style={{ marginLeft: "10px" }} underline>
+                <a target="_blank" href={link.target}> {link.title} </a>
+            </Text>
+        </IconTextBox>
+    )
+}
 
 
 function PropertySnippet({ property, profile, openModal, setPosition, setAddress, setSelectedProperty }) {
@@ -106,6 +121,34 @@ function PropertySnippet({ property, profile, openModal, setPosition, setAddress
                 </Text>}
             </IconTextBox>
 
+            {
+                (data.bkashLinks && data.bkashLinks.length !== 0) &&
+                <>
+                    <IconTextBox>
+                        <Text underline active size={1}>{`Payment`} </Text>
+                        <Text size={1} style={{ ...centerChilds, justifyContent: "left", marginLeft: "10px" }}>
+                            <BsCashCoin />
+                        </Text>
+                    </IconTextBox>
+
+                    {
+                        data.bkashLinks.map((link, index) => {
+                            return (
+                                <>
+                                    <BkashLink link={link} />
+                                </>
+                            )
+                        })
+                    }
+                </>
+            }
+
+
+
+
+
+
+
             <IconTextBox>
                 <Text underline active size={1}>{`Create Issue/Complaint`} </Text>
                 <Text size={1} style={{ ...centerChilds, justifyContent: "left", marginLeft: "10px" }}>
@@ -170,11 +213,11 @@ export default function RentedProperties({ profile }) {
 
     return (
         <OwnedPropertiesBox>
-              <FlexBox>
+            <FlexBox>
                 <Text size={3}>
-                    <TiMessage/>
+                    <TiMessage />
                 </Text>
-                <SearchPropertyInput placeholder="address of owned property" spellCheck="false" onChange={(event) => { setInputAddress(event.target.value) }} />
+                <SearchPropertyInput placeholder="address of rented property" spellCheck="false" onChange={(event) => { setInputAddress(event.target.value) }} />
             </FlexBox>
 
             {
@@ -183,7 +226,7 @@ export default function RentedProperties({ profile }) {
                     <GiCrossMark />
                 </Text>
             }
-            
+
             <PropertyContainer>
                 {
                     properties.filter(propertyFilteredByInput).map((property, index) => {
