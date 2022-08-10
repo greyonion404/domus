@@ -38,11 +38,9 @@ export default function MessengerModal({ profile, currentThreadID }) {
     if (currentMode === MODES.THREAD_OPEN) {
         return (
             <MessengerModalContainer>
-                <FlexBox>
-                    <Text size={3}>
-                        <TiArrowBack onClick={() => { setThreadID(null); setSearchInput(''); }} />
-                    </Text>
-                </FlexBox>
+                <Text size={1} style={{width: "max-content"}} onClick={() => { setThreadID(null); setSearchInput(''); }}>
+                    <TiArrowBack/> Back
+                </Text>
                 <Text>
                     {threadID}
                 </Text>
