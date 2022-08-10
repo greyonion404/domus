@@ -18,6 +18,7 @@ import IssueHistoryOfOwnerModal from "../Modals/IssueHistoryOfOwnerModal";
 import { FlexBox } from "../Modals/Modals.styles";
 import { TiMessage } from "react-icons/ti";
 import { GiCrossMark } from "react-icons/gi";
+import MessengerModal from "../Modals/MessengerModal";
 
 function PropertySnippet({ property, profile, openModal, setPosition, setAddress, setSelectedProperty }) {
 
@@ -166,7 +167,7 @@ export default function OwnedProperties({ profile }) {
         <OwnedPropertiesBox>
             <FlexBox>
                 <Text size={3}>
-                    <TiMessage onClick={() => { openMessengerModal() }}  />
+                    <TiMessage onClick={() => { openMessengerModal() }} />
                 </Text>
                 <SearchPropertyInput placeholder="address of owned property" spellCheck="false" onChange={(event) => { setInputAddress(event.target.value) }} />
             </FlexBox>
@@ -207,6 +208,8 @@ export default function OwnedProperties({ profile }) {
             </Modal>
 
             <Modal showModal={showModal(ModalTypes.MessengerModal, modalType, isModalOpen, setPosition)}>
+                <MessengerModal profile={profile}>
+                </MessengerModal>
             </Modal>
 
 

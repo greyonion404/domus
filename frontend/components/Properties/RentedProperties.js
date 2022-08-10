@@ -20,6 +20,7 @@ import { TiMessage } from "react-icons/ti";
 import { GiCrossMark } from "react-icons/gi";
 import { BsCashCoin } from 'react-icons/bs';
 import data from "../../styles/data";
+import MessengerModal from "../Modals/MessengerModal";
 
 function BkashLink({ link }) {
     return (
@@ -187,6 +188,9 @@ export default function RentedProperties({ profile }) {
         setModalType(type);
         toggleIsModalOpen();
     }
+    function openMessengerModal() {
+        openModal(ModalTypes.MessengerModal);
+    }
 
     const [properties, setProperties] = useState([]);
 
@@ -209,13 +213,14 @@ export default function RentedProperties({ profile }) {
     function propertyFilteredByInput(property) {
         return property.address.toLowerCase().includes(inputAddress.toLowerCase());
     }
+    
 
 
     return (
         <OwnedPropertiesBox>
             <FlexBox>
                 <Text size={3}>
-                    <TiMessage />
+                    <TiMessage onClick={() => { openMessengerModal() }} />
                 </Text>
                 <SearchPropertyInput placeholder="address of rented property" spellCheck="false" onChange={(event) => { setInputAddress(event.target.value) }} />
             </FlexBox>
@@ -241,6 +246,13 @@ export default function RentedProperties({ profile }) {
                     })
                 }
             </PropertyContainer>
+
+            <Modal showModal={showModal(ModalTypes.MessengerModal, modalType, isModalOpen, setPosition)}>
+                <MessengerModal profile={profile}>
+                </MessengerModal>
+            </Modal>
+
+
 
             <Modal showModal={showModal(ModalTypes.MapMarkerModal, modalType, isModalOpen, setPosition)}>
                 <MoveMapMarkerModal>
