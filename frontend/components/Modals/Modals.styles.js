@@ -232,6 +232,19 @@ let IssueSnippetContainer = styled.div`
     }
 `
 
+let MessnegerSearchInput = styled.input`
+    all: unset;
+    background-color: transparent;
+    outline: none;
+    border-bottom: 1px solid ${data.styles.color.secondaryMedium};
+    color: ${data.styles.color.text.lighter};
+    font-size: x-large;
+    width: 90%;
+    margin: auto;
+    margin-bottom: 10px;
+    text-align: center;
+`
+
 export {
     ProfileImage,
     ChangeNameInputContainer,
@@ -246,7 +259,7 @@ export {
     EditingMapBox,
 
     DeletePropertyButton,
-    
+
     FlexBox,
 
     EditPropertyModalContainer,
@@ -260,4 +273,5 @@ export {
     IssueSnippetContainer,
 
     MessengerModalContainer,
+    MessnegerSearchInput
 }

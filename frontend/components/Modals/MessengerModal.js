@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
-import { BsBack } from 'react-icons/bs';
-import { FlexBox, MessengerModalContainer } from './Modals.styles'
+import { FlexBox, MessengerModalContainer, MessnegerSearchInput } from './Modals.styles'
 import { Text } from '../../styles/Text';
 import { TiArrowBack } from 'react-icons/ti';
-import { Input, InputArea } from '../AddPropertyBox/AddPropertyBox.styles';
+
 
 const MODES =
 {
@@ -40,10 +39,9 @@ export default function MessengerModal({ profile, currentThreadID }) {
         return (
             <MessengerModalContainer>
                 <FlexBox>
-                    <Text>
+                    <Text size={3}>
                         <TiArrowBack onClick={() => { setThreadID(null); setSearchInput(''); }} />
                     </Text>
-                    <Input value={searchInput} onChange={(event) => { setSearchInput(event.target.value) }} />
                 </FlexBox>
                 <Text>
                     {threadID}
@@ -57,7 +55,8 @@ export default function MessengerModal({ profile, currentThreadID }) {
         return (
             <MessengerModalContainer>
                 <FlexBox>
-                    <Input value={searchInput} onChange={(event) => { setSearchInput(event.target.value) }} />
+                    <MessnegerSearchInput type="text" placeholder="search user" spellCheck="false"
+                        value={searchInput} onChange={(event) => { setSearchInput(event.target.value) }} />
                 </FlexBox>
                 <Text onClick={() => { setThreadID(1) }}>
                     history, id 1
@@ -73,7 +72,8 @@ export default function MessengerModal({ profile, currentThreadID }) {
         return (
             <MessengerModalContainer>
                 <FlexBox>
-                    <Input value={searchInput} onChange={(event) => { setSearchInput(event.target.value) }} />
+                    <MessnegerSearchInput type="text" placeholder="search user" spellCheck="false"
+                        value={searchInput} onChange={(event) => { setSearchInput(event.target.value) }} />
                 </FlexBox>
                 <Text onClick={() => { setThreadID(3) }}>
                     search result, id 3
