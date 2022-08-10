@@ -90,23 +90,7 @@ let AddIssueModalContainer = styled.div`
         left: 0%;
     }
 `
-let MessengerModalContainer = styled.div`
-    background-color: ${data.styles.color.primary};
-    position: fixed;
-    height: 80%;
-    width: 80%;
-    top: 10%;
-    left: 10%;
-    padding: 10px;
-    word-wrap: break-word;
-    overflow-y: scroll;
-    @media ${data.styles.devices.tablet} {
-        height: 90%;
-        width: 100%;
-        top: 10%;
-        left: 0%;
-    }
-`
+
 let IssueHistoryModalContainer = styled.div`
     background-color: ${data.styles.color.primary};
     position: fixed;
@@ -231,6 +215,33 @@ let IssueSnippetContainer = styled.div`
         width: 100%;
     }
 `
+let MessengerModalContainer = styled.div`
+    background-color: ${data.styles.color.primary};
+    position: fixed;
+    height: 80%;
+    width: 80%;
+    top: 10%;
+    left: 10%;
+    padding: 10px;
+    word-wrap: break-word;
+    overflow-y: scroll;
+    @media ${data.styles.devices.tablet} {
+        height: 90%;
+        width: 100%;
+        top: 10%;
+        left: 0%;
+    }
+`
+let MessengerTopbar = styled.div`
+    display: flex;
+    height: 10%;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 10px;
+    @media ${data.styles.devices.tablet} {
+        height: 5%;
+    }
+`
 
 let MessnegerSearchInput = styled.input`
     all: unset;
@@ -242,9 +253,40 @@ let MessnegerSearchInput = styled.input`
     width: 90%;
     margin: auto;
     margin-bottom: 10px;
+    padding-top: 10px;
     text-align: center;
 `
 
+let MessengerThreadContainer = styled.div`
+    background-color: ${data.styles.color.primaryMedium};
+    height: 88%;
+    width: 99%;
+    padding: 10px;
+    word-wrap: break-word;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    @media ${data.styles.devices.tablet} {
+        height: 93%;
+        width: 100%;
+    }
+`
+
+let MessengerProfileImage = styled.img`
+    height: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    @media ${data.styles.devices.tablet} {
+    }
+`
+let Message = styled.div`
+    height: max-content;
+    width: 100%;
+    min-width: 10px;
+    margin-bottom: 5px;
+    background-color: red;
+`
 export {
     ProfileImage,
     ChangeNameInputContainer,
@@ -273,5 +315,9 @@ export {
     IssueSnippetContainer,
 
     MessengerModalContainer,
-    MessnegerSearchInput
+    MessengerTopbar,
+    MessnegerSearchInput,
+    MessengerThreadContainer,
+    MessengerProfileImage,
+    Message,
 }

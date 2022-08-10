@@ -1,7 +1,88 @@
 import { useEffect, useState } from 'react'
-import { FlexBox, MessengerModalContainer, MessnegerSearchInput } from './Modals.styles'
+import { FlexBox, Message, MessengerModalContainer, MessengerProfileImage, MessengerThreadContainer, MessengerTopbar, MessnegerSearchInput } from './Modals.styles'
 import { Text } from '../../styles/Text';
 import { TiArrowBack } from 'react-icons/ti';
+import { BiHash } from 'react-icons/bi';
+
+
+const sendTo = { name: 'maruf', id: 1 };
+const self = { name: 'grey', id: 2 }
+
+const messages = [
+    {
+        id: 123123,
+        senderID: 1,
+        senderName: "grey",
+        recieverID: 2,
+        recieverName: "maruf",
+        content: "this is the first demo message, hello",
+        timestamp: "sunday, 28/11/2022 12:15 AM",
+    },
+    {
+        id: 123123,
+        senderID: 1,
+        senderName: "grey",
+        recieverID: 2,
+        recieverName: "maruf",
+        content: "this is the first demo message, hello",
+        timestamp: "sunday, 28/11/2022 12:15 AM",
+    },
+    {
+        id: 123123,
+        senderID: 1,
+        senderName: "grey",
+        recieverID: 2,
+        recieverName: "maruf",
+        content: "this is the first demo message, hello",
+        timestamp: "sunday, 28/11/2022 12:15 AM",
+    },
+    {
+        id: 123123,
+        senderID: 1,
+        senderName: "grey",
+        recieverID: 2,
+        recieverName: "maruf",
+        content: "this is the first demo message, hello",
+        timestamp: "sunday, 28/11/2022 12:15 AM",
+    },
+    {
+        id: 123123,
+        senderID: 1,
+        senderName: "grey",
+        recieverID: 2,
+        recieverName: "maruf",
+        content: "this is the first demo message, hello",
+        timestamp: "sunday, 28/11/2022 12:15 AM",
+    },
+    {
+        id: 123123,
+        senderID: 1,
+        senderName: "grey",
+        recieverID: 2,
+        recieverName: "maruf",
+        content: "this is the first demo message, hello",
+        timestamp: "sunday, 28/11/2022 12:15 AM",
+    },
+    {
+        id: 123123,
+        senderID: 1,
+        senderName: "grey",
+        recieverID: 2,
+        recieverName: "maruf",
+        content: "this is the first demo message, hello",
+        timestamp: "sunday, 28/11/2022 12:15 AM",
+    },
+    {
+        id: 123123,
+        senderID: 1,
+        senderName: "grey",
+        recieverID: 2,
+        recieverName: "maruf",
+        content: "this is the first demo message, hello",
+        timestamp: "sunday, 28/11/2022 12:15 AM",
+    },
+];
+
 
 
 const MODES =
@@ -11,6 +92,10 @@ const MODES =
     THREAD_SEARCHING: 'THREAD_SEARCHING'
 }
 export default function MessengerModal({ profile, currentThreadID }) {
+
+ 
+
+    //
 
     const [currentMode, setCurrentMode] = useState(MODES.THREAD_CLOSED);
     const [threadID, setThreadID] = useState(currentThreadID);
@@ -38,12 +123,27 @@ export default function MessengerModal({ profile, currentThreadID }) {
     if (currentMode === MODES.THREAD_OPEN) {
         return (
             <MessengerModalContainer>
-                <Text size={1} style={{width: "max-content"}} onClick={() => { setThreadID(null); setSearchInput(''); }}>
-                    <TiArrowBack/> Back
-                </Text>
-                <Text>
-                    {threadID}
-                </Text>
+                <MessengerTopbar>
+                    <Text size={1} style={{ width: "max-content" }} onClick={() => { setThreadID(null); setSearchInput(''); }}>
+                        <TiArrowBack /> Back
+                    </Text>
+                    <MessengerProfileImage src={"/default_profile_picture.png"} alt={sendTo.name} />
+                    <Text size={1} style={{ width: "max-content", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                        <BiHash />
+                        {sendTo.name}
+                    </Text>
+                </MessengerTopbar>
+                <MessengerThreadContainer>
+                    {
+                        messages.map(()=>{
+                            return(
+                                <Message>
+                                    a
+                                </Message>
+                            )
+                        })
+                    }
+                </MessengerThreadContainer>
 
             </MessengerModalContainer>
         )
@@ -53,7 +153,7 @@ export default function MessengerModal({ profile, currentThreadID }) {
         return (
             <MessengerModalContainer>
                 <FlexBox>
-                    <MessnegerSearchInput type="text" placeholder="search user" spellCheck="false"
+                    <MessnegerSearchInput type="text" placeholder="🔎 search user" spellCheck="false"
                         value={searchInput} onChange={(event) => { setSearchInput(event.target.value) }} />
                 </FlexBox>
                 <Text onClick={() => { setThreadID(1) }}>
@@ -70,7 +170,7 @@ export default function MessengerModal({ profile, currentThreadID }) {
         return (
             <MessengerModalContainer>
                 <FlexBox>
-                    <MessnegerSearchInput type="text" placeholder="search user" spellCheck="false"
+                    <MessnegerSearchInput type="text" placeholder="🔎 search user" spellCheck="false"
                         value={searchInput} onChange={(event) => { setSearchInput(event.target.value) }} />
                 </FlexBox>
                 <Text onClick={() => { setThreadID(3) }}>
