@@ -285,7 +285,6 @@ let Message = styled.div`
     width: 100%;
     min-width: 10px;
     margin-bottom: 5px;
-    background-color: red;
 `
 export {
     ProfileImage,
