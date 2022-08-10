@@ -20,10 +20,10 @@ const messages = [
     },
     {
         id: 123123,
-        senderID: 1,
-        senderName: "grey",
-        recieverID: 2,
-        recieverName: "maruf",
+        senderID: 2,
+        senderName: "maruf",
+        recieverID: 1,
+        recieverName: "grey",
         content: "this is the first demo message, hello",
         timestamp: "sunday, 28/11/2022 12:15 AM",
     },
@@ -65,10 +65,10 @@ const messages = [
     },
     {
         id: 123123,
-        senderID: 1,
-        senderName: "grey",
-        recieverID: 2,
-        recieverName: "maruf",
+        senderID: 2,
+        senderName: "maruf",
+        recieverID: 1,
+        recieverName: "grey",
         content: "this is the first demo message, hello",
         timestamp: "sunday, 28/11/2022 12:15 AM",
     },
@@ -90,10 +90,63 @@ const MODES =
     THREAD_OPEN: 'THREAD_OPEN',
     THREAD_CLOSED: 'THREAD_CLOSED',
     THREAD_SEARCHING: 'THREAD_SEARCHING'
+};
+
+function MessageContainer({ message, isSelfMessage }) {
+    if (isSelfMessage) {
+        return (
+            <Message>
+                <Text>
+                    self : 
+                    {message.content}
+                </Text>
+            </Message>
+        )
+    }
+    else {
+        return (
+            <Message>
+                <Text>
+                    not self : 
+                    {message.content}
+                </Text>
+            </Message>
+        )
+    }
 }
-export default function MessengerModal({ profile, currentThreadID }) {
+
+function Thread({ profile, threadID, setThreadID, setSearchInput }) {
 
  
+    return (
+        <MessengerModalContainer>
+            <MessengerTopbar>
+                <Text size={1} style={{ width: "max-content" }} onClick={() => { setThreadID(null); setSearchInput(''); }}>
+                    <TiArrowBack /> Back
+                </Text>
+                <MessengerProfileImage src={"/default_profile_picture.png"} alt={sendTo.name} />
+                <Text size={1} style={{ width: "max-content", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    <BiHash />
+                    {sendTo.name}
+                </Text>
+            </MessengerTopbar>
+            <MessengerThreadContainer>
+                {
+                    messages.map((message, index) => {
+                        return (<MessageContainer message={message} isSelfMessage={(message.senderID === self.id)} />)
+                    })
+                }
+            </MessengerThreadContainer>
+
+        </MessengerModalContainer>
+    )
+
+}
+
+
+export default function MessengerModal({ profile, currentThreadID }) {
+
+
 
     //
 
@@ -120,32 +173,11 @@ export default function MessengerModal({ profile, currentThreadID }) {
 
 
 
+
+
     if (currentMode === MODES.THREAD_OPEN) {
         return (
-            <MessengerModalContainer>
-                <MessengerTopbar>
-                    <Text size={1} style={{ width: "max-content" }} onClick={() => { setThreadID(null); setSearchInput(''); }}>
-                        <TiArrowBack /> Back
-                    </Text>
-                    <MessengerProfileImage src={"/default_profile_picture.png"} alt={sendTo.name} />
-                    <Text size={1} style={{ width: "max-content", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                        <BiHash />
-                        {sendTo.name}
-                    </Text>
-                </MessengerTopbar>
-                <MessengerThreadContainer>
-                    {
-                        messages.map(()=>{
-                            return(
-                                <Message>
-                                    a
-                                </Message>
-                            )
-                        })
-                    }
-                </MessengerThreadContainer>
-
-            </MessengerModalContainer>
+            <Thread profile={profile} setThreadID={setThreadID} setSearchInput={setSearchInput} threadID={threadID} />
         )
 
     }
