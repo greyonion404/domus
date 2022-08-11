@@ -29,7 +29,11 @@ function BkashLink({ link }) {
                 <BiHash />
             </Text>
             <Text style={{ marginLeft: "10px" }} underline>
-                <a target="_blank" href={link.target}> {link.title} </a>
+                <a onClick={()=>{
+                  var newTab = window.open();
+                  newTab.opener = null;
+                  newTab.location = link.target;
+                }}> {link.title} </a>
             </Text>
         </IconTextBox>
     )

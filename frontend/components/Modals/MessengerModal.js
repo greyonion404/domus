@@ -133,7 +133,7 @@ function Thread({ profile, threadID, setThreadID, setSearchInput }) {
             <MessengerThreadContainer>
                 {
                     messages.map((message, index) => {
-                        return (<MessageContainer message={message} isSelfMessage={(message.senderID === self.id)} />)
+                        return (<MessageContainer key={index} message={message} isSelfMessage={(message.senderID === self.id)} />)
                     })
                 }
             </MessengerThreadContainer>
