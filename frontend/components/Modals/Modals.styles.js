@@ -238,6 +238,7 @@ let MessengerTopbar = styled.div`
     gap: 10px;
     align-items: center;
     margin-bottom: 10px;
+    border-bottom: 1px solid ${data.styles.color.text.light}90;
     @media ${data.styles.devices.tablet} {
         height: 5%;
     }
@@ -258,8 +259,8 @@ let MessnegerSearchInput = styled.input`
 `
 
 let MessengerThreadContainer = styled.div`
-    background-color: ${data.styles.color.primaryMedium};
-    height: 88%;
+    background-color: ${data.styles.color.primary};
+    height: 78%;
     width: 99%;
     padding: 10px;
     word-wrap: break-word;
@@ -268,55 +269,121 @@ let MessengerThreadContainer = styled.div`
     flex-direction: column;
     margin: auto;
     @media ${data.styles.devices.tablet} {
-        height: 93%;
+        height: 83%;
         width: 100%;
     }
 `
+let MessengerTimeStamp = styled.div`
+  width: max-content;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  padding: 5px;
+  padding-left: 10px;
+@media ${data.styles.devices.tablet} {
+    width: 80%;
+}
+`
+
+let MessengerInputContainer = styled.div`
+  background-color: ${data.styles.color.primary};
+  height: 10%;
+  width: 99%;
+  word-wrap: break-word;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  border-top: 1px solid ${data.styles.color.text.light}90;
+@media ${data.styles.devices.tablet} {
+    height: 10%;
+    width: 100%;
+}
+`
 
 let MessengerProfileImage = styled.img`
-    height: 100%;
+    height: 90%;
     aspect-ratio: 1;
     border-radius: 50%;
     @media ${data.styles.devices.tablet} {
     }
 `
 let Message = styled.div`
-    height: max-content;
-    width: 100%;
-    min-width: 10px;
-    margin-bottom: 5px;
+  height: max-content;
+  width: 100%;
+  min-width: 10px;
+  margin-bottom: 5px;
+  color:  ${data.styles.color.text.lighter};
+  padding: 5px;
+  border: 1px solid ${data.styles.color.text.light}40;
 `
+let MessageSenderInfo = styled.div`
+  width: max-content;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  padding: 5px;
+@media ${data.styles.devices.tablet} {
+  width: 80%;
+}
+`
+let MessageProfileImage = styled.img`
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    @media ${data.styles.devices.tablet} {
+    }
+`
+
+let MessageContent = styled.div`
+  height: max-content;
+  width: max-content;
+  word-wrap: break-word;
+  flex-direction: column;
+  padding: 10px;
+  background-color: #191923;
+  border-radius: 5px;
+@media ${data.styles.devices.tablet} {
+  width: 80%;
+}
+`
+
 export {
-    ProfileImage,
-    ChangeNameInputContainer,
-    ChangeNameInput,
+  ProfileImage,
+  ChangeNameInputContainer,
+  ChangeNameInput,
 
-    GenericModal,
+  GenericModal,
 
-    LoadingModalContainer,
+  LoadingModalContainer,
 
-    MapBox,
-    SaveMarkerButtonBox,
-    EditingMapBox,
+  MapBox,
+  SaveMarkerButtonBox,
+  EditingMapBox,
 
-    DeletePropertyButton,
+  DeletePropertyButton,
 
-    FlexBox,
+  FlexBox,
 
-    EditPropertyModalContainer,
+  EditPropertyModalContainer,
 
-    AddIssueModalContainer,
+  AddIssueModalContainer,
 
-    IssueHistoryModalContainer,
-    IssueHistoryOfOwnerModalContainer,
-    
-    IssueSnippetsContainer,
-    IssueSnippetContainer,
+  IssueHistoryModalContainer,
+  IssueHistoryOfOwnerModalContainer,
 
-    MessengerModalContainer,
-    MessengerTopbar,
-    MessnegerSearchInput,
-    MessengerThreadContainer,
-    MessengerProfileImage,
-    Message,
+  IssueSnippetsContainer,
+  IssueSnippetContainer,
+
+  MessengerModalContainer,
+  MessengerTopbar,
+  MessnegerSearchInput,
+  MessengerThreadContainer,
+  MessengerInputContainer,
+  MessengerProfileImage,
+  MessengerTimeStamp,
+  Message,
+  MessageSenderInfo,
+  MessageProfileImage,
+  MessageContent
 }
