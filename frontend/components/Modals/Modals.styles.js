@@ -276,30 +276,11 @@ let MessengerThreadContainer = styled.div`
 let MessengerTimeStamp = styled.div`
   width: max-content;
   display: flex;
-  gap: 5px;
   align-items: center;
-  padding: 5px;
-  padding-left: 10px;
 @media ${data.styles.devices.tablet} {
-    width: 80%;
 }
 `
 
-let MessengerInputContainer = styled.div`
-  background-color: ${data.styles.color.primary};
-  height: 10%;
-  width: 99%;
-  word-wrap: break-word;
-  overflow-y: scroll;
-  display: flex;
-  flex-direction: column;
-  margin: auto;
-  border-top: 1px solid ${data.styles.color.text.light}90;
-@media ${data.styles.devices.tablet} {
-    height: 10%;
-    width: 100%;
-}
-`
 
 let MessengerProfileImage = styled.img`
     height: 90%;
@@ -315,16 +296,19 @@ let Message = styled.div`
   margin-bottom: 5px;
   color:  ${data.styles.color.text.lighter};
   padding: 5px;
+  margin-bottom: 10px;
   border: 1px solid ${data.styles.color.text.light}40;
+  &:hover{
+  }
 `
 let MessageSenderInfo = styled.div`
   width: max-content;
+  max-width: 100%;
   display: flex;
   gap: 5px;
   align-items: center;
   padding: 5px;
 @media ${data.styles.devices.tablet} {
-  width: 80%;
 }
 `
 let MessageProfileImage = styled.img`
@@ -338,14 +322,42 @@ let MessageProfileImage = styled.img`
 let MessageContent = styled.div`
   height: max-content;
   width: max-content;
+  max-width: 60%;
   word-wrap: break-word;
   flex-direction: column;
   padding: 10px;
-  background-color: #191923;
+  background-color: ${data.styles.color.primaryMedium}30;
   border-radius: 5px;
 @media ${data.styles.devices.tablet} {
-  width: 80%;
+    max-width: 90%;
 }
+`
+
+let MessengerInputContainer = styled.div`
+  background-color: ${data.styles.color.primary};
+  height: 10%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin: auto;
+  border-top: 1px solid ${data.styles.color.text.light}90;
+@media ${data.styles.devices.tablet} {
+    height: 10%;
+    width: 100%;
+}
+`
+
+let MessnegerInput = styled.input`
+    all: unset;
+    background-color: transparent;
+    outline: none;
+    border-bottom: 1px solid ${data.styles.color.secondaryMedium};
+    color: ${data.styles.color.text.lighter};
+    font-size: x-large;
+    width: 90%;
+    height: 90%;
+    text-align: center;
 `
 
 export {
@@ -385,5 +397,6 @@ export {
   Message,
   MessageSenderInfo,
   MessageProfileImage,
-  MessageContent
+  MessageContent,
+  MessnegerInput
 }
