@@ -21,6 +21,7 @@ import { GiCrossMark } from "react-icons/gi";
 import { BsCashCoin } from 'react-icons/bs';
 import data from "../../styles/data";
 import MessengerModal from "../Modals/MessengerModal";
+import { getThreadId } from "../../Utils/getThreadID";
 
 function BkashLink({ link }) {
     return (
@@ -40,7 +41,7 @@ function BkashLink({ link }) {
 }
 
 
-function PropertySnippet({ property, profile, openModal, setPosition, setAddress, setSelectedProperty }) {
+function PropertySnippet({ property, profile, openModal, setPosition, setAddress, setSelectedProperty, setThreadID}) {
 
     const setMarkerPosition = useMapStore((state) => state.setMarkerPosition);
     function openMapModal() {
@@ -63,6 +64,12 @@ function PropertySnippet({ property, profile, openModal, setPosition, setAddress
         setSelectedProperty(property);
         openModal(ModalTypes.IssueHistoryModal);
     }
+
+    function openMessengerModal() {
+        openModal(ModalTypes.MessengerModal);
+        setThreadID(getThreadId(profile.authID, renter.authID))
+    }
+
     function hasMapLocation() {
         return !(isEqualFloat(property.latitude, 0) && isEqualFloat(property.longitude, 0));
     }
@@ -98,7 +105,7 @@ function PropertySnippet({ property, profile, openModal, setPosition, setAddress
                 </IconTextBox>
             </IconTextBox>
             <Text size={1}>{property.address}</Text>
-            <Text size={1} style={{ ...centerChilds, justifyContent: "left" }}>{`owned by`} <BiHash /> {renter.name}  </Text>
+            <Text size={1} style={{ ...centerChilds, justifyContent: "left" }} onClick={() => { openMessengerModal() }}>{`owned by`} <BiHash /> {renter.name}  </Text>
             {
                 hasRenter() &&
                 <Text size={1} style={{ ...centerChilds, justifyContent: "left" }}>{`rented by`} <BiHash /> {profile.name}  </Text>
@@ -139,9 +146,8 @@ function PropertySnippet({ property, profile, openModal, setPosition, setAddress
                     {
                         data.bkashLinks.map((link, index) => {
                             return (
-                                <>
-                                    <BkashLink link={link} />
-                                </>
+                                    <BkashLink key={index} link={link} />
+
                             )
                         })
                     }
@@ -178,6 +184,8 @@ function PropertySnippet({ property, profile, openModal, setPosition, setAddress
 
 export default function RentedProperties({ profile }) {
 
+
+
     const modalType = useModalStore((state) => state.modalType);
     const isModalOpen = useModalStore((state) => state.isModalOpen);
     const setModalType = useModalStore((state) => state.setModalType);
@@ -188,12 +196,15 @@ export default function RentedProperties({ profile }) {
     const [inputAddress, setInputAddress] = useState("");
     const [selectedProperty, setSelectedProperty] = useState({})
 
+    const [threadId, setThreadID] = useState(null);
+
     function openModal(type) {
         setModalType(type);
         toggleIsModalOpen();
     }
     function openMessengerModal() {
         openModal(ModalTypes.MessengerModal);
+        setThreadID(null);
     }
 
     const [properties, setProperties] = useState([]);
@@ -246,13 +257,14 @@ export default function RentedProperties({ profile }) {
                             setPosition={setPosition}
                             setAddress={setAddress}
                             setSelectedProperty={setSelectedProperty}
+                            setThreadID={setThreadID}
                         />)
                     })
                 }
             </PropertyContainer>
 
             <Modal showModal={showModal(ModalTypes.MessengerModal, modalType, isModalOpen, setPosition)}>
-                <MessengerModal profile={profile}>
+                <MessengerModal profile={profile} currentThreadID={threadId}>
                 </MessengerModal>
             </Modal>
 

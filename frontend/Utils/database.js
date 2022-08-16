@@ -27,6 +27,20 @@ async function addAuth0UserToDatabase(user) {
         insertError: error
     }
 }
+// retrive all users
+async function getAllUsers() {
+    const {
+        data,
+        error
+    } = await supabase
+        .from('users')
+        .select('*');
+    return {
+        data,
+        error
+    };
+}
+
 // retrieve user
 async function getUserWithAuth0ID(auth0ID) {
     const {
@@ -303,6 +317,7 @@ async function getNotificationsOfUser(userID) {
 }
 
 export {
+    getAllUsers,
     getUserWithAuth0ID,
     addAuth0UserToDatabase,
     changeNameOfUser,

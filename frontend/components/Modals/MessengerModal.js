@@ -13,6 +13,8 @@ import { centerChilds, Text } from '../../styles/Text';
 import { TiArrowBack } from 'react-icons/ti';
 import { BiHash } from 'react-icons/bi';
 import { AiOutlineSend } from 'react-icons/ai';
+import { getThreadId } from '../../Utils/getThreadID';
+import { getAllUsers } from '../../Utils/database';
 
 
 const sendTo = { name: 'maruf', id: 1 };
@@ -101,6 +103,8 @@ const MODES =
     THREAD_SEARCHING: 'THREAD_SEARCHING'
 };
 
+
+
 function MessageContainer({ message, isSelfMessage }) {
     if (isSelfMessage === false) {
         return (
@@ -148,11 +152,20 @@ function MessageContainer({ message, isSelfMessage }) {
 
 function Thread({ profile, threadID, setThreadID, setSearchInput }) {
 
+
     let scrollTextRef = useRef();
 
     useEffect(() => {
         scrollTextRef?.current?.scrollIntoView({ behavior: 'smooth' });;
-    }, [messages])
+    }, [messages]);
+
+    async function fetchOrCreateThread() {
+        console.log(threadID);
+    }
+
+    useEffect(() => {
+        fetchOrCreateThread();
+    }, [])
 
 
     return (
@@ -178,7 +191,7 @@ function Thread({ profile, threadID, setThreadID, setSearchInput }) {
             <MessengerInputContainer>
                 <MessnegerInput type="text" placeholder={`Message #${sendTo.name}`} spellCheck="false" />
                 <Text size={3} style={centerChilds}>
-                    <AiOutlineSend /> 
+                    <AiOutlineSend />
                 </Text>
             </MessengerInputContainer>
 
@@ -197,6 +210,9 @@ export default function MessengerModal({ profile, currentThreadID }) {
     const [currentMode, setCurrentMode] = useState(MODES.THREAD_CLOSED);
     const [threadID, setThreadID] = useState(currentThreadID);
     const [searchInput, setSearchInput] = useState('');
+    const [users, setUsers] = useState([]);
+
+
 
     useEffect(() => {
         if (threadID) {
@@ -215,13 +231,27 @@ export default function MessengerModal({ profile, currentThreadID }) {
 
     }, [searchInput]);
 
+    async function fetchUsers() {
+        let { data } = await getAllUsers();
+        setUsers(data);
+    }
+
+    useEffect(() => {
+        fetchUsers();
+    }, []);
+
+
+    function usersFilteredByInput(user) {
+        return ((user.name.toLowerCase().includes(searchInput.toLowerCase())) && (user.authID !== profile.authID));
+    }
 
 
 
 
-    if (currentMode === MODES.THREAD_OPEN) {
+
+    if (currentMode === MODES.THREAD_OPEN || threadID) {
         return (
-            <Thread profile={profile} setThreadID={setThreadID} setSearchInput={setSearchInput} threadID={threadID} />
+            <Thread profile={profile} threadID={threadID} setThreadID={setThreadID} setSearchInput={setSearchInput} />
         )
 
     }
@@ -249,12 +279,16 @@ export default function MessengerModal({ profile, currentThreadID }) {
                     <MessnegerSearchInput type="text" placeholder="🔎 search user" spellCheck="false"
                         value={searchInput} onChange={(event) => { setSearchInput(event.target.value) }} />
                 </FlexBox>
-                <Text onClick={() => { setThreadID(3) }}>
-                    search result, id 3
-                </Text>
-                <Text onClick={() => { setThreadID(4) }}>
-                    search result, id 4
-                </Text>
+                {
+                    users.filter(usersFilteredByInput).map((user, index) => {
+                        return (
+                            <Text key={user.authID} onClick={() => { setThreadID(getThreadId(profile.authID, user.authID)) }}>
+                                {user.name}
+                            </Text>
+                        )
+
+                    })
+                }
             </MessengerModalContainer>
         )
     }
