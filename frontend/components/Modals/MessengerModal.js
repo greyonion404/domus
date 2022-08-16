@@ -282,9 +282,16 @@ export default function MessengerModal({ profile, currentThreadID }) {
                 {
                     users.filter(usersFilteredByInput).map((user, index) => {
                         return (
-                            <Text key={user.authID} onClick={() => { setThreadID(getThreadId(profile.authID, user.authID)) }}>
-                                {user.name}
-                            </Text>
+                            <MessageSenderInfo>
+                                <MessageProfileImage src={"/default_profile_picture.png"} alt={user.name} />
+
+                                <Text key={user.authID} style={centerChilds} onClick={() => { setThreadID(getThreadId(profile.authID, user.authID)) }}>
+                                    <BiHash />
+                                    {user.name}
+                                </Text>
+                            </MessageSenderInfo>
+
+
                         )
 
                     })
