@@ -69,7 +69,6 @@ export default function AddRentedPropertyBox({ profile }) {
             propertyAddress: property.address,
             timestamp: getBangladeshTime(),
         };
-        console.log(notification);
         await addNotificationToDatabase(notification);
     }
 

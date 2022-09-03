@@ -25,7 +25,6 @@ export default function DeleteRentedPropertyModal({ property, profile }) {
             propertyAddress: property.address,
             timestamp: getBangladeshTime(),
         };
-        console.log(notification);
         await addNotificationToDatabase(notification);
     }
 
@@ -36,7 +35,6 @@ export default function DeleteRentedPropertyModal({ property, profile }) {
         const { updatedProperty, updateError } = await updatePropertyRenterID(property.propertyID, profile = { authID: "" });
         await deleteIssueOfProperty(property.propertyID);
         await sendNotification(deletionDescription, property.renterID);
-        console.log(updateError);
         setIsDeleting(false);
         toggleIsModalOpen();
         if (updatedProperty) window.location.reload(false);

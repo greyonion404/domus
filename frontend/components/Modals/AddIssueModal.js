@@ -41,7 +41,6 @@ export default function AddIssueModal({ property, profile }) {
             propertyAddress: property.address,
             timestamp: getBangladeshTime(),
         };
-        console.log(notification);
         await addNotificationToDatabase(notification);
     }
 
@@ -54,9 +53,7 @@ export default function AddIssueModal({ property, profile }) {
             message: message,
             timestamp: timestamp,
         };
-        console.log(history)
         let { data, error } = await addHistoryToDatabase(history);
-        console.log(error);
     }
 
     async function addIssue() {
@@ -78,7 +75,6 @@ export default function AddIssueModal({ property, profile }) {
 
         setIsuploading(true);
         // upload
-        console.log(issue);
         let { insertedIssue, insertError } = await addIssueToDatabase(issue);
         await addHistory(issueID, 'created the issue', '', time);
         let renterMotificationDescription = `You created an issue titled "${title}"\nThe issue is for the property you currently rent @ ${property.address}`;

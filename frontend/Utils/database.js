@@ -316,6 +316,56 @@ async function getNotificationsOfUser(userID) {
     };
 }
 
+
+// add thread to database
+async function addThreadToDatabase(threadID, lastMessageContent, lastUpdationTime) {
+    const {
+        data,
+        error
+    } = await supabase
+        .from('threads')
+        .insert([{ threadID: threadID, lastMessageContent: lastMessageContent, lastUpdationTime: lastUpdationTime }])
+
+    return {
+        data,
+        error
+    }
+}
+
+// retrieve thread
+async function getThread(threadID) {
+
+    const {
+        data,
+        error
+    } = await supabase
+        .from('threads')
+        .select('*')
+        .eq('threadID', threadID);
+
+    return { data, error };
+}
+
+// update thread
+async function updateThreadByID(threadID, lastMessageContent, lastUpdationTime) {
+
+    const {
+        data,
+        error
+    } = await supabase
+        .from('threads')
+        .update({
+            lastMessageContent: lastMessageContent,
+            lastUpdationTime: lastUpdationTime
+        })
+        .eq("threadID", threadID)
+
+    return {
+        data,
+        error
+    }
+}
+
 export {
     getAllUsers,
     getUserWithAuth0ID,
@@ -342,4 +392,8 @@ export {
 
     addNotificationToDatabase,
     getNotificationsOfUser,
+
+    addThreadToDatabase,
+    getThread,
+    updateThreadByID,
 }

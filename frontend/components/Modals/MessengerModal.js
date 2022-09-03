@@ -14,7 +14,8 @@ import { TiArrowBack } from 'react-icons/ti';
 import { BiHash } from 'react-icons/bi';
 import { AiOutlineSend } from 'react-icons/ai';
 import { getThreadId } from '../../Utils/getThreadID';
-import { getAllUsers } from '../../Utils/database';
+import { addThreadToDatabase, getAllUsers, getThread } from '../../Utils/database';
+import { getBangladeshTime } from '../../Utils/getBangladeshTime';
 
 
 const sendTo = { name: 'maruf', id: 1 };
@@ -154,18 +155,29 @@ function Thread({ profile, threadID, setThreadID, setSearchInput }) {
 
 
     let scrollTextRef = useRef();
+    const [currentThread, setCurrentThread] = useState([]);
 
     useEffect(() => {
         scrollTextRef?.current?.scrollIntoView({ behavior: 'smooth' });;
     }, [messages]);
 
-    async function fetchOrCreateThread() {
-        console.log(threadID);
+    async function fetchOrCreateThread(threadID) {
+
+        let { data, error } = await getThread(threadID);
+        if (data && data.length !== 0) 
+        {
+            setCurrentThread(data[0]);
+        }
+        else {
+            await addThreadToDatabase(threadID, "", getBangladeshTime());
+        }
     }
 
     useEffect(() => {
-        fetchOrCreateThread();
-    }, [])
+        if (threadID) fetchOrCreateThread(threadID);
+    }, [threadID])
+
+
 
 
     return (
@@ -213,7 +225,6 @@ export default function MessengerModal({ profile, currentThreadID }) {
     const [users, setUsers] = useState([]);
 
 
-
     useEffect(() => {
         if (threadID) {
             setCurrentMode(MODES.THREAD_OPEN);
@@ -221,6 +232,7 @@ export default function MessengerModal({ profile, currentThreadID }) {
         else
             setCurrentMode(MODES.THREAD_CLOSED);
     }, [threadID]);
+
 
 
     useEffect(() => {

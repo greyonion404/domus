@@ -41,7 +41,6 @@ function ChangeName({ userName, userID, isUpdating, setIsUpdating }) {
             propertyAddress: null,
             timestamp: getBangladeshTime(),
         };
-        console.log(notification);
         await addNotificationToDatabase(notification);
     }
 
