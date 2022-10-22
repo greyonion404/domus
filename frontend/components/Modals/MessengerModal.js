@@ -151,26 +151,11 @@ function MessageContainer({ message, isSelfMessage }) {
     }
 }
 
-function getRecieverIDOfMessage(threadID, senderID) {
-    let splittedThreadID = threadID.split("_");
-    if (!splittedThreadID || splittedThreadID.length !== 3) return null;
-
-    if (senderID === splittedThreadID[1]) return splittedThreadID[2];
-    else if (senderID === splittedThreadID[2]) return splittedThreadID[1];
-}
-
 function Thread({ profile, threadID, setThreadID, setSearchInput }) {
 
 
     let scrollTextRef = useRef();
     const [currentThread, setCurrentThread] = useState([]);
-    const [currentMessage, setCurrentMessage] = useState("");
-    const [recieverID, setRecieverID] = useState("");
-
-
-
-
-
 
     useEffect(() => {
         scrollTextRef?.current?.scrollIntoView({ behavior: 'smooth' });;
@@ -179,7 +164,8 @@ function Thread({ profile, threadID, setThreadID, setSearchInput }) {
     async function fetchOrCreateThread(threadID) {
 
         let { data, error } = await getThread(threadID);
-        if (data && data.length !== 0) {
+        if (data && data.length !== 0) 
+        {
             setCurrentThread(data[0]);
         }
         else {
@@ -188,22 +174,8 @@ function Thread({ profile, threadID, setThreadID, setSearchInput }) {
     }
 
     useEffect(() => {
-        if (threadID) {
-            fetchOrCreateThread(threadID);
-            setRecieverID(getRecieverIDOfMessage(threadID, profile.authID));
-        }
-    }, [threadID]);
-
-    useEffect(() => {
-        console.log(recieverID);
-    }, [recieverID]);
-
-
-
-
-    async function sendMessage(message, threadID) {
-        if (!message || message === "") return;
-    }
+        if (threadID) fetchOrCreateThread(threadID);
+    }, [threadID])
 
 
 
@@ -229,13 +201,8 @@ function Thread({ profile, threadID, setThreadID, setSearchInput }) {
                 <Text ref={scrollTextRef}></Text>
             </MessengerThreadContainer>
             <MessengerInputContainer>
-                <MessnegerInput type="text" value={currentMessage} placeholder={`Message #${sendTo.name}`} spellCheck="false"
-                    onChange={(event) => { setCurrentMessage(event.target.value) }}
-                />
-                <Text size={3} style={centerChilds} onClick={async () => {
-                    await sendMessage(currentMessage, threadID);
-                    setCurrentMessage("");
-                }}>
+                <MessnegerInput type="text" placeholder={`Message #${sendTo.name}`} spellCheck="false" />
+                <Text size={3} style={centerChilds}>
                     <AiOutlineSend />
                 </Text>
             </MessengerInputContainer>
