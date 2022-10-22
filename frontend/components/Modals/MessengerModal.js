@@ -174,7 +174,7 @@ function Thread({ profile, threadID, setThreadID, setSearchInput }) {
 
     useEffect(() => {
         scrollTextRef?.current?.scrollIntoView({ behavior: 'smooth' });;
-    }, []);
+    }, [messages]);
 
     async function fetchOrCreateThread(threadID) {
 
@@ -327,7 +327,7 @@ export default function MessengerModal({ profile, currentThreadID }) {
                 {
                     users.filter(usersFilteredByInput).map((user, index) => {
                         return (
-                            <MessageSenderInfo key={index}>
+                            <MessageSenderInfo>
                                 <MessageProfileImage src={"/default_profile_picture.png"} alt={user.name} />
 
                                 <Text key={user.authID} style={centerChilds} onClick={() => { setThreadID(getThreadId(profile.authID, user.authID)) }}>
